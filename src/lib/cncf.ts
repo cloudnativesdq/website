@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export async function getCncfData() {
   try {
     const res = await fetch('https://community.cncf.io/cloud-native-santo-domingo/', {
@@ -19,7 +20,7 @@ export async function getCncfData() {
     const data = JSON.parse(nextData);
     const { upcomingEvents, pastEvents, chapterTeam } = data.props.pageProps.prerenderData;
     
-    const organizers = chapterTeam.map((m: any) => {
+    const organizers = chapterTeam.map((m: { user: any; title: string }) => {
       let image = m.user.cropped_avatar_url || m.user.avatar?.url || "";
       if (image && !image.startsWith('http')) {
         image = `https://community.cncf.io${image}`;
@@ -33,7 +34,7 @@ export async function getCncfData() {
       };
     });
 
-    const mapEvent = (e: any) => {
+    const mapEvent = (e: { venue?: any; location_name?: string; city?: string; title: string; event_type_title: string; url: string; start_date: string; cropped_picture_url?: string; cropped_banner_url?: string }) => {
       const venue = e.venue;
       let location = "Santo Domingo, RD";
       
@@ -61,8 +62,8 @@ export async function getCncfData() {
       };
     };
 
-    const upcoming = upcomingEvents.results ? upcomingEvents.results.map(mapEvent) : [];
-    const past = pastEvents.results ? pastEvents.results.map(mapEvent) : [];
+    const upcoming = upcomingEvents.results ? upcomingEvents.results.map((e: any) => mapEvent(e)) : [];
+    const past = pastEvents.results ? pastEvents.results.map((e: any) => mapEvent(e)) : [];
 
     return { organizers, upcoming, past };
   } catch (error: any) {
