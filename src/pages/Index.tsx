@@ -8,6 +8,7 @@ const Index = () => {
     <main className="min-h-screen">
       <HeroSection />
       <OrganizersSection />
+      <GalleryCarousel />
       <EventsSection />
       <footer className="py-12 text-center border-t border-border">
         <p className="text-muted-foreground text-sm">
