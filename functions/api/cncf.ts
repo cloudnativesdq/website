@@ -1,15 +1,19 @@
-import { Handler } from '@netlify/functions';
-import * as cheerio from 'cheerio';
-import fetch from 'node-fetch';
-
-export const handler: Handler = async () => {
+export async function onRequest(context: any) {
   try {
     const res = await fetch('https://community.cncf.io/cloud-native-santo-domingo/');
     const html = await res.text();
-    const $ = cheerio.load(html);
-    const nextData = $('#__NEXT_DATA__').html();
-    if (!nextData) throw new Error("No data found");
     
+    // Extract the __NEXT_DATA__ script content using string splitting
+    const startTag = '<script id="__NEXT_DATA__" type="application/json">';
+    const endTag = '</script>';
+    const startIndex = html.indexOf(startTag);
+    if (startIndex === -1) throw new Error("No data found");
+    
+    const contentStart = startIndex + startTag.length;
+    const endIndex = html.indexOf(endTag, contentStart);
+    if (endIndex === -1) throw new Error("No data found");
+    
+    const nextData = html.substring(contentStart, endIndex);
     const data = JSON.parse(nextData);
     const { upcomingEvents, pastEvents, chapterTeam } = data.props.pageProps.prerenderData;
     
@@ -32,15 +36,17 @@ export const handler: Handler = async () => {
     const upcoming = upcomingEvents.results ? upcomingEvents.results.map(mapEvent) : [];
     const past = pastEvents.results ? pastEvents.results.map(mapEvent) : [];
 
-    return {
-      statusCode: 200,
+    return new Response(JSON.stringify({ organizers, upcoming, past }), {
+      status: 200,
       headers: {
         'Content-Type': 'application/json',
         'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400'
-      },
-      body: JSON.stringify({ organizers, upcoming, past })
-    };
-  } catch (error) {
-    return { statusCode: 500, body: JSON.stringify({ error: String(error) }) };
+      }
+    });
+  } catch (error: any) {
+    return new Response(JSON.stringify({ error: String(error.message || error) }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    });
   }
-};
+}
