@@ -5,8 +5,12 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import './globals.css';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://cloudnativesdq.org'),
   title: 'Cloud Native Santo Domingo',
   description: 'Comunidad Cloud Native de Santo Domingo',
+  icons: {
+    icon: '/favicon.svg',
+  },
 };
 
 export default function RootLayout({
