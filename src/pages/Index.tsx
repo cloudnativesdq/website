@@ -1,6 +1,7 @@
 import HeroSection from "@/components/HeroSection";
 import OrganizersSection from "@/components/OrganizersSection";
 import EventsSection from "@/components/EventsSection";
+import GalleryCarousel from "@/components/GalleryCarousel";
 
 const Index = () => {
   return (
