@@ -8,12 +8,12 @@ import { Instagram, Linkedin, Mail } from "lucide-react";
 export const runtime = 'edge';
 
 const galleryImages = [
-  "https://images.unsplash.com/photo-1540575861501-7cf05a4b125a?auto=format&fit=crop&q=80&w=1000",
-  "https://images.unsplash.com/photo-1591115765373-520b7a2d7294?auto=format&fit=crop&q=80&w=1000",
-  "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=1000",
-  "https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&q=80&w=1000",
-  "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&q=80&w=1000",
-  "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&q=80&w=1000",
+  "https://lh3.googleusercontent.com/d/1R0lpW1Y_4xOyVRuGe0UQ_uLwSAwW2Z3g",
+  "https://lh3.googleusercontent.com/d/1ok4_aMmu01zuH0utAURbtDcLkwfw5HfQ",
+  "https://lh3.googleusercontent.com/d/15ToewxUrZwoqWm7q4gYMOaELfagxXfPH",
+  "https://lh3.googleusercontent.com/d/1a6ozSjd6FoYeNHbbWw0D6o2w5Ps_CucU",
+  "https://lh3.googleusercontent.com/d/1OqPtIdFZW5sv411NYdSQZR4hhbQ7X98O",
+  "https://lh3.googleusercontent.com/d/1J1Td_90NlmdEbX7Nf274fUesUrCytFbB",
 ];
 
 export default async function Home() {
