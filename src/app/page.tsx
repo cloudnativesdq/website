@@ -3,7 +3,7 @@ import OrganizersSection from "@/components/OrganizersSection";
 import EventsSection from "@/components/EventsSection";
 import GalleryCarousel from "@/components/GalleryCarousel";
 import { getCncfData } from "@/lib/cncf";
-import { Instagram, Linkedin, Mail } from "lucide-react";
+import { Instagram, Linkedin, Mail, Github } from "lucide-react";
 
 export const runtime = 'edge';
 const galleryImages = [
