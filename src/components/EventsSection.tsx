@@ -25,7 +25,8 @@ const EventsSection = ({ events, title }: EventsSectionProps) => {
 
   const formatDate = (dateString: string) => {
     try {
-      return format(new Date(dateString), "d 'de' MMMM, yyyy", { locale: es });
+      const date = new Date(dateString);
+      return format(date, "d 'de' MMMM, yyyy '·' p", { locale: es });
     } catch (e) {
       return dateString;
     }
@@ -45,7 +46,7 @@ const EventsSection = ({ events, title }: EventsSectionProps) => {
             : "Revive los momentos de nuestros encuentros anteriores."}
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {events.map((event, i) => {
             const EventIcon = getIcon(event.type);
             return (
@@ -54,32 +55,32 @@ const EventsSection = ({ events, title }: EventsSectionProps) => {
                 href={event.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex gap-4 p-4 rounded-xl bg-card border border-border hover:border-primary/40 hover:glow-sm transition-all duration-300"
+                className="group flex flex-col sm:flex-row gap-6 p-5 rounded-2xl bg-card border border-border hover:border-primary/40 hover:glow-sm transition-all duration-300"
               >
-                <div className="relative w-28 h-28 flex-shrink-0">
+                <div className="relative w-full sm:w-32 h-32 flex-shrink-0">
                   <img
                     src={event.image || "https://res.cloudinary.com/startup-grind/image/upload/c_fill,dpr_2.0,f_auto,g_center,q_auto:good/v1/gcs/platform-data-cncf/contentbuilder/eventthumb.jpg"}
                     alt={event.title}
-                    className="w-full h-full rounded-lg object-cover"
+                    className="w-full h-full rounded-xl object-cover"
                     loading="lazy"
                   />
                 </div>
                 <div className="flex flex-col justify-center min-w-0 flex-1">
-                  <div className="flex items-center justify-between mb-2">
+                  <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
                     <span className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-primary font-bold">
-                      <EventIcon className="w-3 h-3" />
+                      <EventIcon className="w-3.5 h-3.5" />
                       {event.type}
                     </span>
-                    <span className="text-[10px] text-muted-foreground font-medium">
+                    <span className="text-[11px] text-muted-foreground font-medium bg-muted/50 px-2 py-0.5 rounded-full">
                       {formatDate(event.date)}
                     </span>
                   </div>
-                  <h3 className="font-heading font-semibold text-foreground group-hover:text-primary transition-colors leading-tight line-clamp-2 mb-2">
+                  <h3 className="font-heading font-bold text-lg text-foreground group-hover:text-primary transition-colors leading-snug mb-3 line-clamp-2">
                     {event.title}
                   </h3>
-                  <div className="flex items-center gap-1 text-[11px] text-muted-foreground">
-                    <MapPin className="w-3 h-3 text-primary/60" />
-                    <span className="truncate">{event.location}</span>
+                  <div className="flex items-start gap-2 text-[12px] text-muted-foreground">
+                    <MapPin className="w-4 h-4 text-primary/60 mt-0.5 flex-shrink-0" />
+                    <span className="line-clamp-2 leading-relaxed">{event.location}</span>
                   </div>
                 </div>
               </a>

@@ -27,14 +27,28 @@ export async function getCncfData() {
       profileUrl: `https://community.cncf.io${m.user.profile_url}`
     }));
 
-    const mapEvent = (e: any) => ({
-      title: e.title,
-      type: e.event_type_title,
-      image: e.cropped_picture_url || e.cropped_banner_url || "",
-      url: e.url,
-      date: e.start_date,
-      location: e.venue?.name || e.location_name || e.city || "Santo Domingo, RD"
-    });
+    const mapEvent = (e: any) => {
+      const venue = e.venue;
+      let location = "Santo Domingo, RD";
+      
+      if (venue) {
+        const parts = [venue.name, venue.address, venue.city].filter(Boolean);
+        location = parts.join(", ");
+      } else if (e.location_name) {
+        location = e.location_name;
+      } else if (e.city) {
+        location = e.city;
+      }
+
+      return {
+        title: e.title,
+        type: e.event_type_title,
+        image: e.cropped_picture_url || e.cropped_banner_url || "",
+        url: e.url,
+        date: e.start_date, // This is usually an ISO string with time
+        location: location
+      };
+    };
 
     const upcoming = upcomingEvents.results ? upcomingEvents.results.map(mapEvent) : [];
     const past = pastEvents.results ? pastEvents.results.map(mapEvent) : [];
