@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 interface Organizer {
   name: string;
   role: string;
@@ -32,14 +34,16 @@ const OrganizersSection = ({ organizers }: OrganizersSectionProps) => {
               rel="noopener noreferrer"
               className="group flex flex-col items-center text-center p-6 rounded-xl bg-card border border-border hover:border-primary/40 hover:glow-sm transition-all duration-300"
             >
-              <img
-                src={org.image}
-                alt={org.name}
-                className="w-24 h-24 rounded-full object-cover mb-4 border-2 border-border group-hover:border-primary transition-colors"
-                loading="lazy"
-                width={96}
-                height={96}
-              />
+              <div className="w-24 h-24 rounded-full overflow-hidden mb-4 border-2 border-border group-hover:border-primary transition-colors relative">
+                <Image
+                  src={org.image || "https://res.cloudinary.com/startup-grind/image/upload/c_fill,dpr_2.0,f_auto,g_center,q_auto:good/v1/gcs/platform-data-cncf/contentbuilder/eventthumb.jpg"}
+                  alt={org.name}
+                  className="object-cover"
+                  fill
+                  sizes="96px"
+                  unoptimized
+                />
+              </div>
               <h3 className="font-heading font-semibold text-sm text-foreground mb-1 leading-tight">
                 {org.name}
               </h3>
@@ -52,5 +56,6 @@ const OrganizersSection = ({ organizers }: OrganizersSectionProps) => {
     </section>
   );
 };
+
 
 export default OrganizersSection;

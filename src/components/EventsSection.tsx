@@ -1,6 +1,7 @@
 import { Calendar, Monitor, Coffee, MapPin } from "lucide-react";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
+import Image from "next/image";
 
 interface Event {
   title: string;
@@ -57,12 +58,14 @@ const EventsSection = ({ events, title }: EventsSectionProps) => {
                 rel="noopener noreferrer"
                 className="group flex flex-col sm:flex-row gap-6 p-5 rounded-2xl bg-card border border-border hover:border-primary/40 hover:glow-sm transition-all duration-300"
               >
-                <div className="relative w-full sm:w-32 h-32 flex-shrink-0">
-                  <img
+                <div className="relative w-full sm:w-32 h-32 flex-shrink-0 overflow-hidden rounded-xl">
+                  <Image
                     src={event.image || "https://res.cloudinary.com/startup-grind/image/upload/c_fill,dpr_2.0,f_auto,g_center,q_auto:good/v1/gcs/platform-data-cncf/contentbuilder/eventthumb.jpg"}
                     alt={event.title}
-                    className="w-full h-full rounded-xl object-cover"
-                    loading="lazy"
+                    className="object-cover"
+                    fill
+                    sizes="(max-width: 640px) 100vw, 128px"
+                    unoptimized
                   />
                 </div>
                 <div className="flex flex-col justify-center min-w-0 flex-1">
@@ -91,5 +94,6 @@ const EventsSection = ({ events, title }: EventsSectionProps) => {
     </section>
   );
 };
+
 
 export default EventsSection;

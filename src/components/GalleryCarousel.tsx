@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
@@ -65,12 +66,14 @@ const GalleryCarousel = ({ images }: GalleryCarouselProps) => {
                   key={index}
                   className="flex-[0_0_80%] sm:flex-[0_0_45%] lg:flex-[0_0_30%] min-w-0"
                 >
-                  <div className="aspect-[4/3] rounded-xl overflow-hidden border border-border">
-                    <img
+                  <div className="aspect-[4/3] rounded-xl overflow-hidden border border-border relative">
+                    <Image
                       src={src}
                       alt={`Cloud Native Santo Domingo evento ${index + 1}`}
                       className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-                      loading="lazy"
+                      fill
+                      sizes="(max-width: 640px) 80vw, (max-width: 1024px) 45vw, 30vw"
+                      unoptimized
                     />
                   </div>
                 </div>
@@ -81,7 +84,7 @@ const GalleryCarousel = ({ images }: GalleryCarouselProps) => {
           <button
             onClick={scrollPrev}
             disabled={!canScrollPrev}
-            className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-card/80 backdrop-blur border border-border flex items-center justify-center text-foreground hover:bg-primary hover:text-primary-foreground transition-colors opacity-0 group-hover:opacity-100 disabled:opacity-0"
+            className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-card/80 backdrop-blur border border-border flex items-center justify-center text-foreground hover:bg-primary hover:text-primary-foreground transition-colors opacity-0 group-hover:opacity-100 disabled:opacity-0 z-10"
             aria-label="Previous"
           >
             <ChevronLeft className="w-5 h-5" />
@@ -89,7 +92,7 @@ const GalleryCarousel = ({ images }: GalleryCarouselProps) => {
           <button
             onClick={scrollNext}
             disabled={!canScrollNext}
-            className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-card/80 backdrop-blur border border-border flex items-center justify-center text-foreground hover:bg-primary hover:text-primary-foreground transition-colors opacity-0 group-hover:opacity-100 disabled:opacity-0"
+            className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-card/80 backdrop-blur border border-border flex items-center justify-center text-foreground hover:bg-primary hover:text-primary-foreground transition-colors opacity-0 group-hover:opacity-100 disabled:opacity-0 z-10"
             aria-label="Next"
           >
             <ChevronRight className="w-5 h-5" />

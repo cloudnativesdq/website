@@ -19,13 +19,19 @@ export async function getCncfData() {
     const data = JSON.parse(nextData);
     const { upcomingEvents, pastEvents, chapterTeam } = data.props.pageProps.prerenderData;
     
-    const organizers = chapterTeam.map((m: any) => ({
-      name: m.user.full_name || `${m.user.first_name} ${m.user.last_name}`,
-      role: m.title.split(' | ')[0] || m.title,
-      company: m.title.split(' | ')[1] || m.user.company || "",
-      image: m.user.cropped_avatar_url || m.user.avatar?.url || "",
-      profileUrl: `https://community.cncf.io${m.user.profile_url}`
-    }));
+    const organizers = chapterTeam.map((m: any) => {
+      let image = m.user.cropped_avatar_url || m.user.avatar?.url || "";
+      if (image && !image.startsWith('http')) {
+        image = `https://community.cncf.io${image}`;
+      }
+      return {
+        name: m.user.full_name || `${m.user.first_name} ${m.user.last_name}`,
+        role: m.title.split(' | ')[0] || m.title,
+        company: m.title.split(' | ')[1] || m.user.company || "",
+        image,
+        profileUrl: `https://community.cncf.io${m.user.profile_url}`
+      };
+    });
 
     const mapEvent = (e: any) => {
       const venue = e.venue;
@@ -40,10 +46,15 @@ export async function getCncfData() {
         location = e.city;
       }
 
+      let image = e.cropped_picture_url || e.cropped_banner_url || "";
+      if (image && !image.startsWith('http')) {
+        image = `https://community.cncf.io${image}`;
+      }
+
       return {
         title: e.title,
         type: e.event_type_title,
-        image: e.cropped_picture_url || e.cropped_banner_url || "",
+        image,
         url: e.url,
         date: e.start_date, // This is usually an ISO string with time
         location: location
