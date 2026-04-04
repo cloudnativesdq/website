@@ -9,6 +9,7 @@ interface GalleryCarouselProps {
 }
 
 const GalleryCarousel = ({ images }: GalleryCarouselProps) => {
+  const [shuffledImages, setShuffledImages] = useState<string[]>([]);
   const [emblaRef, emblaApi] = useEmblaCarousel(
     {
       loop: true,
@@ -32,13 +33,19 @@ const GalleryCarousel = ({ images }: GalleryCarouselProps) => {
   }, [emblaApi]);
 
   useEffect(() => {
+    if (images && images.length > 0) {
+      setShuffledImages([...images].sort(() => Math.random() - 0.5));
+    }
+  }, [images]);
+
+  useEffect(() => {
     if (!emblaApi) return;
     onSelect();
     emblaApi.on("select", onSelect);
     emblaApi.on("reInit", onSelect);
   }, [emblaApi, onSelect]);
 
-  if (!images || images.length === 0) return null;
+  if (!shuffledImages || shuffledImages.length === 0) return null;
 
   return (
     <section className="py-24">
@@ -53,7 +60,7 @@ const GalleryCarousel = ({ images }: GalleryCarouselProps) => {
         <div className="relative group">
           <div className="overflow-hidden rounded-xl" ref={emblaRef}>
             <div className="flex gap-4">
-              {images.map((src, index) => (
+              {shuffledImages.map((src, index) => (
                 <div
                   key={index}
                   className="flex-[0_0_80%] sm:flex-[0_0_45%] lg:flex-[0_0_30%] min-w-0"
@@ -90,7 +97,7 @@ const GalleryCarousel = ({ images }: GalleryCarouselProps) => {
         </div>
 
         <div className="flex justify-center gap-1.5 mt-6">
-          {images.map((_, index) => (
+          {shuffledImages.map((_, index) => (
             <button
               key={index}
               onClick={() => emblaApi?.scrollTo(index)}

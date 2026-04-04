@@ -8,12 +8,6 @@ import { Instagram, Linkedin, Mail } from "lucide-react";
 export const runtime = 'edge';
 
 const galleryImages = [
-  "https://lh3.googleusercontent.com/d/1R0lpW1Y_4xOyVRuGe0UQ_uLwSAwW2Z3g",
-  "https://lh3.googleusercontent.com/d/1ok4_aMmu01zuH0utAURbtDcLkwfw5HfQ",
-  "https://lh3.googleusercontent.com/d/15ToewxUrZwoqWm7q4gYMOaELfagxXfPH",
-  "https://lh3.googleusercontent.com/d/1a6ozSjd6FoYeNHbbWw0D6o2w5Ps_CucU",
-  "https://lh3.googleusercontent.com/d/1OqPtIdFZW5sv411NYdSQZR4hhbQ7X98O",
-  "https://lh3.googleusercontent.com/d/1J1Td_90NlmdEbX7Nf274fUesUrCytFbB",
   "https://lh3.googleusercontent.com/pw/AP1GczOCcmb8M-0hVxC0XNnNe-rBbyx_qCXHZ0ZXj2Y-jK0uT3A70dtP0HDVPOjlp8dghuvlAUQXgiGhKVfA1sJ8ytsV-ulrzBRmz5wf7YnV2cuEc03IiYk=w1200",
   "https://lh3.googleusercontent.com/pw/AP1GczNNBlMtsqszNV28ssPquXoSdPcIuJXjFZ7u95L1ja0FFLO2XxfmpT9_w8DzZq7QmWLU_NHqsMnWNkT9odhivIfKqVchbJUtLM47ZY7bXRn_fjMg9gE=w1200",
   "https://lh3.googleusercontent.com/pw/AP1GczMvBjLIpVcO6pbjF4khGMbuA-R8Cscx6MrHh5vIQuQVTWEBvV7NP39MCUn7behBLAn_mNJJBFmHHnqtOCL69-PY5SmFewKy0vgwO5dAZCb0VesPbTg=w1200",
