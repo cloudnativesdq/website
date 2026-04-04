@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { Analytics } from "@vercel/analytics/next"
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -26,6 +27,7 @@ export default function RootLayout({
       <body>
         <TooltipProvider>
           {children}
+          <Analytics />
           <Toaster />
           <Sonner />
         </TooltipProvider>
