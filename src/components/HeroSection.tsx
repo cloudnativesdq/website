@@ -1,15 +1,17 @@
+import Image from "next/image";
 import heroBanner from "@/assets/hero-banner.jpg";
 import { MapPin, Users } from "lucide-react";
 
 const HeroSection = () => {
   return (
     <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden">
-      <img
+      <Image
         src={heroBanner}
         alt="Cloud Native network visualization"
         className="absolute inset-0 w-full h-full object-cover"
         width={1920}
         height={640}
+        priority
       />
       <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/80 to-background" />
       <div className="relative z-10 container text-center py-20">

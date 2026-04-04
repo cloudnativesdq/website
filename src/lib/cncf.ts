@@ -1,6 +1,8 @@
-export async function onRequest(context: any) {
+export async function getCncfData() {
   try {
-    const res = await fetch('https://community.cncf.io/cloud-native-santo-domingo/');
+    const res = await fetch('https://community.cncf.io/cloud-native-santo-domingo/', {
+      next: { revalidate: 3600 } // Cache for 1 hour
+    });
     const html = await res.text();
     
     // Extract the __NEXT_DATA__ script content using string splitting
@@ -36,17 +38,9 @@ export async function onRequest(context: any) {
     const upcoming = upcomingEvents.results ? upcomingEvents.results.map(mapEvent) : [];
     const past = pastEvents.results ? pastEvents.results.map(mapEvent) : [];
 
-    return new Response(JSON.stringify({ organizers, upcoming, past }), {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json',
-        'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400'
-      }
-    });
+    return { organizers, upcoming, past };
   } catch (error: any) {
-    return new Response(JSON.stringify({ error: String(error.message || error) }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' }
-    });
+    console.error("Error fetching CNCF data:", error);
+    return { organizers: [], upcoming: [], past: [] };
   }
 }
