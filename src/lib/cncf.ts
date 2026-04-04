@@ -32,7 +32,8 @@ export async function getCncfData() {
       type: e.event_type_title,
       image: e.cropped_picture_url || e.cropped_banner_url || "",
       url: e.url,
-      date: e.start_date
+      date: e.start_date,
+      location: e.venue?.name || e.location_name || e.city || "Santo Domingo, RD"
     });
 
     const upcoming = upcomingEvents.results ? upcomingEvents.results.map(mapEvent) : [];

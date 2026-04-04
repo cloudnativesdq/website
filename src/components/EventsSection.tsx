@@ -1,4 +1,6 @@
-import { Calendar, Monitor, Coffee } from "lucide-react";
+import { Calendar, Monitor, Coffee, MapPin } from "lucide-react";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
 
 interface Event {
   title: string;
@@ -6,6 +8,7 @@ interface Event {
   image: string;
   url: string;
   date: string;
+  location?: string;
 }
 
 interface EventsSectionProps {
@@ -20,6 +23,14 @@ const EventsSection = ({ events, title }: EventsSectionProps) => {
     return Calendar;
   };
 
+  const formatDate = (dateString: string) => {
+    try {
+      return format(new Date(dateString), "d 'de' MMMM, yyyy", { locale: es });
+    } catch (e) {
+      return dateString;
+    }
+  };
+
   if (!events || events.length === 0) return null;
 
   return (
@@ -29,7 +40,9 @@ const EventsSection = ({ events, title }: EventsSectionProps) => {
           <span className="text-gradient">{title}</span>
         </h2>
         <p className="text-muted-foreground text-center mb-16 max-w-lg mx-auto">
-          Meetups, charlas y talleres para la comunidad Cloud Native.
+          {title.toLowerCase().includes("próximos") 
+            ? "¡No te pierdas nuestros siguientes encuentros!" 
+            : "Revive los momentos de nuestros encuentros anteriores."}
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -43,26 +56,31 @@ const EventsSection = ({ events, title }: EventsSectionProps) => {
                 rel="noopener noreferrer"
                 className="group flex gap-4 p-4 rounded-xl bg-card border border-border hover:border-primary/40 hover:glow-sm transition-all duration-300"
               >
-                <img
-                  src={event.image || "https://res.cloudinary.com/startup-grind/image/upload/c_fill,dpr_2.0,f_auto,g_center,q_auto:good/v1/gcs/platform-data-cncf/contentbuilder/eventthumb.jpg"}
-                  alt={event.title}
-                  className="w-28 h-28 rounded-lg object-cover flex-shrink-0"
-                  loading="lazy"
-                  width={112}
-                  height={112}
-                />
-                <div className="flex flex-col justify-center min-w-0">
-                  <span className="inline-flex items-center gap-1.5 text-xs text-primary font-medium mb-2">
-                    <EventIcon className="w-3 h-3" />
-                    {event.type}
-                  </span>
-                  <h3 className="font-heading font-semibold text-foreground group-hover:text-primary transition-colors leading-snug line-clamp-2">
+                <div className="relative w-28 h-28 flex-shrink-0">
+                  <img
+                    src={event.image || "https://res.cloudinary.com/startup-grind/image/upload/c_fill,dpr_2.0,f_auto,g_center,q_auto:good/v1/gcs/platform-data-cncf/contentbuilder/eventthumb.jpg"}
+                    alt={event.title}
+                    className="w-full h-full rounded-lg object-cover"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="flex flex-col justify-center min-w-0 flex-1">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-primary font-bold">
+                      <EventIcon className="w-3 h-3" />
+                      {event.type}
+                    </span>
+                    <span className="text-[10px] text-muted-foreground font-medium">
+                      {formatDate(event.date)}
+                    </span>
+                  </div>
+                  <h3 className="font-heading font-semibold text-foreground group-hover:text-primary transition-colors leading-tight line-clamp-2 mb-2">
                     {event.title}
                   </h3>
-                  <span className="text-xs text-muted-foreground mt-2 flex items-center gap-1">
-                    <Calendar className="w-3 h-3" />
-                    Ver detalles →
-                  </span>
+                  <div className="flex items-center gap-1 text-[11px] text-muted-foreground">
+                    <MapPin className="w-3 h-3 text-primary/60" />
+                    <span className="truncate">{event.location}</span>
+                  </div>
                 </div>
               </a>
             );
