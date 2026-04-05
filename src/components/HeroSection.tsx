@@ -1,91 +1,152 @@
 
 "use client";
 
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import heroBanner from "@/assets/hero-banner.jpg";
-import { MapPin, Users, ArrowRight, CalendarCheck } from "lucide-react";
+import { MapPin, Users, ArrowRight, CalendarCheck, Sparkles } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 import { links } from "@/lib/links";
+import { cn } from "@/lib/utils";
 
 interface HeroSectionProps {
   membersCount: number;
   pastCount: number;
 }
 
+const CountUp = ({ end, duration = 2000, prefix = "" }: { end: number; duration?: number; prefix?: string }) => {
+  const [count, setCount] = useState(0);
+  const roundedEnd = Math.floor(end / 10) * 10;
+
+  useEffect(() => {
+    let startTime: number | null = null;
+    let animationFrame: number;
+
+    const animate = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = timestamp - startTime;
+      const percentage = Math.min(progress / duration, 1);
+      
+      // Easing function: easeOutQuart
+      const easeOutQuart = 1 - Math.pow(1 - percentage, 4);
+      const currentValue = Math.floor(easeOutQuart * roundedEnd);
+      
+      // Step by 10
+      const steppedValue = Math.floor(currentValue / 10) * 10;
+      
+      setCount(steppedValue);
+
+      if (percentage < 1) {
+        animationFrame = requestAnimationFrame(animate);
+      } else {
+        setCount(roundedEnd);
+      }
+    };
+
+    animationFrame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationFrame);
+  }, [roundedEnd, duration]);
+
+  return <span className="tabular-nums font-bold">{prefix}{count}</span>;
+};
+
 const HeroSection = ({ membersCount, pastCount }: HeroSectionProps) => {
-  const { t } = useLanguage();
+  const { t, mounted } = useLanguage();
 
   return (
-    <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden border-b border-white/5 bg-background">
+    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden border-b border-white/5 bg-background select-none">
+      {/* Background Layer */}
       <div className="absolute inset-0 z-0">
         <Image
           src={heroBanner}
           alt="Cloud Native Santo Domingo"
-          className="object-cover scale-105"
+          className="object-cover scale-110 blur-[2px] opacity-40 brightness-50"
           fill
           priority
           unoptimized
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/80 to-background" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,hsl(var(--background))_100%)] opacity-70" />
+        {/* Dynamic Mesh Gradients */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/60 to-background" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,hsla(199,89%,48%,0.15),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,hsla(222,47%,10%,0.4),transparent_50%)]" />
+        
+        {/* Animated Background Pulse */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,hsla(199,89%,48%,0.05)_0%,transparent_70%)] animate-pulse" />
       </div>
 
       <div className="relative z-10 container px-6 py-24 md:py-32 flex flex-col items-center text-center">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-darker text-[10px] md:text-xs font-heading font-semibold tracking-wider uppercase text-primary mb-8 animate-fade-up border border-primary/20">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-          </span>
+        {/* Community Badge */}
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-darker text-[10px] md:text-xs font-heading font-bold tracking-[0.2em] uppercase text-primary mb-10 animate-fade-up border border-primary/20 shadow-xl shadow-primary/5">
+          <Sparkles className="w-3 h-3 animate-pulse" />
           Latin America · CNCF Community Group
         </div>
 
-        <h1 className="text-4xl sm:text-6xl md:text-8xl font-heading font-extrabold mb-8 animate-fade-up leading-[1.1] tracking-tight" style={{ animationDelay: "0.1s" }}>
-          {t.heroTitle1}<br />
-          <span className="text-gradient">{t.heroTitle2}</span>
+        {/* Main Heading */}
+        <h1 className="text-5xl sm:text-7xl md:text-[9rem] font-heading font-black mb-10 animate-fade-up leading-[0.85] tracking-tighter" style={{ animationDelay: "0.1s" }}>
+          <span className="block opacity-90">{t.heroTitle1}</span>
+          <span className="text-gradient block pb-4 mt-2">{t.heroTitle2}</span>
         </h1>
 
-        <p className="text-muted-foreground max-w-2xl mx-auto text-base md:text-xl mb-12 animate-fade-up leading-relaxed" style={{ animationDelay: "0.2s" }}>
+        {/* Subtitle */}
+        <p className="text-muted-foreground/80 max-w-2xl mx-auto text-lg md:text-2xl mb-14 animate-fade-up leading-relaxed font-medium" style={{ animationDelay: "0.2s" }}>
           {t.heroSubtitle}
         </p>
 
-        <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 mb-12 animate-fade-up" style={{ animationDelay: "0.3s" }}>
-          <div className="flex items-center gap-2.5 px-4 py-2 rounded-xl glass text-sm font-medium">
-            <Users className="w-4 h-4 text-primary" />
-            <span className="text-foreground">{membersCount} {t.members}</span>
+        {/* Metrics Grid */}
+        <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 mb-16 animate-fade-up" style={{ animationDelay: "0.3s" }}>
+          <div className="group flex flex-col items-center gap-1 px-8 py-4 rounded-[2.5rem] glass hover:bg-white/5 transition-all duration-500 border border-white/10 hover:border-primary/30 shadow-2xl">
+            <div className="flex items-center gap-3">
+              <Users className="w-5 h-5 text-primary" />
+              <div className="text-2xl md:text-3xl font-heading font-bold text-foreground">
+                {mounted ? <CountUp end={membersCount} prefix="+" /> : "0"}
+              </div>
+            </div>
+            <span className="text-[10px] font-heading font-bold uppercase tracking-widest text-muted-foreground/60 group-hover:text-primary/80 transition-colors">{t.members}</span>
           </div>
-          <div className="flex items-center gap-2.5 px-4 py-2 rounded-xl glass text-sm font-medium">
-            <CalendarCheck className="w-4 h-4 text-primary" />
-            <span className="text-foreground">{pastCount} {t.eventsLabel}</span>
+
+          <div className="group flex flex-col items-center gap-1 px-8 py-4 rounded-[2.5rem] glass hover:bg-white/5 transition-all duration-500 border border-white/10 hover:border-primary/30 shadow-2xl">
+            <div className="flex items-center gap-3">
+              <CalendarCheck className="w-5 h-5 text-primary" />
+              <div className="text-2xl md:text-3xl font-heading font-bold text-foreground">
+                {mounted ? <CountUp end={pastCount} prefix="+" /> : "0"}
+              </div>
+            </div>
+            <span className="text-[10px] font-heading font-bold uppercase tracking-widest text-muted-foreground/60 group-hover:text-primary/80 transition-colors">{t.eventsLabel}</span>
           </div>
-          <div className="flex items-center gap-2.5 px-4 py-2 rounded-xl glass text-sm font-medium">
-            <MapPin className="w-4 h-4 text-primary" />
-            <span className="text-foreground">{t.location}</span>
+
+          <div className="group hidden sm:flex flex-col items-center gap-1 px-8 py-4 rounded-[2.5rem] glass hover:bg-white/5 transition-all duration-500 border border-white/10 hover:border-primary/30 shadow-2xl">
+            <div className="flex items-center gap-3">
+              <MapPin className="w-5 h-5 text-primary" />
+              <div className="text-lg md:text-xl font-heading font-extrabold text-foreground">Santo Domingo</div>
+            </div>
+            <span className="text-[10px] font-heading font-bold uppercase tracking-widest text-muted-foreground/60 group-hover:text-primary/80 transition-colors">República Dominicana</span>
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-center gap-4 animate-fade-up" style={{ animationDelay: "0.4s" }}>
+        {/* Call to Actions */}
+        <div className="flex flex-col sm:flex-row items-center gap-5 animate-fade-up" style={{ animationDelay: "0.4s" }}>
           <a
             href={links.cncfCommunity}
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-primary to-cyan-400 text-primary-foreground font-heading font-bold rounded-2xl glow-md hover:glow-lg transition-all duration-500 hover:-translate-y-1 active:scale-95 shadow-2xl shadow-primary/30"
+            className="group relative inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-primary to-cyan-500 text-primary-foreground font-heading font-black rounded-3xl glow-md hover:glow-lg transition-all duration-500 hover:-translate-y-2 active:scale-95 shadow-2xl shadow-primary/40 uppercase tracking-wider text-sm"
           >
             {t.joinCommunity}
-            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-2" />
           </a>
           
           <a
             href="#events"
-            className="px-8 py-4 bg-white/5 hover:bg-white/10 text-white font-heading font-bold rounded-2xl transition-all duration-300 border border-white/20 hover:border-white/40 backdrop-blur-md hover:-translate-y-1 active:scale-95"
+            className="px-10 py-5 bg-white/5 hover:bg-white/10 text-white font-heading font-black rounded-3xl transition-all duration-300 border border-white/10 hover:border-white/30 backdrop-blur-xl hover:-translate-y-1 active:scale-95 uppercase tracking-wider text-sm"
           >
             {t.exploreEvents}
           </a>
         </div>
       </div>
 
-      {/* Decorative floating elements */}
-      <div className="absolute top-1/4 -left-12 w-64 h-64 bg-primary/10 rounded-full blur-[120px] animate-pulse pointer-events-none" />
-      <div className="absolute bottom-1/4 -right-12 w-64 h-64 bg-blue-500/10 rounded-full blur-[120px] animate-pulse pointer-events-none" style={{ animationDelay: "2s" }} />
+      {/* Decorative Blur Blobs */}
+      <div className="absolute top-[10%] -left-20 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] mix-blend-screen pointer-events-none animate-float" />
+      <div className="absolute bottom-[10%] -right-20 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] mix-blend-screen pointer-events-none animate-float" style={{ animationDelay: "3s" }} />
     </section>
   );
 };
