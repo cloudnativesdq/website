@@ -86,51 +86,51 @@ const HeroSection = ({ membersCount, pastCount, upcomingCount }: HeroSectionProp
         </p>
 
         {/* Metrics Grid */}
-        <div className="flex flex-wrap items-center justify-center gap-3 md:gap-6 mb-8 md:mb-12 animate-fade-up" style={{ animationDelay: "0.3s" }}>
-          <div className="group flex flex-col items-center gap-0.5 md:gap-1 px-5 md:px-8 py-2 md:py-4 rounded-2xl md:rounded-[2.5rem] glass hover:bg-white/5 transition-all duration-500 border border-white/10 hover:border-primary/30 shadow-2xl">
-            <div className="flex items-center gap-2 md:gap-3">
-              <Users className="w-4 h-4 md:w-5 md:h-5 text-primary" />
-              <div className="text-lg md:text-3xl font-heading font-bold text-foreground">
+        <div className="flex flex-wrap items-center justify-center gap-2 md:gap-6 mb-8 md:mb-12 animate-fade-up w-full max-w-sm sm:max-w-none mx-auto" style={{ animationDelay: "0.3s" }}>
+          <div className="group flex-1 min-w-[130px] flex flex-col items-center gap-0.5 md:gap-1 px-3 sm:px-5 md:px-8 py-3 md:py-4 rounded-2xl md:rounded-[2.5rem] glass hover:bg-white/5 transition-all duration-500 border border-white/10 hover:border-primary/30 shadow-2xl">
+            <div className="flex items-center gap-1.5 md:gap-3">
+              <Users className="w-3.5 h-3.5 md:w-5 md:h-5 text-primary" />
+              <div className="text-xl md:text-3xl font-heading font-bold text-foreground">
                 {mounted ? <CountUp end={membersCount} prefix="+" /> : "0"}
               </div>
             </div>
-            <span className="text-[8px] md:text-[10px] font-heading font-bold uppercase tracking-widest text-muted-foreground/60 group-hover:text-primary/80 transition-colors">{t.members}</span>
+            <span className="text-[9px] md:text-[10px] font-heading font-bold uppercase tracking-widest text-muted-foreground/60 group-hover:text-primary/80 transition-colors whitespace-nowrap">{t.members}</span>
           </div>
 
-          <div className="group flex flex-col items-center gap-0.5 md:gap-1 px-5 md:px-8 py-2 md:py-4 rounded-2xl md:rounded-[2.5rem] glass hover:bg-white/5 transition-all duration-500 border border-white/10 hover:border-primary/30 shadow-2xl">
-            <div className="flex items-center gap-2 md:gap-3">
-              <CalendarCheck className="w-4 h-4 md:w-5 md:h-5 text-primary" />
-              <div className="text-lg md:text-3xl font-heading font-bold text-foreground">
+          <div className="group flex-1 min-w-[130px] flex flex-col items-center gap-0.5 md:gap-1 px-3 sm:px-5 md:px-8 py-3 md:py-4 rounded-2xl md:rounded-[2.5rem] glass hover:bg-white/5 transition-all duration-500 border border-white/10 hover:border-primary/30 shadow-2xl">
+            <div className="flex items-center gap-1.5 md:gap-3">
+              <CalendarCheck className="w-3.5 h-3.5 md:w-5 md:h-5 text-primary" />
+              <div className="text-xl md:text-3xl font-heading font-bold text-foreground">
                 {mounted ? <CountUp end={pastCount} prefix="+" /> : "0"}
               </div>
             </div>
-            <span className="text-[8px] md:text-[10px] font-heading font-bold uppercase tracking-widest text-muted-foreground/60 group-hover:text-primary/80 transition-colors">{t.eventsLabel}</span>
+            <span className="text-[9px] md:text-[10px] font-heading font-bold uppercase tracking-widest text-muted-foreground/60 group-hover:text-primary/80 transition-colors whitespace-nowrap">{t.eventsLabel}</span>
           </div>
 
-          <div className="group hidden sm:flex flex-col items-center gap-0.5 md:gap-1 px-5 md:px-8 py-2 md:py-4 rounded-2xl md:rounded-[2.5rem] glass hover:bg-white/5 transition-all duration-500 border border-white/10 hover:border-primary/30 shadow-2xl">
-            <div className="flex items-center gap-2 md:gap-3">
-              <MapPin className="w-4 h-4 md:w-5 md:h-5 text-primary" />
+          <div className="group hidden sm:flex flex-1 min-w-[140px] flex-col items-center gap-0.5 md:gap-1 px-3 sm:px-5 md:px-8 py-3 md:py-4 rounded-2xl md:rounded-[2.5rem] glass hover:bg-white/5 transition-all duration-500 border border-white/10 hover:border-primary/30 shadow-2xl">
+            <div className="flex items-center gap-1.5 md:gap-3">
+              <MapPin className="w-3.5 h-3.5 md:w-5 md:h-5 text-primary" />
               <div className="text-sm md:text-xl font-heading font-extrabold text-foreground">Santo Domingo</div>
             </div>
-            <span className="text-[8px] md:text-[10px] font-heading font-bold uppercase tracking-widest text-muted-foreground/60 group-hover:text-primary/80 transition-colors">República Dominicana</span>
+            <span className="text-[9px] md:text-[10px] font-heading font-bold uppercase tracking-widest text-muted-foreground/60 group-hover:text-primary/80 transition-colors whitespace-nowrap">República Dominicana</span>
           </div>
         </div>
 
         {/* Call to Actions */}
-        <div className="flex flex-col sm:flex-row items-center gap-4 animate-fade-up" style={{ animationDelay: "0.4s" }}>
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 w-full max-w-[280px] sm:max-w-none mx-auto animate-fade-up" style={{ animationDelay: "0.4s" }}>
           <a
             href={links.cncfCommunity}
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative inline-flex items-center gap-3 px-8 md:px-10 py-3.5 md:py-5 bg-gradient-to-r from-primary to-cyan-500 text-primary-foreground font-heading font-black rounded-2xl md:rounded-3xl glow-md hover:glow-lg transition-all duration-500 hover:-translate-y-2 active:scale-95 shadow-2xl shadow-primary/40 uppercase tracking-wider text-xs md:text-sm"
+            className="group relative inline-flex items-center justify-center gap-3 px-6 md:px-10 py-3.5 md:py-5 bg-gradient-to-r from-primary to-cyan-500 text-primary-foreground font-heading font-black rounded-2xl md:rounded-3xl glow-md hover:glow-lg transition-all duration-500 hover:-translate-y-2 active:scale-95 shadow-2xl shadow-primary/40 uppercase tracking-wider text-xs md:text-sm w-full sm:w-auto"
           >
             {t.joinCommunity}
-            <ArrowRight className="w-4 h-4 md:w-5 md:h-5 transition-transform group-hover:translate-x-2" />
+            <ArrowRight className="w-4 h-4 md:w-5 md:h-5 transition-transform group-hover:translate-x-2 shrink-0" />
           </a>
           
           <a
             href="#events"
-            className="relative px-8 md:px-10 py-3.5 md:py-5 bg-white/5 hover:bg-white/10 text-white font-heading font-black rounded-2xl md:rounded-3xl transition-all duration-300 border border-white/10 hover:border-white/30 backdrop-blur-xl hover:-translate-y-1 active:scale-95 uppercase tracking-wider text-xs md:text-sm"
+            className="relative inline-flex items-center justify-center px-6 md:px-10 py-3.5 md:py-5 bg-white/5 hover:bg-white/10 text-white font-heading font-black rounded-2xl md:rounded-3xl transition-all duration-300 border border-white/10 hover:border-white/30 backdrop-blur-xl hover:-translate-y-1 active:scale-95 uppercase tracking-wider text-xs md:text-sm w-full sm:w-auto"
           >
             {upcomingCount > 0 && (
               <span className="absolute -top-2 -right-2 flex h-5 w-5">

@@ -34,9 +34,9 @@ const Navbar = () => {
       )}
     >
       <div className="container flex items-center justify-between">
-        <Link href="/" className="font-heading font-bold text-lg xs:text-xl tracking-tight flex items-center gap-1.5 whitespace-nowrap group hover:scale-105 transition-transform duration-300">
+        <Link href="/" className="font-heading font-bold text-[13px] sm:text-base md:text-xl tracking-tight flex items-center gap-1.5 whitespace-nowrap group hover:scale-105 transition-transform duration-300">
           <span className="text-primary group-hover:text-cyan-400 transition-colors">Cloud Native</span>
-          <span className="hidden xs:inline">SDQ</span>
+          <span>SDQ</span>
         </Link>
 
         {/* Desktop Nav */}
