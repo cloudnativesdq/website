@@ -7,8 +7,32 @@ import './globals.css';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://cloudnativesdq.org'),
-  title: 'Cloud Native Santo Domingo',
-  description: 'Comunidad Cloud Native de Santo Domingo',
+  title: 'Cloud Native Santo Domingo | Comunidad Oficial CNCF en RD',
+  description: 'Únete a la comunidad oficial de Cloud Native Computing Foundation (CNCF) en Santo Domingo. Eventos, charlas y networking sobre Kubernetes, Docker y el ecosistema Cloud Native en República Dominicana.',
+  keywords: [
+    'Cloud Native',
+    'CNCF',
+    'Santo Domingo',
+    'República Dominicana',
+    'Kubernetes',
+    'Docker',
+    'DevOps',
+    'Comunidad Tech',
+    'Eventos de Tecnología',
+  ],
+  openGraph: {
+    title: 'Cloud Native Santo Domingo | Comunidad Oficial CNCF',
+    description: 'Únete a la comunidad oficial de Cloud Native Computing Foundation (CNCF) en Santo Domingo. Eventos sobre Kubernetes, Docker y Cloud Native en RD.',
+    url: 'https://cloudnativesdq.org',
+    siteName: 'Cloud Native Santo Domingo',
+    locale: 'es_DO',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Cloud Native Santo Domingo',
+    description: 'Comunidad oficial de Cloud Native Computing Foundation (CNCF) en Santo Domingo, República Dominicana.',
+  },
   icons: {
     icon: '/favicon.svg',
   },

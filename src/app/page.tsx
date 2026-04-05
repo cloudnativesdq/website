@@ -65,6 +65,24 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            name: "Cloud Native Santo Domingo",
+            url: "https://cloudnativesdq.org",
+            logo: "https://cloudnativesdq.org/favicon.svg",
+            sameAs: [
+              "https://www.instagram.com/cncfsdq",
+              "https://www.linkedin.com/company/cloud-native-santo-domingo",
+              "https://github.com/cloudnativesdq/website",
+              "https://community.cncf.io/cloud-native-santo-domingo/"
+            ]
+          })
+        }}
+      />
       <HeroSection />
       <OrganizersSection organizers={data.organizers} />
       <GalleryCarousel images={galleryImages} />
