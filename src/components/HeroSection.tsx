@@ -4,19 +4,18 @@ import { MapPin, Users, ArrowRight } from "lucide-react";
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden border-b border-white/5">
+    <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden border-b border-white/5 bg-background">
       <div className="absolute inset-0 z-0">
         <Image
           src={heroBanner}
-          alt="Cloud Native network visualization"
-          className="w-full h-full object-cover scale-105"
-          width={1920}
-          height={1080}
+          alt="Cloud Native Santo Domingo"
+          className="object-cover scale-105"
+          fill
           priority
           unoptimized
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/80 to-background" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,hsl(var(--background))_100%)] opacity-60" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,hsl(var(--background))_100%)] opacity-70" />
       </div>
 
       <div className="relative z-10 container px-6 py-24 md:py-32 flex flex-col items-center text-center">
@@ -53,7 +52,7 @@ const HeroSection = () => {
             href="https://community.cncf.io/cloud-native-santo-domingo/"
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground font-heading font-bold rounded-2xl glow-sm hover:glow-md transition-all duration-300 hover:-translate-y-1 active:scale-95"
+            className="group relative inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground font-heading font-bold rounded-2xl glow-sm hover:glow-md transition-all duration-300 hover:-translate-y-1 active:scale-95 shadow-xl shadow-primary/20"
           >
             Únete a la Comunidad
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -61,7 +60,7 @@ const HeroSection = () => {
 
           <a
             href="#events"
-            className="px-8 py-4 bg-secondary text-secondary-foreground font-heading font-bold rounded-2xl hover:bg-secondary/80 transition-all duration-300"
+            className="px-8 py-4 bg-secondary text-secondary-foreground font-heading font-bold rounded-2xl hover:bg-secondary/80 transition-all duration-300 border border-white/5"
           >
             Ver Eventos
           </a>
@@ -74,6 +73,5 @@ const HeroSection = () => {
     </section>
   );
 };
-
 export default HeroSection;
 

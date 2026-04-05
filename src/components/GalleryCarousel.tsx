@@ -94,7 +94,7 @@ const GalleryCarousel = ({ images }: GalleryCarouselProps) => {
                   key={index}
                   className="flex-[0_0_85%] sm:flex-[0_0_60%] lg:flex-[0_0_40%] min-w-0"
                 >
-                  <div className="aspect-[16/10] rounded-2xl md:rounded-3xl overflow-hidden border border-white/10 relative group/item shadow-2xl">
+                  <div className="aspect-[16/10] rounded-2xl md:rounded-3xl overflow-hidden border border-white/10 relative group/item shadow-2xl bg-muted">
                     <Image
                       src={src}
                       alt={`Cloud Native Santo Domingo evento ${index + 1}`}
