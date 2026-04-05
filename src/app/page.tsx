@@ -88,59 +88,54 @@ export default async function Home() {
       <GalleryCarousel images={galleryImages} />
       <EventsSection events={data.upcoming} title="Próximos Eventos" />
       <EventsSection events={data.past} title="Eventos Pasados" />
-      <footer className="py-16 text-center border-t border-border bg-surface/30">
-        <div className="container">
-          <div className="flex justify-center gap-6 mb-8">
-            <a
-              href="https://www.instagram.com/cncfsdq"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-primary transition-colors"
-              aria-label="Instagram"
-            >
-              <Instagram className="w-6 h-6" />
-            </a>
-            <a
-              href="https://www.linkedin.com/company/cloud-native-santo-domingo"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-primary transition-colors"
-              aria-label="LinkedIn"
-            >
-              <Linkedin className="w-6 h-6" />
-            </a>
-            <a
-              href="https://github.com/cloudnativesdq/website"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-primary transition-colors"
-              aria-label="GitHub"
-            >
-              <Github className="w-6 h-6" />
-            </a>
-            <a
-              href="mailto:organizers@cloudnativesdq.org"
-              className="text-muted-foreground hover:text-primary transition-colors"
-              aria-label="Email"
-            >
-              <Mail className="w-6 h-6" />
-            </a>
+      <footer className="relative py-20 mt-24 border-t border-white/5 overflow-hidden">
+        <div className="absolute inset-0 bg-surface/20 backdrop-blur-3xl -z-10" />
+        <div className="container px-6">
+          <div className="flex flex-col items-center">
+            <div className="flex justify-center gap-4 mb-12">
+              {[
+                { icon: Instagram, href: "https://www.instagram.com/cncfsdq", label: "Instagram" },
+                { icon: Linkedin, href: "https://www.linkedin.com/company/cloud-native-santo-domingo", label: "LinkedIn" },
+                { icon: Github, href: "https://github.com/cloudnativesdq/website", label: "GitHub" },
+                { icon: Mail, href: "mailto:organizers@cloudnativesdq.org", label: "Email" }
+              ].map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-12 h-12 rounded-2xl glass-darker flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all duration-300 border border-white/5 group"
+                  aria-label={social.label}
+                >
+                  <social.icon className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                </a>
+              ))}
+            </div>
+            
+            <div className="text-center space-y-4">
+              <p className="text-muted-foreground text-sm font-medium">
+                Cloud Native Santo Domingo · Powered by{" "}
+                <a
+                  href="https://www.cncf.io/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:underline underline-offset-4 decoration-primary/30"
+                >
+                  Cloud Native Computing Foundation
+                </a>
+              </p>
+              
+              <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4 text-[10px] text-muted-foreground/40 uppercase tracking-[0.2em] font-bold">
+                <span>© {new Date().getFullYear()} Cloud Native SDQ</span>
+                <span className="hidden md:block text-primary/20">•</span>
+                <span>Santo Domingo, República Dominicana</span>
+              </div>
+            </div>
           </div>
-          <p className="text-muted-foreground text-sm mb-2">
-            Cloud Native Santo Domingo · Powered by{" "}
-            <a
-              href="https://www.cncf.io/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary hover:underline"
-            >
-              CNCF
-            </a>
-          </p>
-          <p className="text-[10px] text-muted-foreground/50 uppercase tracking-widest">
-            © {new Date().getFullYear()} Cloud Native SDQ
-          </p>
         </div>
+        
+        {/* Decorative corner glow */}
+        <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-primary/10 rounded-full blur-[100px] pointer-events-none" />
       </footer>
     </main>
   );
