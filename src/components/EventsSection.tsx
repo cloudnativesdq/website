@@ -72,13 +72,15 @@ const EventsSection = ({ events, title }: EventsSectionProps) => {
               <p className="text-muted-foreground text-sm mb-6 leading-relaxed">
                 {t.callForSpeakersDesc}
               </p>
-              <Link 
-                href="/contact" 
+              <a 
+                href={links.cfp}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-primary font-bold text-sm group/link"
               >
-                {language === "es" ? "Contactar" : "Get in touch"}
+                {language === "es" ? "Postular Charla" : "Submit Talk"}
                 <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
-              </Link>
+              </a>
             </div>
 
             <div className="group p-8 rounded-[2rem] bg-white/5 border border-white/10 glass hover:border-primary/50 transition-all duration-500">

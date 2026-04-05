@@ -7,7 +7,7 @@ import HeroSection from "@/components/HeroSection";
 import OrganizersSection from "@/components/OrganizersSection";
 import EventsSection from "@/components/EventsSection";
 import GalleryCarousel from "@/components/GalleryCarousel";
-import { Instagram, Linkedin, Mail, Github, Youtube, Presentation } from "lucide-react";
+import { Instagram, Linkedin, Mail, Github, Youtube, Presentation, Mic2 } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 import { links } from "@/lib/links";
 
@@ -149,6 +149,16 @@ export default function HomeView({ data }: HomeViewProps) {
                 >
                   <Presentation className="w-4 h-4" />
                   {language === "es" ? "Presentaciones" : "Slide Decks"}
+                </a>
+                <span className="hidden md:block text-white/10">|</span>
+                <a
+                  href={links.cfp}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-primary text-sm font-medium transition-colors flex items-center gap-2"
+                >
+                  <Mic2 className="w-4 h-4" />
+                  {language === "es" ? "Postular Charla" : "Call for Speakers"}
                 </a>
               </div>
               

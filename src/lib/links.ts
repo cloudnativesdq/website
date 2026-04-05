@@ -13,6 +13,7 @@ export const links = {
   
   // Resources
   slides: "https://drive.google.com/drive/folders/1A0KR_mcGsH6ggXnFOB9dG_QooiNpaZEj?usp=drive_link",
+  cfp: "https://sessionize.com/cloud-native-santo-domingo-2026/",
   
   // Contact
   email: "organizers@cloudnativesdq.org",
