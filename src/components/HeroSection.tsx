@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 interface HeroSectionProps {
   membersCount: number;
   pastCount: number;
+  upcomingCount: number;
 }
 
 const CountUp = ({ end, duration = 2000, prefix = "" }: { end: number; duration?: number; prefix?: string }) => {
@@ -45,7 +46,7 @@ const CountUp = ({ end, duration = 2000, prefix = "" }: { end: number; duration?
   return <span className="tabular-nums font-bold">{prefix}{count}</span>;
 };
 
-const HeroSection = ({ membersCount, pastCount }: HeroSectionProps) => {
+const HeroSection = ({ membersCount, pastCount, upcomingCount }: HeroSectionProps) => {
   const { t, mounted } = useLanguage();
 
   return (
@@ -129,8 +130,16 @@ const HeroSection = ({ membersCount, pastCount }: HeroSectionProps) => {
           
           <a
             href="#events"
-            className="px-8 md:px-10 py-3.5 md:py-5 bg-white/5 hover:bg-white/10 text-white font-heading font-black rounded-2xl md:rounded-3xl transition-all duration-300 border border-white/10 hover:border-white/30 backdrop-blur-xl hover:-translate-y-1 active:scale-95 uppercase tracking-wider text-xs md:text-sm"
+            className="relative px-8 md:px-10 py-3.5 md:py-5 bg-white/5 hover:bg-white/10 text-white font-heading font-black rounded-2xl md:rounded-3xl transition-all duration-300 border border-white/10 hover:border-white/30 backdrop-blur-xl hover:-translate-y-1 active:scale-95 uppercase tracking-wider text-xs md:text-sm"
           >
+            {upcomingCount > 0 && (
+              <span className="absolute -top-2 -right-2 flex h-5 w-5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                <span className="relative flex items-center justify-center rounded-full h-5 w-5 bg-primary text-[10px] font-bold text-primary-foreground shadow-lg">
+                  {upcomingCount}
+                </span>
+              </span>
+            )}
             {t.exploreEvents}
           </a>
         </div>

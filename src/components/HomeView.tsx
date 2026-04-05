@@ -98,7 +98,7 @@ export default function HomeView({ data }: HomeViewProps) {
         }}
       />
       <Navbar />
-      <HeroSection membersCount={data.membersCount} pastCount={data.pastCount} />
+      <HeroSection membersCount={data.membersCount} pastCount={data.pastCount} upcomingCount={data.upcoming.length} />
       <OrganizersSection organizers={data.organizers} />
       <GalleryCarousel images={galleryImages} />
       <div id="events">
