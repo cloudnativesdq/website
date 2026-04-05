@@ -16,7 +16,6 @@ interface HeroSectionProps {
 
 const CountUp = ({ end, duration = 2000, prefix = "" }: { end: number; duration?: number; prefix?: string }) => {
   const [count, setCount] = useState(0);
-  const roundedEnd = Math.floor(end / 10) * 10;
 
   useEffect(() => {
     let startTime: number | null = null;
@@ -28,21 +27,20 @@ const CountUp = ({ end, duration = 2000, prefix = "" }: { end: number; duration?
       const percentage = Math.min(progress / duration, 1);
       
       const easeOutQuart = 1 - Math.pow(1 - percentage, 4);
-      const currentValue = Math.floor(easeOutQuart * roundedEnd);
-      const steppedValue = Math.floor(currentValue / 10) * 10;
+      const currentValue = Math.floor(easeOutQuart * end);
       
-      setCount(steppedValue);
+      setCount(currentValue);
 
       if (percentage < 1) {
         animationFrame = requestAnimationFrame(animate);
       } else {
-        setCount(roundedEnd);
+        setCount(end);
       }
     };
 
     animationFrame = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(animationFrame);
-  }, [roundedEnd, duration]);
+  }, [end, duration]);
 
   return <span className="tabular-nums font-bold">{prefix}{count}</span>;
 };
@@ -123,7 +121,7 @@ const HeroSection = ({ membersCount, pastCount }: HeroSectionProps) => {
             href={links.cncfCommunity}
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative inline-flex items-center gap-3 px-8 md:px-10 py-3 md:py-5 bg-gradient-to-r from-primary to-cyan-500 text-primary-foreground font-heading font-black rounded-2xl md:rounded-3xl glow-md hover:glow-lg transition-all duration-500 hover:-translate-y-2 active:scale-95 shadow-2xl shadow-primary/40 uppercase tracking-wider text-xs md:text-sm"
+            className="group relative inline-flex items-center gap-3 px-8 md:px-10 py-3.5 md:py-5 bg-gradient-to-r from-primary to-cyan-500 text-primary-foreground font-heading font-black rounded-2xl md:rounded-3xl glow-md hover:glow-lg transition-all duration-500 hover:-translate-y-2 active:scale-95 shadow-2xl shadow-primary/40 uppercase tracking-wider text-xs md:text-sm"
           >
             {t.joinCommunity}
             <ArrowRight className="w-4 h-4 md:w-5 md:h-5 transition-transform group-hover:translate-x-2" />
@@ -131,7 +129,7 @@ const HeroSection = ({ membersCount, pastCount }: HeroSectionProps) => {
           
           <a
             href="#events"
-            className="px-8 md:px-10 py-3 md:py-5 bg-white/5 hover:bg-white/10 text-white font-heading font-black rounded-2xl md:rounded-3xl transition-all duration-300 border border-white/10 hover:border-white/30 backdrop-blur-xl hover:-translate-y-1 active:scale-95 uppercase tracking-wider text-xs md:text-sm"
+            className="px-8 md:px-10 py-3.5 md:py-5 bg-white/5 hover:bg-white/10 text-white font-heading font-black rounded-2xl md:rounded-3xl transition-all duration-300 border border-white/10 hover:border-white/30 backdrop-blur-xl hover:-translate-y-1 active:scale-95 uppercase tracking-wider text-xs md:text-sm"
           >
             {t.exploreEvents}
           </a>
