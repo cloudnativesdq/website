@@ -5,10 +5,15 @@ export const links = {
   cncfMain: "https://www.cncf.io/",
   
   // Socials
-  instagram: "https://www.instagram.com/cncfsdq",
-  linkedin: "https://www.linkedin.com/company/cloud-native-santo-domingo",
+  instagram: "https://instagram.com/cncf_sd",
+  linkedin: "https://www.linkedin.com/company/cncg-santo-domingo",
+  youtube: "https://www.youtube.com/@CNCFSantoDomingo",
+  telegram: "https://t.me/+WqSM3umCZvg4ZjYx",
   github: "https://github.com/cloudnativesdq/website",
   githubOrg: "https://github.com/cloudnativesdq",
+  
+  // Resources
+  slides: "https://drive.google.com/drive/folders/1A0KR_mcGsH6ggXnFOB9dG_QooiNpaZEj?usp=drive_link",
   
   // Contact
   email: "organizers@cloudnativesdq.org",

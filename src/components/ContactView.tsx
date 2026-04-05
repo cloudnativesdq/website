@@ -4,7 +4,7 @@
 import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
 import { useLanguage } from "@/hooks/use-language";
-import { Mail, Send, CheckCircle2, AlertCircle, Github, Instagram, Linkedin } from "lucide-react";
+import { Mail, Send, CheckCircle2, AlertCircle, Github, Instagram, Linkedin, Youtube, MessageCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { sendEmail } from "@/app/actions/send-email";
 import { links } from "@/lib/links";
@@ -69,10 +69,12 @@ export default function ContactView() {
 
                 <div className="p-8 rounded-[2rem] bg-white/5 border border-white/10 glass shadow-2xl">
                   <h2 className="text-2xl font-heading font-bold mb-6">Social Media</h2>
-                  <div className="flex gap-4">
+                  <div className="flex flex-wrap gap-4">
                     {[
                       { icon: Instagram, href: links.instagram, label: "Instagram" },
                       { icon: Linkedin, href: links.linkedin, label: "LinkedIn" },
+                      { icon: Youtube, href: links.youtube, label: "YouTube" },
+                      { icon: MessageCircle, href: links.telegram, label: "Telegram" },
                       { icon: Github, href: links.github, label: "GitHub" }
                     ].map((social) => (
                       <a
@@ -81,6 +83,7 @@ export default function ContactView() {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="w-12 h-12 rounded-2xl glass-darker flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all border border-white/5 group"
+                        title={social.label}
                       >
                         <social.icon className="w-5 h-5 group-hover:scale-110 transition-transform" />
                       </a>

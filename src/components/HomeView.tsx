@@ -7,7 +7,7 @@ import HeroSection from "@/components/HeroSection";
 import OrganizersSection from "@/components/OrganizersSection";
 import EventsSection from "@/components/EventsSection";
 import GalleryCarousel from "@/components/GalleryCarousel";
-import { Instagram, Linkedin, Mail, Github } from "lucide-react";
+import { Instagram, Linkedin, Mail, Github, Youtube, MessageCircle, Presentation } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 import { links } from "@/lib/links";
 
@@ -84,6 +84,8 @@ export default function HomeView({ data }: HomeViewProps) {
             "sameAs": [
               links.instagram,
               links.linkedin,
+              links.youtube,
+              links.telegram,
               links.githubOrg,
               links.cncfCommunity
             ],
@@ -108,10 +110,12 @@ export default function HomeView({ data }: HomeViewProps) {
         <div className="absolute inset-0 bg-surface/20 backdrop-blur-3xl -z-10" />
         <div className="container px-6">
           <div className="flex flex-col items-center">
-            <div className="flex justify-center gap-4 mb-12">
+            <div className="flex justify-center gap-4 mb-12 flex-wrap">
               {[
                 { icon: Instagram, href: links.instagram, label: "Instagram" },
                 { icon: Linkedin, href: links.linkedin, label: "LinkedIn" },
+                { icon: Youtube, href: links.youtube, label: "YouTube" },
+                { icon: MessageCircle, href: links.telegram, label: "Telegram" },
                 { icon: Github, href: links.github, label: "GitHub" },
                 { icon: Mail, href: links.emailMailto, label: "Email" }
               ].map((social) => (
@@ -129,17 +133,26 @@ export default function HomeView({ data }: HomeViewProps) {
             </div>
             
             <div className="text-center space-y-4">
-              <p className="text-muted-foreground text-sm font-medium">
-                {t.footerText.split("Cloud Native Computing Foundation")[0]}
+              <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-4 mb-4">
                 <a
                   href={links.cncfMain}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary hover:underline underline-offset-4 decoration-primary/30"
+                  className="text-muted-foreground hover:text-primary text-sm font-medium transition-colors flex items-center gap-2"
                 >
                   Cloud Native Computing Foundation
                 </a>
-              </p>
+                <span className="hidden md:block text-white/10">|</span>
+                <a
+                  href={links.slides}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-primary text-sm font-medium transition-colors flex items-center gap-2"
+                >
+                  <Presentation className="w-4 h-4" />
+                  {language === "es" ? "Presentaciones" : "Slide Decks"}
+                </a>
+              </div>
               
               <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4 text-[10px] text-muted-foreground/40 uppercase tracking-[0.2em] font-bold">
                 <span>© {new Date().getFullYear()} Cloud Native SDQ</span>
