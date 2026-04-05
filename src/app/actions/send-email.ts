@@ -16,8 +16,8 @@ export async function sendEmail(formData: FormData) {
 
   try {
     const { data, error } = await resend.emails.send({
-      from: "Cloud Native SDQ <onboarding@resend.dev>",
-      to: ["chris@cloudnativesdq.org"],
+      from: "Cloud Native SDQ <notificaciones@cloudnativesdq.org>",
+      to: ["organizers@cloudnativesdq.org"],
       subject: `Nuevo mensaje de contacto de ${name}`,
       replyTo: email,
       html: `
