@@ -1,7 +1,11 @@
+
+"use client";
+
 import Image from "next/image";
 import heroBanner from "@/assets/hero-banner.jpg";
 import { MapPin, Users, ArrowRight } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
+import { links } from "@/lib/links";
 
 const HeroSection = () => {
   const { t } = useLanguage();
@@ -52,7 +56,7 @@ const HeroSection = () => {
 
         <div className="flex flex-col sm:flex-row items-center gap-4 animate-fade-up" style={{ animationDelay: "0.4s" }}>
           <a
-            href="https://community.cncf.io/cloud-native-santo-domingo/"
+            href={links.cncfCommunity}
             target="_blank"
             rel="noopener noreferrer"
             className="group relative inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-primary to-cyan-400 text-primary-foreground font-heading font-bold rounded-2xl glow-md hover:glow-lg transition-all duration-500 hover:-translate-y-1 active:scale-95 shadow-2xl shadow-primary/30"
@@ -60,7 +64,7 @@ const HeroSection = () => {
             {t.joinCommunity}
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
           </a>
-
+          
           <a
             href="#events"
             className="px-8 py-4 bg-white/5 hover:bg-white/10 text-white font-heading font-bold rounded-2xl transition-all duration-300 border border-white/20 hover:border-white/40 backdrop-blur-md hover:-translate-y-1 active:scale-95"
@@ -70,12 +74,11 @@ const HeroSection = () => {
         </div>
       </div>
 
-
       {/* Decorative floating elements */}
       <div className="absolute top-1/4 -left-12 w-64 h-64 bg-primary/10 rounded-full blur-[120px] animate-pulse pointer-events-none" />
       <div className="absolute bottom-1/4 -right-12 w-64 h-64 bg-blue-500/10 rounded-full blur-[120px] animate-pulse pointer-events-none" style={{ animationDelay: "2s" }} />
     </section>
   );
 };
-export default HeroSection;
 
+export default HeroSection;

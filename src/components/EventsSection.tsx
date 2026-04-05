@@ -1,11 +1,13 @@
 
 "use client";
 
-import { Calendar, Monitor, Coffee, MapPin } from "lucide-react";
+import { Calendar, Monitor, Coffee, MapPin, Mic2, Building2, ArrowRight } from "lucide-react";
 import { format } from "date-fns";
 import { es, enUS } from "date-fns/locale";
 import Image from "next/image";
 import { useLanguage } from "@/hooks/use-language";
+import Link from "next/link";
+import { links } from "@/lib/links";
 
 interface Event {
   title: string;
@@ -22,7 +24,7 @@ interface EventsSectionProps {
 }
 
 const EventsSection = ({ events, title }: EventsSectionProps) => {
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   
   const getIcon = (type: string) => {
     if (type?.toLowerCase().includes("online") || type?.toLowerCase().includes("virtual")) return Monitor;
@@ -45,9 +47,63 @@ const EventsSection = ({ events, title }: EventsSectionProps) => {
     }
   };
 
-  if (!events || events.length === 0) return null;
-
   const isUpcoming = title.toLowerCase().includes("próximos") || title.toLowerCase().includes("upcoming");
+
+  // Empty state for upcoming events
+  if (isUpcoming && (!events || events.length === 0)) {
+    return (
+      <section className="py-24 relative overflow-hidden">
+        <div className="container px-6 relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-heading font-bold mb-4">
+              <span className="text-gradient">{title}</span>
+            </h2>
+            <p className="text-muted-foreground max-w-lg mx-auto text-base md:text-lg">
+              {t.noUpcomingEvents}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div className="group p-8 rounded-[2rem] bg-white/5 border border-white/10 glass hover:border-primary/50 transition-all duration-500">
+              <div className="w-12 h-12 bg-primary/20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <Mic2 className="w-6 h-6 text-primary" />
+              </div>
+              <h3 className="text-xl font-heading font-bold mb-3">{t.callForSpeakers}</h3>
+              <p className="text-muted-foreground text-sm mb-6 leading-relaxed">
+                {t.callForSpeakersDesc}
+              </p>
+              <Link 
+                href="/contact" 
+                className="inline-flex items-center gap-2 text-primary font-bold text-sm group/link"
+              >
+                {language === "es" ? "Contactar" : "Get in touch"}
+                <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
+              </Link>
+            </div>
+
+            <div className="group p-8 rounded-[2rem] bg-white/5 border border-white/10 glass hover:border-primary/50 transition-all duration-500">
+              <div className="w-12 h-12 bg-blue-500/20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <Building2 className="w-6 h-6 text-blue-400" />
+              </div>
+              <h3 className="text-xl font-heading font-bold mb-3">{t.becomeHost}</h3>
+              <p className="text-muted-foreground text-sm mb-6 leading-relaxed">
+                {t.becomeHostDesc}
+              </p>
+              <Link 
+                href="/contact" 
+                className="inline-flex items-center gap-2 text-blue-400 font-bold text-sm group/link"
+              >
+                {language === "es" ? "Contactar" : "Get in touch"}
+                <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (!events || events.length === 0) return null;
 
   return (
     <section className="py-24 relative overflow-hidden">
@@ -76,7 +132,7 @@ const EventsSection = ({ events, title }: EventsSectionProps) => {
               >
                 <div className="relative w-full sm:w-48 h-48 sm:h-auto flex-shrink-0 overflow-hidden rounded-2xl bg-muted">
                   <Image
-                    src={event.image || "https://res.cloudinary.com/startup-grind/image/upload/c_fill,dpr_2.0,f_auto,g_center,q_auto:good/v1/gcs/platform-data-cncf/contentbuilder/eventthumb.jpg"}
+                    src={event.image || links.eventFallbackImage}
                     alt={event.title}
                     className="object-cover transition-transform duration-700 group-hover:scale-110"
                     fill

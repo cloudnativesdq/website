@@ -7,6 +7,7 @@ import { useLanguage } from "@/hooks/use-language";
 import { Mail, Send, CheckCircle2, AlertCircle, Github, Instagram, Linkedin } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { sendEmail } from "@/app/actions/send-email";
+import { links } from "@/lib/links";
 
 export default function ContactView() {
   const { t, language } = useLanguage();
@@ -56,10 +57,10 @@ export default function ContactView() {
                     Email
                   </h2>
                   <a 
-                    href="mailto:organizers@cloudnativesdq.org"
+                    href={links.emailMailto}
                     className="text-lg md:text-xl font-medium text-foreground hover:text-primary transition-colors block mb-2 break-all"
                   >
-                    organizers@cloudnativesdq.org
+                    {links.email}
                   </a>
                   <p className="text-muted-foreground text-sm">
                     {language === "es" ? "Te responderemos lo antes posible." : "We'll get back to you as soon as possible."}
@@ -70,9 +71,9 @@ export default function ContactView() {
                   <h2 className="text-2xl font-heading font-bold mb-6">Social Media</h2>
                   <div className="flex gap-4">
                     {[
-                      { icon: Instagram, href: "https://www.instagram.com/cncfsdq", label: "Instagram" },
-                      { icon: Linkedin, href: "https://www.linkedin.com/company/cloud-native-santo-domingo", label: "LinkedIn" },
-                      { icon: Github, href: "https://github.com/cloudnativesdq/website", label: "GitHub" }
+                      { icon: Instagram, href: links.instagram, label: "Instagram" },
+                      { icon: Linkedin, href: links.linkedin, label: "LinkedIn" },
+                      { icon: Github, href: links.github, label: "GitHub" }
                     ].map((social) => (
                       <a
                         key={social.label}

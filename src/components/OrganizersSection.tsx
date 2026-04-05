@@ -3,6 +3,7 @@
 
 import Image from "next/image";
 import { useLanguage } from "@/hooks/use-language";
+import { links } from "@/lib/links";
 
 interface Organizer {
   name: string;
@@ -43,7 +44,7 @@ const OrganizersSection = ({ organizers }: OrganizersSectionProps) => {
             >
               <div className="relative w-20 h-20 md:w-28 md:h-28 rounded-[1.5rem] md:rounded-[2rem] overflow-hidden mb-6 border-2 border-white/10 group-hover:border-primary/50 transition-all duration-500 rotate-3 group-hover:rotate-0 bg-muted">
                 <Image
-                  src={org.image || "https://res.cloudinary.com/startup-grind/image/upload/c_fill,dpr_2.0,f_auto,g_center,q_auto:good/v1/gcs/platform-data-cncf/contentbuilder/eventthumb.jpg"}
+                  src={org.image || links.organizerFallbackImage}
                   alt={org.name}
                   className="object-cover scale-110 group-hover:scale-100 transition-transform duration-500"
                   fill

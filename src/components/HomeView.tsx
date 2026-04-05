@@ -9,6 +9,7 @@ import EventsSection from "@/components/EventsSection";
 import GalleryCarousel from "@/components/GalleryCarousel";
 import { Instagram, Linkedin, Mail, Github } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
+import { links } from "@/lib/links";
 
 const galleryImages = [
   "https://lh3.googleusercontent.com/pw/AP1GczOCcmb8M-0hVxC0XNnNe-rBbyx_qCXHZ0ZXj2Y-jK0uT3A70dtP0HDVPOjlp8dghuvlAUQXgiGhKVfA1sJ8ytsV-ulrzBRmz5wf7YnV2cuEc03IiYk=w1200",
@@ -78,13 +79,13 @@ export default function HomeView({ data }: HomeViewProps) {
             "@context": "https://schema.org",
             "@type": "Organization",
             "name": "Cloud Native Santo Domingo",
-            "url": "https://cloudnativesdq.org",
-            "logo": "https://cloudnativesdq.org/favicon.svg",
+            "url": links.siteUrl,
+            "logo": links.siteLogo,
             "sameAs": [
-              "https://www.instagram.com/cncfsdq",
-              "https://www.linkedin.com/company/cloud-native-santo-domingo",
-              "https://github.com/cloudnativesdq",
-              "https://community.cncf.io/cloud-native-santo-domingo/"
+              links.instagram,
+              links.linkedin,
+              links.githubOrg,
+              links.cncfCommunity
             ],
             "description": "Comunidad oficial de Cloud Native Computing Foundation (CNCF) en Santo Domingo, República Dominicana.",
             "address": {
@@ -109,10 +110,10 @@ export default function HomeView({ data }: HomeViewProps) {
           <div className="flex flex-col items-center">
             <div className="flex justify-center gap-4 mb-12">
               {[
-                { icon: Instagram, href: "https://www.instagram.com/cncfsdq", label: "Instagram" },
-                { icon: Linkedin, href: "https://www.linkedin.com/company/cloud-native-santo-domingo", label: "LinkedIn" },
-                { icon: Github, href: "https://github.com/cloudnativesdq/website", label: "GitHub" },
-                { icon: Mail, href: "mailto:organizers@cloudnativesdq.org", label: "Email" }
+                { icon: Instagram, href: links.instagram, label: "Instagram" },
+                { icon: Linkedin, href: links.linkedin, label: "LinkedIn" },
+                { icon: Github, href: links.github, label: "GitHub" },
+                { icon: Mail, href: links.emailMailto, label: "Email" }
               ].map((social) => (
                 <a
                   key={social.label}
@@ -131,7 +132,7 @@ export default function HomeView({ data }: HomeViewProps) {
               <p className="text-muted-foreground text-sm font-medium">
                 {t.footerText.split("Cloud Native Computing Foundation")[0]}
                 <a
-                  href="https://www.cncf.io/"
+                  href={links.cncfMain}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-primary hover:underline underline-offset-4 decoration-primary/30"

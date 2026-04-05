@@ -14,6 +14,9 @@ export default {
       },
     },
     extend: {
+      screens: {
+        xs: "480px",
+      },
       fontFamily: {
         heading: ['"Space Grotesk"', 'sans-serif'],
         body: ['Inter', 'sans-serif'],
