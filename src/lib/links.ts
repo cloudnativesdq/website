@@ -8,7 +8,6 @@ export const links = {
   instagram: "https://instagram.com/cncf_sd",
   linkedin: "https://www.linkedin.com/company/cncg-santo-domingo",
   youtube: "https://www.youtube.com/@CNCFSantoDomingo",
-  telegram: "https://t.me/+WqSM3umCZvg4ZjYx",
   github: "https://github.com/cloudnativesdq/website",
   githubOrg: "https://github.com/cloudnativesdq",
   

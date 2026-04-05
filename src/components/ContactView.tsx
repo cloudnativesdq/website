@@ -4,7 +4,7 @@
 import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
 import { useLanguage } from "@/hooks/use-language";
-import { Mail, Send, CheckCircle2, AlertCircle, Github, Instagram, Linkedin, Youtube, MessageCircle } from "lucide-react";
+import { Mail, Send, CheckCircle2, AlertCircle, Github, Instagram, Linkedin, Youtube } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { sendEmail } from "@/app/actions/send-email";
 import { links } from "@/lib/links";
@@ -74,7 +74,6 @@ export default function ContactView() {
                       { icon: Instagram, href: links.instagram, label: "Instagram" },
                       { icon: Linkedin, href: links.linkedin, label: "LinkedIn" },
                       { icon: Youtube, href: links.youtube, label: "YouTube" },
-                      { icon: MessageCircle, href: links.telegram, label: "Telegram" },
                       { icon: Github, href: links.github, label: "GitHub" }
                     ].map((social) => (
                       <a

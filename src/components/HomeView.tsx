@@ -7,7 +7,7 @@ import HeroSection from "@/components/HeroSection";
 import OrganizersSection from "@/components/OrganizersSection";
 import EventsSection from "@/components/EventsSection";
 import GalleryCarousel from "@/components/GalleryCarousel";
-import { Instagram, Linkedin, Mail, Github, Youtube, MessageCircle, Presentation } from "lucide-react";
+import { Instagram, Linkedin, Mail, Github, Youtube, Presentation } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 import { links } from "@/lib/links";
 
@@ -85,7 +85,6 @@ export default function HomeView({ data }: HomeViewProps) {
               links.instagram,
               links.linkedin,
               links.youtube,
-              links.telegram,
               links.githubOrg,
               links.cncfCommunity
             ],
@@ -99,7 +98,7 @@ export default function HomeView({ data }: HomeViewProps) {
         }}
       />
       <Navbar />
-      <HeroSection />
+      <HeroSection membersCount={data.membersCount} pastCount={data.pastCount} />
       <OrganizersSection organizers={data.organizers} />
       <GalleryCarousel images={galleryImages} />
       <div id="events">
@@ -115,7 +114,6 @@ export default function HomeView({ data }: HomeViewProps) {
                 { icon: Instagram, href: links.instagram, label: "Instagram" },
                 { icon: Linkedin, href: links.linkedin, label: "LinkedIn" },
                 { icon: Youtube, href: links.youtube, label: "YouTube" },
-                { icon: MessageCircle, href: links.telegram, label: "Telegram" },
                 { icon: Github, href: links.github, label: "GitHub" },
                 { icon: Mail, href: links.emailMailto, label: "Email" }
               ].map((social) => (

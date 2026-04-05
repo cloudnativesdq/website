@@ -3,11 +3,16 @@
 
 import Image from "next/image";
 import heroBanner from "@/assets/hero-banner.jpg";
-import { MapPin, Users, ArrowRight } from "lucide-react";
+import { MapPin, Users, ArrowRight, CalendarCheck } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 import { links } from "@/lib/links";
 
-const HeroSection = () => {
+interface HeroSectionProps {
+  membersCount: number;
+  pastCount: number;
+}
+
+const HeroSection = ({ membersCount, pastCount }: HeroSectionProps) => {
   const { t } = useLanguage();
 
   return (
@@ -43,10 +48,14 @@ const HeroSection = () => {
           {t.heroSubtitle}
         </p>
 
-        <div className="flex flex-wrap items-center justify-center gap-4 md:gap-8 mb-12 animate-fade-up" style={{ animationDelay: "0.3s" }}>
+        <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 mb-12 animate-fade-up" style={{ animationDelay: "0.3s" }}>
           <div className="flex items-center gap-2.5 px-4 py-2 rounded-xl glass text-sm font-medium">
             <Users className="w-4 h-4 text-primary" />
-            <span className="text-foreground">481 {t.members}</span>
+            <span className="text-foreground">{membersCount} {t.members}</span>
+          </div>
+          <div className="flex items-center gap-2.5 px-4 py-2 rounded-xl glass text-sm font-medium">
+            <CalendarCheck className="w-4 h-4 text-primary" />
+            <span className="text-foreground">{pastCount} {t.eventsLabel}</span>
           </div>
           <div className="flex items-center gap-2.5 px-4 py-2 rounded-xl glass text-sm font-medium">
             <MapPin className="w-4 h-4 text-primary" />
