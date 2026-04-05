@@ -1,4 +1,8 @@
+
+"use client";
+
 import Image from "next/image";
+import { useLanguage } from "@/hooks/use-language";
 
 interface Organizer {
   name: string;
@@ -13,6 +17,7 @@ interface OrganizersSectionProps {
 }
 
 const OrganizersSection = ({ organizers }: OrganizersSectionProps) => {
+  const { t } = useLanguage();
   if (!organizers || organizers.length === 0) return null;
 
   return (
@@ -20,10 +25,10 @@ const OrganizersSection = ({ organizers }: OrganizersSectionProps) => {
       <div className="container px-6 relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-heading font-bold mb-4">
-            <span className="text-gradient">Nuestro Equipo</span>
+            <span className="text-gradient">{t.teamTitle}</span>
           </h2>
           <p className="text-muted-foreground max-w-lg mx-auto text-base md:text-lg">
-            Las mentes apasionadas que impulsan el ecosistema Cloud Native en Santo Domingo.
+            {t.teamSubtitle}
           </p>
         </div>
         
@@ -65,6 +70,5 @@ const OrganizersSection = ({ organizers }: OrganizersSectionProps) => {
     </section>
   );
 };
-
 
 export default OrganizersSection;

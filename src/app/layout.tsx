@@ -1,8 +1,10 @@
+
 import type { Metadata } from 'next';
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Analytics } from "@vercel/analytics/next"
+import { LanguageProvider } from "@/hooks/use-language";
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -49,12 +51,14 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
       </head>
       <body>
-        <TooltipProvider>
-          {children}
-          <Analytics />
-          <Toaster />
-          <Sonner />
-        </TooltipProvider>
+        <LanguageProvider>
+          <TooltipProvider>
+            {children}
+            <Analytics />
+            <Toaster />
+            <Sonner />
+          </TooltipProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

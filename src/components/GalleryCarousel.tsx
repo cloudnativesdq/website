@@ -1,15 +1,18 @@
+
 "use client";
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useLanguage } from "@/hooks/use-language";
 
 interface GalleryCarouselProps {
   images: string[];
 }
 
 const GalleryCarousel = ({ images }: GalleryCarouselProps) => {
+  const { t, language } = useLanguage();
   const [shuffledImages, setShuffledImages] = useState<string[]>([]);
   const [emblaRef, emblaApi] = useEmblaCarousel(
     {
@@ -61,10 +64,10 @@ const GalleryCarousel = ({ images }: GalleryCarouselProps) => {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div className="max-w-lg">
             <h2 className="text-3xl md:text-5xl font-heading font-bold mb-4">
-              <span className="text-gradient">Galería</span>
+              <span className="text-gradient">{t.galleryTitle}</span>
             </h2>
             <p className="text-muted-foreground text-base md:text-lg">
-              Momentos inolvidables de nuestros encuentros y el crecimiento de nuestra comunidad.
+              {t.gallerySubtitle}
             </p>
           </div>
           
@@ -72,14 +75,14 @@ const GalleryCarousel = ({ images }: GalleryCarouselProps) => {
             <button
               onClick={scrollPrev}
               className="w-12 h-12 rounded-2xl glass-darker flex items-center justify-center text-foreground hover:bg-primary hover:text-primary-foreground transition-all duration-300 border border-white/10 active:scale-95"
-              aria-label="Anterior"
+              aria-label={language === "es" ? "Anterior" : "Previous"}
             >
               <ChevronLeft className="w-6 h-6" />
             </button>
             <button
               onClick={scrollNext}
               className="w-12 h-12 rounded-2xl glass-darker flex items-center justify-center text-foreground hover:bg-primary hover:text-primary-foreground transition-all duration-300 border border-white/10 active:scale-95"
-              aria-label="Siguiente"
+              aria-label={language === "es" ? "Siguiente" : "Next"}
             >
               <ChevronRight className="w-6 h-6" />
             </button>

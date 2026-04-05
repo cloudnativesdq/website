@@ -1,11 +1,16 @@
+
+"use client";
+
+import React from "react";
+import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import OrganizersSection from "@/components/OrganizersSection";
 import EventsSection from "@/components/EventsSection";
 import GalleryCarousel from "@/components/GalleryCarousel";
 import { getCncfData } from "@/lib/cncf";
 import { Instagram, Linkedin, Mail, Github } from "lucide-react";
+import { useLanguage } from "@/hooks/use-language";
 
-export const runtime = 'edge';
 const galleryImages = [
   // Google Photos Album
   "https://lh3.googleusercontent.com/pw/AP1GczOCcmb8M-0hVxC0XNnNe-rBbyx_qCXHZ0ZXj2Y-jK0uT3A70dtP0HDVPOjlp8dghuvlAUQXgiGhKVfA1sJ8ytsV-ulrzBRmz5wf7YnV2cuEc03IiYk=w1200",
@@ -60,34 +65,26 @@ const galleryImages = [
   "https://lh3.googleusercontent.com/d/1EeC_h0mYoBnOj1Vsys7oS-Dhq47Bdj4H=w1200",
 ];
 
-export default async function Home() {
-  const data = await getCncfData();
+export default function Home() {
+  const [data, setData] = React.useState<any>(null);
+  const { t, language } = useLanguage();
+
+  React.useEffect(() => {
+    getCncfData().then(setData);
+  }, []);
+
+  if (!data) return null;
 
   return (
     <main className="min-h-screen">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Organization",
-            name: "Cloud Native Santo Domingo",
-            url: "https://cloudnativesdq.org",
-            logo: "https://cloudnativesdq.org/favicon.svg",
-            sameAs: [
-              "https://www.instagram.com/cncfsdq",
-              "https://www.linkedin.com/company/cloud-native-santo-domingo",
-              "https://github.com/cloudnativesdq/website",
-              "https://community.cncf.io/cloud-native-santo-domingo/"
-            ]
-          })
-        }}
-      />
+      <Navbar />
       <HeroSection />
       <OrganizersSection organizers={data.organizers} />
       <GalleryCarousel images={galleryImages} />
-      <EventsSection events={data.upcoming} title="Próximos Eventos" />
-      <EventsSection events={data.past} title="Eventos Pasados" />
+      <div id="events">
+        <EventsSection events={data.upcoming} title={t.upcomingEvents} />
+        <EventsSection events={data.past} title={t.pastEvents} />
+      </div>
       <footer className="relative py-20 mt-24 border-t border-white/5 overflow-hidden">
         <div className="absolute inset-0 bg-surface/20 backdrop-blur-3xl -z-10" />
         <div className="container px-6">
@@ -114,7 +111,7 @@ export default async function Home() {
             
             <div className="text-center space-y-4">
               <p className="text-muted-foreground text-sm font-medium">
-                Cloud Native Santo Domingo · Powered by{" "}
+                {t.footerText.split("Cloud Native Computing Foundation")[0]}
                 <a
                   href="https://www.cncf.io/"
                   target="_blank"
@@ -128,7 +125,7 @@ export default async function Home() {
               <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4 text-[10px] text-muted-foreground/40 uppercase tracking-[0.2em] font-bold">
                 <span>© {new Date().getFullYear()} Cloud Native SDQ</span>
                 <span className="hidden md:block text-primary/20">•</span>
-                <span>Santo Domingo, República Dominicana</span>
+                <span>Santo Domingo, {language === "es" ? "República Dominicana" : "Dominican Republic"}</span>
               </div>
             </div>
           </div>
@@ -140,4 +137,3 @@ export default async function Home() {
     </main>
   );
 }
-

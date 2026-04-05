@@ -1,7 +1,11 @@
+
+"use client";
+
 import { Calendar, Monitor, Coffee, MapPin } from "lucide-react";
 import { format } from "date-fns";
-import { es } from "date-fns/locale";
+import { es, enUS } from "date-fns/locale";
 import Image from "next/image";
+import { useLanguage } from "@/hooks/use-language";
 
 interface Event {
   title: string;
@@ -18,6 +22,8 @@ interface EventsSectionProps {
 }
 
 const EventsSection = ({ events, title }: EventsSectionProps) => {
+  const { language } = useLanguage();
+  
   const getIcon = (type: string) => {
     if (type?.toLowerCase().includes("online") || type?.toLowerCase().includes("virtual")) return Monitor;
     if (type?.toLowerCase().includes("meetup") || type?.toLowerCase().includes("brunch")) return Coffee;
@@ -27,7 +33,9 @@ const EventsSection = ({ events, title }: EventsSectionProps) => {
   const formatDate = (dateString: string) => {
     try {
       const date = new Date(dateString);
-      return format(date, "d 'de' MMMM, yyyy '·' p", { locale: es });
+      return format(date, "d 'de' MMMM, yyyy '·' p", { 
+        locale: language === "es" ? es : enUS 
+      });
     } catch (e) {
       return dateString;
     }
@@ -35,10 +43,10 @@ const EventsSection = ({ events, title }: EventsSectionProps) => {
 
   if (!events || events.length === 0) return null;
 
-  const isUpcoming = title.toLowerCase().includes("próximos");
+  const isUpcoming = title.toLowerCase().includes("próximos") || title.toLowerCase().includes("upcoming");
 
   return (
-    <section id={isUpcoming ? "events" : undefined} className="py-24 relative overflow-hidden">
+    <section className="py-24 relative overflow-hidden">
       <div className="container px-6 relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-heading font-bold mb-4">
@@ -46,8 +54,8 @@ const EventsSection = ({ events, title }: EventsSectionProps) => {
           </h2>
           <p className="text-muted-foreground max-w-lg mx-auto text-base md:text-lg">
             {isUpcoming 
-              ? "¡No te pierdas nuestros siguientes encuentros! Conéctate con otros profesionales y aprende." 
-              : "Revive los momentos de nuestros encuentros anteriores y mantente al día."}
+              ? (language === "es" ? "¡No te pierdas nuestros siguientes encuentros! Conéctate con otros profesionales y aprende." : "Don't miss our next meetings! Connect with other professionals and learn.")
+              : (language === "es" ? "Revive los momentos de nuestros encuentros anteriores y mantente al día." : "Relive the moments of our previous meetings and stay up to date.")}
           </p>
         </div>
 
@@ -62,7 +70,7 @@ const EventsSection = ({ events, title }: EventsSectionProps) => {
                 rel="noopener noreferrer"
                 className="group flex flex-col sm:flex-row gap-6 p-1 rounded-3xl bg-white/5 border border-white/10 hover:border-primary/50 hover:bg-white/[0.08] transition-all duration-500 overflow-hidden"
               >
-                <div className="relative w-full sm:w-48 h-48 sm:h-auto flex-shrink-0 overflow-hidden rounded-2xl">
+                <div className="relative w-full sm:w-48 h-48 sm:h-auto flex-shrink-0 overflow-hidden rounded-2xl bg-muted">
                   <Image
                     src={event.image || "https://res.cloudinary.com/startup-grind/image/upload/c_fill,dpr_2.0,f_auto,g_center,q_auto:good/v1/gcs/platform-data-cncf/contentbuilder/eventthumb.jpg"}
                     alt={event.title}
@@ -115,6 +123,5 @@ const EventsSection = ({ events, title }: EventsSectionProps) => {
     </section>
   );
 };
-
 
 export default EventsSection;

@@ -1,8 +1,11 @@
 import Image from "next/image";
 import heroBanner from "@/assets/hero-banner.jpg";
 import { MapPin, Users, ArrowRight } from "lucide-react";
+import { useLanguage } from "@/hooks/use-language";
 
 const HeroSection = () => {
+  const { t } = useLanguage();
+
   return (
     <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden border-b border-white/5 bg-background">
       <div className="absolute inset-0 z-0">
@@ -28,22 +31,22 @@ const HeroSection = () => {
         </div>
 
         <h1 className="text-4xl sm:text-6xl md:text-8xl font-heading font-extrabold mb-8 animate-fade-up leading-[1.1] tracking-tight" style={{ animationDelay: "0.1s" }}>
-          Cloud Native<br />
-          <span className="text-gradient">Santo Domingo</span>
+          {t.heroTitle1}<br />
+          <span className="text-gradient">{t.heroTitle2}</span>
         </h1>
 
         <p className="text-muted-foreground max-w-2xl mx-auto text-base md:text-xl mb-12 animate-fade-up leading-relaxed" style={{ animationDelay: "0.2s" }}>
-          Empoderando a la próxima generación de ingenieros en la República Dominicana a través de tecnologías open source y principios Cloud Native.
+          {t.heroSubtitle}
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-4 md:gap-8 mb-12 animate-fade-up" style={{ animationDelay: "0.3s" }}>
           <div className="flex items-center gap-2.5 px-4 py-2 rounded-xl glass text-sm font-medium">
             <Users className="w-4 h-4 text-primary" />
-            <span className="text-foreground">481 miembros</span>
+            <span className="text-foreground">481 {t.members}</span>
           </div>
           <div className="flex items-center gap-2.5 px-4 py-2 rounded-xl glass text-sm font-medium">
             <MapPin className="w-4 h-4 text-primary" />
-            <span className="text-foreground">Santo Domingo, RD</span>
+            <span className="text-foreground">{t.location}</span>
           </div>
         </div>
 
@@ -52,20 +55,21 @@ const HeroSection = () => {
             href="https://community.cncf.io/cloud-native-santo-domingo/"
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground font-heading font-bold rounded-2xl glow-sm hover:glow-md transition-all duration-300 hover:-translate-y-1 active:scale-95 shadow-xl shadow-primary/20"
+            className="group relative inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-primary to-cyan-400 text-primary-foreground font-heading font-bold rounded-2xl glow-md hover:glow-lg transition-all duration-500 hover:-translate-y-1 active:scale-95 shadow-2xl shadow-primary/30"
           >
-            Únete a la Comunidad
+            {t.joinCommunity}
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
           </a>
 
           <a
             href="#events"
-            className="px-8 py-4 bg-secondary text-secondary-foreground font-heading font-bold rounded-2xl hover:bg-secondary/80 transition-all duration-300 border border-white/5"
+            className="px-8 py-4 bg-white/5 hover:bg-white/10 text-white font-heading font-bold rounded-2xl transition-all duration-300 border border-white/20 hover:border-white/40 backdrop-blur-md hover:-translate-y-1 active:scale-95"
           >
-            Ver Eventos
+            {t.exploreEvents}
           </a>
         </div>
       </div>
+
 
       {/* Decorative floating elements */}
       <div className="absolute top-1/4 -left-12 w-64 h-64 bg-primary/10 rounded-full blur-[120px] animate-pulse pointer-events-none" />
