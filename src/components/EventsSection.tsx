@@ -33,7 +33,11 @@ const EventsSection = ({ events, title }: EventsSectionProps) => {
   const formatDate = (dateString: string) => {
     try {
       const date = new Date(dateString);
-      return format(date, "d 'de' MMMM, yyyy '·' p", { 
+      const pattern = language === "es" 
+        ? "d 'de' MMMM, yyyy '·' p" 
+        : "MMMM d, yyyy '·' p";
+      
+      return format(date, pattern, { 
         locale: language === "es" ? es : enUS 
       });
     } catch (e) {
