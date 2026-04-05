@@ -6,19 +6,27 @@ import Navbar from "@/components/Navbar";
 import { useLanguage } from "@/hooks/use-language";
 import { Mail, Send, CheckCircle2, AlertCircle, Github, Instagram, Linkedin } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { sendEmail } from "@/app/actions/send-email";
 
 const ContactPage = () => {
   const { t, language } = useLanguage();
   const [formState, setFormState] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setFormState("sending");
+    setErrorMessage("");
     
-    // Simulate API call
-    setTimeout(() => {
+    const formData = new FormData(e.currentTarget);
+    const result = await sendEmail(formData);
+
+    if (result.success) {
       setFormState("success");
-    }, 1500);
+    } else {
+      setFormState("error");
+      setErrorMessage(result.error || "Error");
+    }
   };
 
   return (
@@ -105,6 +113,7 @@ const ContactPage = () => {
                       </label>
                       <input 
                         required
+                        name="name"
                         type="text" 
                         className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
                         placeholder="John Doe"
@@ -117,6 +126,7 @@ const ContactPage = () => {
                       </label>
                       <input 
                         required
+                        name="email"
                         type="email" 
                         className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
                         placeholder="john@example.com"
@@ -129,6 +139,7 @@ const ContactPage = () => {
                       </label>
                       <textarea 
                         required
+                        name="message"
                         rows={5}
                         className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all resize-none"
                         placeholder="..."
@@ -150,7 +161,7 @@ const ContactPage = () => {
                     {formState === "error" && (
                       <div className="flex items-center gap-2 text-destructive text-sm font-medium mt-4">
                         <AlertCircle className="w-4 h-4" />
-                        {t.errorMessage}
+                        {errorMessage || t.errorMessage}
                       </div>
                     )}
                   </form>
