@@ -4,9 +4,6 @@
 {{- if .Inner -}}{{- /* We don't use the inner content, but Hugo will complain if we don't reference it. */ -}}{{- end -}}
 {{- $isActiveTab := false -}}
 {{- $activeWasSet := false -}}
-{{- $persistTab := false -}}
-{{- $tpPersistAttrName := "data-td-tp-persist" -}}
-{{- $persistKey := "" -}}
 <ul class="nav nav-tabs" id="tabs-{{- $tabPaneOrdinal -}}" role="tablist">
 	{{- range $i, $e := $tabs -}}
       {{- $enabled := not $e.disabled -}}
@@ -21,9 +18,6 @@
         {{- end -}}
         {{ if not $enabled }} disabled{{ end -}}"
           id="{{ $tabid }}" data-bs-toggle="tab" data-bs-target="#{{ $entryid }}" role="tab"
-          {{ if $persistTab -}}
-            {{ printf "%s=%q " $tpPersistAttrName $persistKey | safeHTMLAttr -}}
-          {{ end -}}
           aria-controls="{{- $entryid -}}" aria-selected="{{ $isActiveTab }}">
         {{ index . "name" | markdownify }}
       </button>
@@ -39,7 +33,7 @@
         {{- if $isActiveTab -}}
           show active
         {{- end }}"
-        id="{{ $entryid }}" role="tabpanel" aria-labelledby="{{ $tabid }}" tabindex="{{ $tabPaneOrdinal }}">
+        id="{{ $entryid }}" role="tabpanel" aria-labelledby="{{ $tabid }}" tabindex="0">
 	{{- with index . "content" -}}
 		{{- . -}}
 	{{- else -}}
