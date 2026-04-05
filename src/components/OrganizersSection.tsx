@@ -40,7 +40,7 @@ const OrganizersSection = ({ organizers }: OrganizersSectionProps) => {
               href={org.profileUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex flex-col items-center text-center p-6 rounded-[2rem] bg-white/5 border border-white/10 hover:border-primary/50 hover:bg-white/[0.08] transition-all duration-500 hover:-translate-y-2 shadow-xl"
+              className="group flex flex-col items-center text-center p-6 rounded-[2rem] bg-white/5 border border-white/10 hover:border-primary/50 hover:bg-white/[0.08] transition-all duration-500 hover-lift shadow-xl shadow-black/20"
             >
               <div className="relative w-20 h-20 md:w-28 md:h-28 rounded-[1.5rem] md:rounded-[2rem] overflow-hidden mb-6 border-2 border-white/10 group-hover:border-primary/50 transition-all duration-500 rotate-3 group-hover:rotate-0 bg-muted">
                 <Image

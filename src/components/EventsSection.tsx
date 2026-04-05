@@ -130,7 +130,7 @@ const EventsSection = ({ events, title }: EventsSectionProps) => {
                 href={event.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex flex-col sm:flex-row gap-6 p-1 rounded-3xl bg-white/5 border border-white/10 hover:border-primary/50 hover:bg-white/[0.08] transition-all duration-500 overflow-hidden"
+                className="group flex flex-col sm:flex-row gap-6 p-1 rounded-3xl bg-white/5 border border-white/10 hover:border-primary/50 hover:bg-white/[0.08] transition-all duration-500 overflow-hidden hover-lift shadow-2xl shadow-black/20"
               >
                 <div className="relative w-full sm:w-48 h-48 sm:h-auto flex-shrink-0 overflow-hidden rounded-2xl bg-muted">
                   <Image
