@@ -5,24 +5,28 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
   :root {
     --background: 222 47% 6%;
-    --foreground: 210 40% 96%;
+    --foreground: 210 40% 98%;
 
-    --card: 222 40% 10%;
-    --card-foreground: 210 40% 96%;
+    --card: 222 40% 8%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 222 40% 10%;
-    --popover-foreground: 210 40% 96%;
+    --popover: 222 40% 8%;
+    --popover-foreground: 210 40% 98%;
 
     --primary: 199 89% 48%;
     --primary-foreground: 222 47% 6%;
 
-    --secondary: 222 30% 16%;
+    --secondary: 222 30% 12%;
     --secondary-foreground: 210 40% 90%;
 
-    --muted: 222 30% 14%;
-    --muted-foreground: 215 20% 55%;
+    --muted: 222 30% 10%;
+    --muted-foreground: 215 20% 65%;
 
     --accent: 199 89% 48%;
     --accent-foreground: 222 47% 6%;
@@ -30,41 +34,67 @@
     --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 222 30% 18%;
-    --input: 222 30% 18%;
+    --border: 222 30% 16%;
+    --input: 222 30% 16%;
     --ring: 199 89% 48%;
 
-    --radius: 0.75rem;
+    --radius: 1rem;
 
-    --sidebar-background: 222 40% 8%;
-    --sidebar-foreground: 210 40% 96%;
+    --sidebar-background: 222 40% 6%;
+    --sidebar-foreground: 210 40% 98%;
     --sidebar-primary: 199 89% 48%;
     --sidebar-primary-foreground: 222 47% 6%;
-    --sidebar-accent: 222 30% 14%;
-    --sidebar-accent-foreground: 210 40% 96%;
-    --sidebar-border: 222 30% 18%;
+    --sidebar-accent: 222 30% 12%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 222 30% 16%;
     --sidebar-ring: 199 89% 48%;
 
     --glow: 199 89% 48%;
-    --surface: 222 35% 12%;
+    --surface: 222 35% 10%;
   }
 }
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border selection:bg-primary/30 selection:text-primary-foreground;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
   }
 
   body {
     @apply bg-background text-foreground font-body antialiased;
+    background-image: 
+      radial-gradient(at 0% 0%, hsla(199, 89%, 48%, 0.08) 0, transparent 50%),
+      radial-gradient(at 100% 0%, hsla(199, 89%, 48%, 0.08) 0, transparent 50%);
+    background-attachment: fixed;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.15;
+    z-index: -1;
+    pointer-events: none;
+    background-image: url("https://www.transparenttextures.com/patterns/carbon-fibre.png");
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading;
+    @apply font-heading tracking-tight;
   }
 }
 
 @layer utilities {
+  .glass {
+    @apply bg-card/40 backdrop-blur-md border border-white/5;
+  }
+  .glass-darker {
+    @apply bg-black/40 backdrop-blur-xl border border-white/5;
+  }
   .glow-sm {
     box-shadow: 0 0 20px -5px hsl(var(--glow) / 0.3);
   }
@@ -72,6 +102,26 @@
     box-shadow: 0 0 40px -10px hsl(var(--glow) / 0.4);
   }
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-[hsl(199,89%,48%)] to-[hsl(199,89%,70%)];
+    @apply bg-clip-text text-transparent bg-gradient-to-br from-primary via-primary/90 to-blue-400;
+  }
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  /* Smooth Interaction Utilities */
+  .hover-lift {
+    @apply hover:-translate-y-1 hover:shadow-2xl active:translate-y-0 active:scale-95 transition-all duration-300;
+  }
+  
+  .tap-bounce {
+    @apply active:scale-90 transition-transform duration-200;
+  }
+
+  .nav-link-ltr {
+    @apply relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full;
   }
 }
