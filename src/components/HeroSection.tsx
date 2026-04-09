@@ -59,7 +59,6 @@ const HeroSection = ({ membersCount, pastCount, upcomingCount }: HeroSectionProp
           className="object-cover scale-110 blur-[2px] opacity-40 brightness-50"
           fill
           priority
-          unoptimized
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/60 to-background" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,hsla(199,89%,48%,0.15),transparent_50%)]" />

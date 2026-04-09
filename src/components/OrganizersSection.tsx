@@ -33,14 +33,14 @@ const OrganizersSection = ({ organizers }: OrganizersSectionProps) => {
           </p>
         </div>
         
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
+        <div className="flex flex-wrap justify-center gap-4 md:gap-6">
           {organizers.map((org, i) => (
             <a
               key={org.name + i}
               href={org.profileUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex flex-col items-center text-center p-6 rounded-[2rem] bg-white/5 border border-white/10 hover:border-primary/50 hover:bg-white/[0.08] transition-all duration-500 hover-lift shadow-xl shadow-black/20"
+              className="group flex flex-col items-center text-center p-6 rounded-[2rem] bg-white/5 border border-white/10 hover:border-primary/50 hover:bg-white/[0.08] transition-all duration-500 hover-lift shadow-xl shadow-black/20 w-[calc(50%-1rem)] sm:w-[calc(33.333%-1.5rem)] lg:w-[calc(20%-1.5rem)] min-w-[160px]"
             >
               <div className="relative w-20 h-20 md:w-28 md:h-28 rounded-[1.5rem] md:rounded-[2rem] overflow-hidden mb-6 border-2 border-white/10 group-hover:border-primary/50 transition-all duration-500 rotate-3 group-hover:rotate-0 bg-muted">
                 <Image
@@ -49,7 +49,6 @@ const OrganizersSection = ({ organizers }: OrganizersSectionProps) => {
                   className="object-cover scale-110 group-hover:scale-100 transition-transform duration-500"
                   fill
                   sizes="(max-width: 768px) 80px, 112px"
-                  unoptimized
                 />
               </div>
               

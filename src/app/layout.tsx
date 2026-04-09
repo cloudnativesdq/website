@@ -37,7 +37,12 @@ export const metadata: Metadata = {
     description: 'Comunidad oficial de Cloud Native Computing Foundation (CNCF) en Santo Domingo, República Dominicana.',
   },
   icons: {
-    icon: '/favicon.svg',
+    icon: [
+      {
+        url: '/favicon.svg',
+        type: 'image/svg+xml',
+      },
+    ],
   },
   alternates: {
     canonical: 'https://cloudnativesdq.org',

@@ -19,7 +19,8 @@ const GalleryCarousel = ({ images }: GalleryCarouselProps) => {
       loop: true,
       align: "center",
       slidesToScroll: 1,
-      dragFree: true,
+      dragFree: false,
+      containScroll: "trimSnaps",
     },
     [Autoplay({ delay: 5000, stopOnInteraction: false })]
   );
@@ -104,7 +105,6 @@ const GalleryCarousel = ({ images }: GalleryCarouselProps) => {
                       className="w-full h-full object-cover transition-all duration-700 group-hover/item:scale-110 group-hover/item:rotate-1"
                       fill
                       sizes="(max-width: 640px) 85vw, (max-width: 1024px) 60vw, 40vw"
-                      unoptimized
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover/item:opacity-100 transition-opacity duration-500" />
                   </div>

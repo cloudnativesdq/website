@@ -139,9 +139,7 @@ const EventsSection = ({ events, title }: EventsSectionProps) => {
                     className="object-cover transition-transform duration-700 group-hover:scale-110"
                     fill
                     sizes="(max-width: 640px) 100vw, 192px"
-                    unoptimized
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent sm:hidden" />
+                  />                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent sm:hidden" />
                   <div className="absolute bottom-4 left-4 sm:hidden">
                     <span className="px-2 py-1 rounded-md bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-widest">
                       {event.type}
