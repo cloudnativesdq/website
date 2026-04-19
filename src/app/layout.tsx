@@ -23,21 +23,36 @@ export const metadata: Metadata = {
     'Comunidad Tech',
     'Eventos de Tecnología',
   ],
-  openGraph: {
+    openGraph: {
     title: 'Cloud Native Santo Domingo | Comunidad Oficial CNCF',
     description: 'Únete a la comunidad oficial de Cloud Native Computing Foundation (CNCF) en Santo Domingo. Eventos sobre Kubernetes, Docker y Cloud Native en RD.',
     url: 'https://cloudnativesdq.org',
     siteName: 'Cloud Native Santo Domingo',
     locale: 'es_DO',
     type: 'website',
+    images: [
+      {
+        url: '/favicon.svg',
+        width: 800,
+        height: 800,
+        alt: 'CNCF Logo',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Cloud Native Santo Domingo',
     description: 'Comunidad oficial de Cloud Native Computing Foundation (CNCF) en Santo Domingo, República Dominicana.',
+    images: ['/favicon.svg'],
   },
   icons: {
     icon: [
+      {
+        url: '/favicon.svg',
+        type: 'image/svg+xml',
+      },
+    ],
+    apple: [
       {
         url: '/favicon.svg',
         type: 'image/svg+xml',
