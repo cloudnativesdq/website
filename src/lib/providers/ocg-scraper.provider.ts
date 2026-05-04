@@ -12,10 +12,23 @@ interface OcgUserChip {
   title?: string;
 }
 
+const LOCAL_ORGANIZER_IMAGES: Record<string, string> = {
+  "fdb0d8b43af30293e93e60c9c88456a4dbc0a836964486599b8df96614c960dd.jpg": "/images/organizers/enmanuel.jpg",
+  "e1ce229b5b1421ab9243e1916434985df0e6fa9afc8d0d0c86d5be79b0a6811a.jpg": "/images/organizers/ayesha.jpg",
+  "ffae15ca0f72b449de23e3fe949ea2b3ad44c47ec695f6844512d65c6988d646.jpeg": "/images/organizers/miguel.jpeg",
+  "ae4b06c6adf642d80dafcf9b1211f3cf0afc6aeb98e82cbff5409d68739f05e9.jpg": "/images/organizers/lester.jpg",
+};
+
 function resolveImageUrl(path: string | undefined, baseUrl: string): string {
   if (!path) return "";
   if (path.startsWith("http")) return path;
-  return `${baseUrl}${path}`;
+
+  const filename = path.split("/").pop() || "";
+  if (LOCAL_ORGANIZER_IMAGES[filename]) {
+    return LOCAL_ORGANIZER_IMAGES[filename];
+  }
+
+  return `/api/ocg-image?path=${encodeURIComponent(path)}`;
 }
 
 function parseMembersCount(html: string): number {
