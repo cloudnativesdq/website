@@ -15,7 +15,12 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'community.cncf.io',
       },
+      {
+        protocol: 'https',
+        hostname: 'ocgroups.dev',
+      },
     ],
+    unoptimized: true,
   },
 };
 

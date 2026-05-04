@@ -1,7 +1,7 @@
 
 export const links = {
   // Community
-  cncfCommunity: "https://community.cncf.io/cloud-native-santo-domingo/",
+  cncfCommunity: "https://ocgroups.dev/cncf/group/cqecyjw",
   cncfMain: "https://www.cncf.io/",
   
   // Socials
@@ -20,8 +20,8 @@ export const links = {
   emailMailto: "mailto:organizers@cloudnativesdq.org",
   
   // External Assets & Fallbacks
-  eventFallbackImage: "https://res.cloudinary.com/startup-grind/image/upload/c_fill,dpr_2.0,f_auto,g_center,q_auto:good/v1/gcs/platform-data-cncf/contentbuilder/eventthumb.jpg",
-  organizerFallbackImage: "https://res.cloudinary.com/startup-grind/image/upload/c_fill,dpr_2.0,f_auto,g_center,q_auto:good/v1/gcs/platform-data-cncf/contentbuilder/eventthumb.jpg",
+  eventFallbackImage: "/images/logo.png",
+  organizerFallbackImage: "/images/logo.png",
   
   // Site Info
   siteUrl: "https://cloudnativesdq.org",
