@@ -32,6 +32,10 @@ export const translations = {
     successMessage: "¡Mensaje enviado con éxito!",
     errorMessage: "Hubo un error al enviar el mensaje. Inténtalo de nuevo.",
     footerText: "Cloud Native Santo Domingo · Powered by Cloud Native Computing Foundation",
+    calendarTitle: "Calendario de Eventos",
+    calendarSubtitle: "Explora nuestra línea de tiempo orbital - cada nodo representa un encuentro con la comunidad.",
+    viewEvent: "Ver Evento",
+    noEventsThisMonth: "No hay eventos este mes",
   },
   en: {
     heroTitle1: "Cloud Native",
@@ -65,6 +69,10 @@ export const translations = {
     successMessage: "Message sent successfully!",
     errorMessage: "There was an error sending the message. Please try again.",
     footerText: "Cloud Native Santo Domingo · Powered by Cloud Native Computing Foundation",
+    calendarTitle: "Event Calendar",
+    calendarSubtitle: "Explore our orbital timeline - each node represents a community gathering.",
+    viewEvent: "View Event",
+    noEventsThisMonth: "No events this month",
   }
 };
 

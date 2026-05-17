@@ -1,5 +1,6 @@
 import type { CommunityData, Organizer, CommunityEvent } from "../types";
 import type { CommunityDataSource } from "./community-data-source";
+import { eventImageOverrides } from "../event-image-overrides";
 
 const OCG_BASE_URL = "https://ocgroups.dev";
 
@@ -114,10 +115,14 @@ function parseEventSection(
     const imageStyle = block.match(
       /background-image:\s*url\('([^']+)'\)/
     );
-    const image = resolveImageUrl(
-      imageStyle ? imageStyle[1] : undefined,
-      baseUrl
-    );
+
+    const eventSlug = eventUrl.split("/").pop() || "";
+    const image = eventImageOverrides[eventSlug]
+      ? eventImageOverrides[eventSlug]
+      : resolveImageUrl(
+          imageStyle ? imageStyle[1] : undefined,
+          baseUrl
+        );
 
     // Extract category/type from card-header
     const typeMatch = block.match(

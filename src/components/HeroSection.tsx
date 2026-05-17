@@ -128,7 +128,7 @@ const HeroSection = ({ membersCount, pastCount, upcomingCount }: HeroSectionProp
           </a>
           
           <a
-            href="#events"
+            href="/events"
             className="relative inline-flex items-center justify-center px-6 md:px-10 py-3.5 md:py-5 bg-white/5 hover:bg-white/10 text-white font-heading font-black rounded-2xl md:rounded-3xl transition-all duration-300 border border-white/10 hover:border-white/30 backdrop-blur-xl hover:-translate-y-1 active:scale-95 uppercase tracking-wider text-xs md:text-sm w-full sm:w-auto"
           >
             {upcomingCount > 0 && (
