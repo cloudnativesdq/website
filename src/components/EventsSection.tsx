@@ -125,7 +125,7 @@ const EventsSection = ({ events, title }: EventsSectionProps) => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 lg:max-w-5xl lg:mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 lg:max-w-5xl lg:mx-auto lg:justify-items-center">
           {events.map((event, i) => (
             <EventCard
               key={event.title + i}
