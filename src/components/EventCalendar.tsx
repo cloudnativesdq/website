@@ -16,6 +16,7 @@ interface Event {
   url: string;
   date: string;
   location?: string;
+  soldOut?: boolean;
 }
 
 interface EventCalendarProps {
@@ -285,10 +286,15 @@ export default function EventCalendar({ events }: EventCalendarProps) {
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
                 
-                <div className="absolute bottom-4 left-6 right-6">
+                <div className="absolute bottom-4 left-6 right-6 flex items-center gap-2 flex-wrap">
                   <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/20 text-primary text-xs font-bold uppercase tracking-wider border border-primary/30">
                     {selectedEvent.type}
                   </span>
+                  {selectedEvent.soldOut && (
+                    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/20 text-red-400 text-xs font-bold uppercase tracking-wider border border-red-500/30">
+                      Sold Out
+                    </span>
+                  )}
                 </div>
               </div>
 

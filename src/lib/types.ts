@@ -13,6 +13,7 @@ export interface CommunityEvent {
   url: string;
   date: string;
   location?: string;
+  soldOut?: boolean;
 }
 
 export interface CommunityStats {

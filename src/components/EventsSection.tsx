@@ -17,6 +17,7 @@ interface Event {
   url: string;
   date: string;
   location?: string;
+  soldOut?: boolean;
 }
 
 interface EventsSectionProps {
@@ -169,19 +170,29 @@ function EventCard({
           onError={() => setImgSrc(links.eventFallbackImage)}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent sm:hidden" />
-        <div className="absolute bottom-4 left-4 sm:hidden">
+        <div className="absolute bottom-4 left-4 sm:hidden flex items-center gap-2">
           <span className="px-2 py-1 rounded-md bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-widest">
             {event.type}
           </span>
+          {event.soldOut && (
+            <span className="px-2 py-1 rounded-md bg-red-500 text-white text-[10px] font-bold uppercase tracking-widest">
+              Sold Out
+            </span>
+          )}
         </div>
       </div>
       
       <div className="flex flex-col justify-center p-4 sm:p-2 min-w-0 flex-1">
-        <div className="hidden sm:flex items-center gap-3 mb-3">
+        <div className="hidden sm:flex items-center gap-2 mb-3 flex-wrap">
           <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-primary/10 text-[10px] uppercase tracking-wider text-primary font-bold border border-primary/20">
             <EventIcon className="w-3 h-3" />
             {event.type}
           </span>
+          {event.soldOut && (
+            <span className="px-2 py-0.5 rounded-full bg-red-500/20 text-[10px] uppercase tracking-wider text-red-400 font-bold border border-red-500/20">
+              Sold Out
+            </span>
+          )}
         </div>
         
         <h3 className="font-heading font-bold text-xl md:text-2xl text-foreground group-hover:text-primary transition-colors leading-tight mb-4 line-clamp-2">

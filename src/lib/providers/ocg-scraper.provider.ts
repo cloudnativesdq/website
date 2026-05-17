@@ -135,6 +135,9 @@ function parseEventSection(
     };
     type = typeMapping[type] || type;
 
+    const soldOutPatterns = [/sold\s*out/i, /full/i, /waitlist/i, /sin\s*cupos/i, /agotado/i];
+    const isSoldOut = soldOutPatterns.some(p => p.test(block));
+
     events.push({
       title: title.trim(),
       type,
@@ -142,6 +145,7 @@ function parseEventSection(
       url: `${baseUrl}${eventUrl}`,
       date: dateText || new Date().toISOString(),
       location: locationText || undefined,
+      soldOut: isSoldOut,
     });
 
     count++;
