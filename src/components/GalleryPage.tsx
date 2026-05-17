@@ -77,8 +77,8 @@ export default function GalleryPage() {
             </h1>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               {language === "es"
-                ? "Momentos captured de nuestros encuentros, meetups y eventos"
-                : "Captured moments from our gatherings, meetups and events"}
+                ? "Fotos de nuestros encuentros, meetups y eventos"
+                : "Photos from our gatherings, meetups and events"}
             </p>
             <p className="text-muted-foreground/60 text-sm mt-4">
               {galleryImages.length} {language === "es" ? "fotos" : "photos"}

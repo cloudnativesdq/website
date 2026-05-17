@@ -18,6 +18,7 @@ interface Event {
   date: string;
   location?: string;
   soldOut?: boolean;
+  isPast?: boolean;
 }
 
 interface EventsSectionProps {
@@ -50,6 +51,7 @@ const EventsSection = ({ events, title }: EventsSectionProps) => {
   };
 
   const isUpcoming = title.toLowerCase().includes("próximos") || title.toLowerCase().includes("upcoming");
+  const isPastEvent = title.toLowerCase().includes("pasados") || title.toLowerCase().includes("past");
 
   // Empty state for upcoming events
   if (isUpcoming && (!events || events.length === 0)) {
@@ -130,6 +132,7 @@ const EventsSection = ({ events, title }: EventsSectionProps) => {
               event={event}
               formatDate={formatDate}
               getIcon={getIcon}
+              isPast={isPastEvent}
             />
           ))}
         </div>
@@ -145,13 +148,16 @@ function EventCard({
   event,
   formatDate,
   getIcon,
+  isPast = false,
 }: {
   event: Event;
   formatDate: (d: string) => string;
   getIcon: (t: string) => typeof Calendar;
+  isPast?: boolean;
 }) {
   const [imgSrc, setImgSrc] = useState(event.image || links.eventFallbackImage);
   const EventIcon = getIcon(event.type);
+  const showSoldOut = event.soldOut && !isPast;
 
   return (
     <a
@@ -174,7 +180,7 @@ function EventCard({
           <span className="px-2 py-1 rounded-md bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-widest">
             {event.type}
           </span>
-          {event.soldOut && (
+          {showSoldOut && (
             <span className="px-2 py-1 rounded-md bg-red-500 text-white text-[10px] font-bold uppercase tracking-widest">
               Sold Out
             </span>
@@ -188,7 +194,7 @@ function EventCard({
             <EventIcon className="w-3 h-3" />
             {event.type}
           </span>
-          {event.soldOut && (
+          {showSoldOut && (
             <span className="px-2 py-0.5 rounded-full bg-red-500/20 text-[10px] uppercase tracking-wider text-red-400 font-bold border border-red-500/20">
               Sold Out
             </span>
