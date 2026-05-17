@@ -25,17 +25,6 @@ export default function TeamPage({ data }: TeamPageProps) {
         <div className="absolute bottom-0 left-0 w-[400px] h-[300px] bg-cyan-500/10 rounded-full blur-[100px]" />
         
         <div className="container px-6 relative z-10">
-          <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-6xl font-heading font-black mb-4">
-              <span className="text-gradient">{language === "es" ? "Nuestro Equipo" : "Our Team"}</span>
-            </h1>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              {language === "es"
-                ? "Las personas que hacen posible esta comunidad. Organizadores voluntarios apasionados por compartir conocimiento."
-                : "The people who make this community possible. Volunteer organizers passionate about sharing knowledge."}
-            </p>
-          </div>
-
           <OrganizersSection organizers={data.organizers} />
         </div>
       </section>
