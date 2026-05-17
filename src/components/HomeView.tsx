@@ -5,7 +5,6 @@ import React from "react";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import OrganizersSection from "@/components/OrganizersSection";
-import EventsSection from "@/components/EventsSection";
 import GalleryCarousel from "@/components/GalleryCarousel";
 import { Instagram, Linkedin, Mail, Github, Youtube, Presentation, Mic2 } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
@@ -70,41 +69,142 @@ interface HomeViewProps {
 export default function HomeView({ data }: HomeViewProps) {
   const { t, language } = useLanguage();
 
+  const parseEventDate = (dateStr: string) => {
+    const match = dateStr.match(/(\w+)\s+(\d+),\s*(\d+)/);
+    if (match) {
+      const [, month, day, year] = match;
+      const fullYear = year.length === 2 ? `20${year}` : year;
+      return new Date(`${month} ${day}, ${fullYear}`);
+    }
+    return new Date(dateStr);
+  };
+
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Cloud Native Santo Domingo",
+    "alternateName": "CNCD SDQ",
+    "url": links.siteUrl,
+    "logo": links.siteLogo,
+    "sameAs": [
+      links.instagram,
+      links.linkedin,
+      links.youtube,
+      links.githubOrg,
+      links.cncfCommunity
+    ],
+    "description": "Comunidad oficial de Cloud Native Computing Foundation (CNCF) en Santo Domingo, República Dominicana. Eventos, charlas y networking sobre Kubernetes, Docker y el ecosistema Cloud Native.",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Santo Domingo",
+      "addressRegion": "Santo Domingo",
+      "addressCountry": "DO"
+    },
+    "areaServed": {
+      "@type": "Country",
+      "name": "Dominican Republic"
+    },
+    "member": data.organizers.map((org: any) => ({
+      "@type": "Person",
+      "name": org.name,
+      "jobTitle": org.role,
+      "worksFor": {
+        "@type": "Organization",
+        "name": org.company
+      }
+    })),
+    "event": data.upcoming.map((event: any) => {
+      const eventDate = parseEventDate(event.date);
+      return {
+        "@type": "Event",
+        "name": event.title,
+        "startDate": eventDate.toISOString(),
+        "endDate": eventDate.toISOString(),
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "eventStatus": "https://schema.org/EventScheduled",
+        "location": {
+          "@type": event.location?.toLowerCase().includes("virtual") 
+            ? "VirtualLocation" 
+            : "Place",
+          "name": event.location || "Santo Domingo",
+          ...(event.location?.toLowerCase().includes("virtual") 
+            ? { "url": event.url }
+            : { "address": { "@type": "PostalAddress", "addressLocality": "Santo Domingo", "addressCountry": "DO" } }
+          )
+        },
+        "image": event.image || links.siteLogo,
+        "url": event.url,
+        "description": `${event.title} - Evento de la comunidad Cloud Native Santo Domingo.`,
+        "organizer": {
+          "@type": "Organization",
+          "name": "Cloud Native Santo Domingo",
+          "url": links.siteUrl
+        }
+      };
+    })
+  };
+
   return (
     <main className="min-h-screen">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Organization",
-            "name": "Cloud Native Santo Domingo",
-            "url": links.siteUrl,
-            "logo": links.siteLogo,
-            "sameAs": [
-              links.instagram,
-              links.linkedin,
-              links.youtube,
-              links.githubOrg,
-              links.cncfCommunity
-            ],
-            "description": "Comunidad oficial de Cloud Native Computing Foundation (CNCF) en Santo Domingo, República Dominicana.",
-            "address": {
-              "@type": "PostalAddress",
-              "addressLocality": "Santo Domingo",
-              "addressCountry": "DO"
-            }
-          })
+          __html: JSON.stringify(organizationSchema)
         }}
       />
       <Navbar />
       <HeroSection membersCount={data.membersCount} pastCount={data.pastCount} upcomingCount={data.upcoming.length} />
+      
       <OrganizersSection organizers={data.organizers} />
-      <GalleryCarousel images={galleryImages} />
-      <div id="events">
-        <EventsSection events={data.upcoming} title={t.upcomingEvents} />
-        <EventsSection events={data.past} title={t.pastEvents} />
-      </div>
+
+      <section className="py-20 relative overflow-hidden">
+        <div className="container px-6">
+          <div className="flex items-center justify-between mb-10">
+            <h2 className="text-2xl md:text-4xl font-heading font-bold">
+              <span className="text-gradient">{language === "es" ? "Próximos Eventos" : "Upcoming Events"}</span>
+            </h2>
+            <a href="/events" className="text-sm font-bold text-primary hover:text-cyan-400 transition-colors">
+              {language === "es" ? "Ver todos →" : "View all →"}
+            </a>
+          </div>
+          {data.upcoming.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {data.upcoming.slice(0, 3).map((event: any, i: number) => (
+                <a
+                  key={i}
+                  href={event.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group p-6 rounded-[2rem] bg-white/5 border border-white/10 hover:border-primary/50 hover:bg-white/[0.08] transition-all duration-500"
+                >
+                  <div className="text-xs font-bold text-primary uppercase tracking-wider mb-2">{event.type}</div>
+                  <h3 className="font-heading font-bold text-lg text-foreground group-hover:text-primary transition-colors mb-3 line-clamp-2">{event.title}</h3>
+                  <div className="text-sm text-muted-foreground">{event.date}</div>
+                  {event.location && <div className="text-xs text-muted-foreground/60 mt-1">{event.location}</div>}
+                </a>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12 text-muted-foreground">
+              {language === "es" ? "No hay eventos próximos programados" : "No upcoming events scheduled"}
+            </div>
+          )}
+        </div>
+      </section>
+
+      <section className="py-16 relative overflow-hidden">
+        <div className="container px-6">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-2xl md:text-4xl font-heading font-bold">
+              <span className="text-gradient">{language === "es" ? "Galería" : "Gallery"}</span>
+            </h2>
+            <a href="/gallery" className="text-sm font-bold text-primary hover:text-cyan-400 transition-colors">
+              {language === "es" ? "Ver todas →" : "View all →"}
+            </a>
+          </div>
+          <GalleryCarousel images={galleryImages} />
+        </div>
+      </section>
       <footer className="relative py-20 mt-24 border-t border-white/5 overflow-hidden">
         <div className="absolute inset-0 bg-surface/20 backdrop-blur-3xl -z-10" />
         <div className="container px-6">

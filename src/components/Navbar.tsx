@@ -22,7 +22,9 @@ const Navbar = () => {
 
   const navLinks = [
     { href: "/", label: language === "es" ? "Inicio" : "Home" },
-    { href: "/#events", label: language === "es" ? "Eventos" : "Events" },
+    { href: "/events", label: language === "es" ? "Eventos" : "Events" },
+    { href: "/team", label: language === "es" ? "Equipo" : "Team" },
+    { href: "/gallery", label: language === "es" ? "Galería" : "Gallery" },
     { href: "/contact", label: language === "es" ? "Contacto" : "Contact" },
   ];
 
