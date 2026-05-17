@@ -128,7 +128,12 @@ function parseEventSection(
     const typeMatch = block.match(
       /<div class="card-header">\s*<span>([^<]*)<\/span>/
     );
-    const type = typeMatch ? typeMatch[1].trim() : "Meetup";
+    let type = typeMatch ? typeMatch[1].trim() : "Meetup";
+    
+    const typeMapping: Record<string, string> = {
+      "Regional": "Meetup",
+    };
+    type = typeMapping[type] || type;
 
     events.push({
       title: title.trim(),
