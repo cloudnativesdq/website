@@ -125,7 +125,7 @@ const EventsSection = ({ events, title }: EventsSectionProps) => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 lg:max-w-5xl lg:mx-auto lg:justify-items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 lg:max-w-5xl lg:mx-auto">
           {events.map((event, i) => (
             <EventCard
               key={event.title + i}
@@ -133,6 +133,7 @@ const EventsSection = ({ events, title }: EventsSectionProps) => {
               formatDate={formatDate}
               getIcon={getIcon}
               isPast={isPastEvent}
+              isSingle={events.length === 1}
             />
           ))}
         </div>
@@ -149,11 +150,13 @@ function EventCard({
   formatDate,
   getIcon,
   isPast = false,
+  isSingle = false,
 }: {
   event: Event;
   formatDate: (d: string) => string;
   getIcon: (t: string) => typeof Calendar;
   isPast?: boolean;
+  isSingle?: boolean;
 }) {
   const [imgSrc, setImgSrc] = useState(event.image || links.eventFallbackImage);
   const EventIcon = getIcon(event.type);
@@ -164,7 +167,7 @@ function EventCard({
       href={event.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="group flex flex-col sm:flex-row gap-6 p-1 rounded-3xl bg-white/5 border border-white/10 hover:border-primary/50 hover:bg-white/[0.08] transition-all duration-500 overflow-hidden hover-lift shadow-2xl shadow-black/20"
+      className={`group flex flex-col sm:flex-row gap-6 p-1 rounded-3xl bg-white/5 border border-white/10 hover:border-primary/50 hover:bg-white/[0.08] transition-all duration-500 overflow-hidden hover-lift shadow-2xl shadow-black/20 ${isSingle ? "lg:col-span-2 lg:max-w-2xl lg:mx-auto" : ""}`}
     >
       <div className="relative w-full sm:w-48 h-48 sm:h-auto flex-shrink-0 overflow-hidden rounded-2xl bg-muted">
         <Image
