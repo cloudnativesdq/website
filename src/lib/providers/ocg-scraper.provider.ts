@@ -76,6 +76,31 @@ function parseEvents(html: string, baseUrl: string): {
   return { upcoming, past };
 }
 
+async function fetchEventCapacity(eventUrl: string, baseUrl: string, groupSlug: string): Promise<{ soldOut: boolean; spotsRemaining?: number }> {
+  try {
+    const eventSlug = eventUrl.split("/").pop();
+    if (!eventSlug) return { soldOut: false };
+
+    const availabilityUrl = `${baseUrl}/cncf/group/${groupSlug}/event/${eventSlug}/availability`;
+    const res = await fetch(availabilityUrl, {
+      headers: {
+        "User-Agent": "cloudnativesdq-website/1.0",
+        "origin": baseUrl,
+      },
+    });
+
+    if (!res.ok) return { soldOut: false };
+
+    const data = await res.json();
+    return {
+      soldOut: data.remaining_capacity === 0,
+      spotsRemaining: data.remaining_capacity,
+    };
+  } catch {
+    return { soldOut: false };
+  }
+}
+
 function parseEventSection(
   html: string,
   sectionTitle: string,
@@ -98,7 +123,6 @@ function parseEventSection(
     const block = match[0];
     const eventUrl = match[1];
 
-    // Stop if we've entered the next major section
     if (count > 0) {
       const nextSection = html.indexOf(
         '<div class="uppercase text-lg',
@@ -124,7 +148,6 @@ function parseEventSection(
           baseUrl
         );
 
-    // Extract category/type from card-header
     const typeMatch = block.match(
       /<div class="card-header">\s*<span>([^<]*)<\/span>/
     );
@@ -219,9 +242,16 @@ export class OcgScraperProvider implements CommunityDataSource {
     const organizers = parseOrganizers(html, this.baseUrl);
     const { upcoming, past } = parseEvents(html, this.baseUrl);
 
+    const upcomingWithCapacity = await Promise.all(
+      upcoming.map(async (event) => {
+        const capacity = await fetchEventCapacity(event.url, this.baseUrl, this.groupSlug);
+        return { ...event, spotsRemaining: capacity.spotsRemaining, soldOut: capacity.soldOut };
+      })
+    );
+
     return {
       organizers,
-      upcoming,
+      upcoming: upcomingWithCapacity,
       past,
       pastCount: past.length || 0,
       membersCount,

@@ -18,6 +18,7 @@ interface Event {
   date: string;
   location?: string;
   soldOut?: boolean;
+  spotsRemaining?: number;
   isPast?: boolean;
 }
 
@@ -38,16 +39,43 @@ const EventsSection = ({ events, title }: EventsSectionProps) => {
   const formatDate = (dateString: string) => {
     try {
       const date = new Date(dateString);
-      const pattern = language === "es" 
-        ? "d 'de' MMMM, yyyy '·' p" 
-        : "MMMM d, yyyy '·' p";
-      
-      return format(date, pattern, { 
-        locale: language === "es" ? es : enUS 
-      });
-    } catch (e) {
-      return dateString;
-    }
+      if (!isNaN(date.getTime())) {
+        const pattern = language === "es"
+          ? "d 'de' MMMM, yyyy '·' p"
+          : "MMMM d, yyyy '·' p";
+        return format(date, pattern, {
+          locale: language === "es" ? es : enUS,
+        });
+      }
+    } catch {}
+
+    const match = dateString.match(/(\w+)\s+(\d+),\s+(\d+)\s+·\s+(\d+:\d+)\s*([AP]M)\s*([-+]\d+|AST|EST|EDT|CST|CDT|MST|PDT|PST)?/i);
+    if (!match) return dateString;
+
+    const months: Record<string, string> = {
+      Jan: "01", Feb: "02", Mar: "03", Apr: "04", May: "05", Jun: "06",
+      Jul: "07", Aug: "08", Sep: "09", Oct: "10", Nov: "11", Dec: "12"
+    };
+
+    const [, month, day, year, time, period] = match;
+    let hours = parseInt(time.split(":")[0], 10);
+    const minutes = time.split(":")[1];
+
+    if (period?.toUpperCase() === "PM" && hours !== 12) hours += 12;
+    if (period?.toUpperCase() === "AM" && hours === 12) hours = 0;
+
+    const monthNum = months[month] || "01";
+    const date = new Date(`${year}-${monthNum}-${day}T${hours.toString().padStart(2, "0")}:${minutes}:00`);
+
+    if (isNaN(date.getTime())) return dateString;
+
+    const pattern = language === "es"
+      ? "d 'de' MMMM, yyyy '·' p"
+      : "MMMM d, yyyy '·' p";
+
+    return format(date, pattern, {
+      locale: language === "es" ? es : enUS,
+    });
   };
 
   const isUpcoming = title.toLowerCase().includes("próximos") || title.toLowerCase().includes("upcoming");
@@ -134,6 +162,7 @@ const EventsSection = ({ events, title }: EventsSectionProps) => {
               getIcon={getIcon}
               isPast={isPastEvent}
               isSingle={events.length === 1}
+              spotsText={t.spotsRemaining}
             />
           ))}
         </div>
@@ -151,16 +180,19 @@ function EventCard({
   getIcon,
   isPast = false,
   isSingle = false,
+  spotsText,
 }: {
   event: Event;
   formatDate: (d: string) => string;
   getIcon: (t: string) => typeof Calendar;
   isPast?: boolean;
   isSingle?: boolean;
+  spotsText: string;
 }) {
   const [imgSrc, setImgSrc] = useState(event.image || links.eventFallbackImage);
   const EventIcon = getIcon(event.type);
   const showSoldOut = event.soldOut && !isPast;
+  const showSpots = !isPast && !showSoldOut && event.spotsRemaining !== undefined && event.spotsRemaining < 10;
 
   return (
     <a
@@ -188,6 +220,11 @@ function EventCard({
               Sold Out
             </span>
           )}
+          {showSpots && (
+            <span className="px-2 py-1 rounded-md bg-amber-500 text-black text-[10px] font-bold uppercase tracking-widest">
+              {spotsText.replace("{count}", String(event.spotsRemaining))}
+            </span>
+          )}
         </div>
       </div>
       
@@ -200,6 +237,11 @@ function EventCard({
           {showSoldOut && (
             <span className="px-2 py-0.5 rounded-full bg-red-500/20 text-[10px] uppercase tracking-wider text-red-400 font-bold border border-red-500/20">
               Sold Out
+            </span>
+          )}
+          {showSpots && (
+            <span className="px-2 py-0.5 rounded-full bg-amber-500/20 text-[10px] uppercase tracking-wider text-amber-400 font-bold border border-amber-500/20">
+              {spotsText.replace("{count}", String(event.spotsRemaining))}
             </span>
           )}
         </div>

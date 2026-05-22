@@ -17,6 +17,7 @@ interface Event {
   date: string;
   location?: string;
   soldOut?: boolean;
+  spotsRemaining?: number;
 }
 
 interface EventCalendarProps {
@@ -293,6 +294,11 @@ export default function EventCalendar({ events }: EventCalendarProps) {
                   {selectedEvent.soldOut && (
                     <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/20 text-red-400 text-xs font-bold uppercase tracking-wider border border-red-500/30">
                       Sold Out
+                    </span>
+                  )}
+                  {!selectedEvent.soldOut && selectedEvent.spotsRemaining !== undefined && selectedEvent.spotsRemaining < 10 && (
+                    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 text-amber-400 text-xs font-bold uppercase tracking-wider border border-amber-500/30">
+                      {t.spotsRemaining.replace("{count}", String(selectedEvent.spotsRemaining))}
                     </span>
                   )}
                 </div>

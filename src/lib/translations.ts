@@ -36,6 +36,7 @@ export const translations = {
     calendarSubtitle: "Mira nuestro calendario, cada fecha es una reunión de la comunidad.",
     viewEvent: "Ver Evento",
     noEventsThisMonth: "No hay eventos este mes",
+    spotsRemaining: "{count} lugares disponibles",
   },
   en: {
     heroTitle1: "Cloud Native",
@@ -73,6 +74,7 @@ export const translations = {
     calendarSubtitle: "Check our calendar, each date is a community meetup.",
     viewEvent: "View Event",
     noEventsThisMonth: "No events this month",
+    spotsRemaining: "{count} spots left",
   }
 };
 

@@ -14,6 +14,7 @@ export interface CommunityEvent {
   date: string;
   location?: string;
   soldOut?: boolean;
+  spotsRemaining?: number;
 }
 
 export interface CommunityStats {
