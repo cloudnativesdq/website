@@ -101,6 +101,31 @@ async function fetchEventCapacity(eventUrl: string, baseUrl: string, groupSlug: 
   }
 }
 
+async function fetchEventPortrait(eventUrl: string, baseUrl: string): Promise<string | undefined> {
+  try {
+    const res = await fetch(eventUrl, {
+      headers: {
+        "User-Agent": "cloudnativesdq-website/1.0",
+        "origin": baseUrl,
+      },
+      signal: AbortSignal.timeout(5000),
+    });
+
+    if (!res.ok) return undefined;
+
+    const html = await res.text();
+    const match = html.match(/images="(\[.*?\])"/);
+    if (!match) return undefined;
+
+    const images = JSON.parse(match[1].replace(/&#34;/g, '"'));
+    if (!images || images.length === 0) return undefined;
+
+    return `/api/ocg-image?path=${encodeURIComponent(images[0])}`;
+  } catch {
+    return undefined;
+  }
+}
+
 function parseEventSection(
   html: string,
   sectionTitle: string,
@@ -245,14 +270,22 @@ export class OcgScraperProvider implements CommunityDataSource {
     const upcomingWithCapacity = await Promise.all(
       upcoming.map(async (event) => {
         const capacity = await fetchEventCapacity(event.url, this.baseUrl, this.groupSlug);
-        return { ...event, spotsRemaining: capacity.spotsRemaining, soldOut: capacity.soldOut };
+        const portrait = await fetchEventPortrait(event.url, this.baseUrl);
+        return { ...event, spotsRemaining: capacity.spotsRemaining, soldOut: capacity.soldOut, portraitImage: portrait };
+      })
+    );
+
+    const pastWithPortraits = await Promise.all(
+      past.map(async (event) => {
+        const portrait = await fetchEventPortrait(event.url, this.baseUrl);
+        return { ...event, portraitImage: portrait };
       })
     );
 
     return {
       organizers,
       upcoming: upcomingWithCapacity,
-      past,
+      past: pastWithPortraits,
       pastCount: past.length || 0,
       membersCount,
     };

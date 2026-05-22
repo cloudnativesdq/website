@@ -19,6 +19,7 @@ interface Event {
   location?: string;
   soldOut?: boolean;
   spotsRemaining?: number;
+  portraitImage?: string;
   isPast?: boolean;
 }
 
@@ -189,7 +190,7 @@ function EventCard({
   isSingle?: boolean;
   spotsText: string;
 }) {
-  const [imgSrc, setImgSrc] = useState(event.image || links.eventFallbackImage);
+  const [imgSrc, setImgSrc] = useState(event.portraitImage || event.image || links.eventFallbackImage);
   const EventIcon = getIcon(event.type);
   const showSoldOut = event.soldOut && !isPast;
   const showSpots = !isPast && !showSoldOut && event.spotsRemaining !== undefined && event.spotsRemaining < 10;

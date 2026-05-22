@@ -18,6 +18,7 @@ interface Event {
   location?: string;
   soldOut?: boolean;
   spotsRemaining?: number;
+  portraitImage?: string;
 }
 
 interface EventCalendarProps {
@@ -219,9 +220,9 @@ export default function EventCalendar({ events }: EventCalendarProps) {
                   style={{ animationDelay: `${i * 0.1}s` }}
                 >
                   <div className="w-10 h-10 rounded-xl overflow-hidden bg-muted flex-shrink-0">
-                    {event.image ? (
+                    {event.image || event.portraitImage ? (
                       <Image
-                        src={event.image}
+                        src={event.portraitImage || event.image}
                         alt={event.title}
                         width={40}
                         height={40}
@@ -272,9 +273,9 @@ export default function EventCalendar({ events }: EventCalendarProps) {
               </button>
               
               <div className="relative h-48 bg-muted">
-                {selectedEvent.image ? (
+                {selectedEvent.image || selectedEvent.portraitImage ? (
                   <Image
-                    src={selectedEvent.image}
+                    src={selectedEvent.portraitImage || selectedEvent.image}
                     alt={selectedEvent.title}
                     fill
                     className="object-cover"

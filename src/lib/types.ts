@@ -15,6 +15,7 @@ export interface CommunityEvent {
   location?: string;
   soldOut?: boolean;
   spotsRemaining?: number;
+  portraitImage?: string;
 }
 
 export interface CommunityStats {
