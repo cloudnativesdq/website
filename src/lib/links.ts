@@ -26,4 +26,12 @@ export const links = {
   // Site Info
   siteUrl: "https://cloudnativesdq.org",
   siteLogo: "https://cloudnativesdq.org/favicon.svg",
+
+  // Luma Events (fetched by LumaScraperProvider)
+  lumaEvents: [
+    {
+      url: "https://luma.com/event/evt-zln7Flow0wdYSZR",
+      type: "Meetup",
+    },
+  ] as { url: string; type?: string; image?: string; location?: string }[],
 };
