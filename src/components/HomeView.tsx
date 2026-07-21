@@ -4,6 +4,7 @@
 import React from "react";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
+import UpcomingEventsPreview from "@/components/UpcomingEventsPreview";
 import OrganizersSection from "@/components/OrganizersSection";
 import { Instagram, Linkedin, Mail, Github, Youtube, Presentation, Mic2 } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
@@ -101,7 +102,8 @@ export default function HomeView({ data }: HomeViewProps) {
       />
       <Navbar />
       <HeroSection membersCount={data.membersCount} pastCount={data.pastCount} upcomingCount={data.upcoming.length} />
-      
+      <UpcomingEventsPreview events={data.upcoming} />
+
       <OrganizersSection organizers={data.organizers} />
       <footer className="relative py-20 mt-24 border-t border-white/5 overflow-hidden">
         <div className="absolute inset-0 bg-surface/20 backdrop-blur-3xl -z-10" />

@@ -66,13 +66,13 @@ const Navbar = () => {
         <div className="flex md:hidden items-center gap-3">
           <button
             onClick={() => setLanguage(language === "es" ? "en" : "es")}
-            className="px-3 py-1.5 rounded-xl glass border border-white/10 text-[10px] font-black tracking-widest active:scale-90 transition-transform"
+            className="min-h-11 px-3.5 py-2 rounded-xl glass border border-white/10 text-[10px] font-black tracking-widest active:scale-90 transition-transform"
           >
             {language.toUpperCase()}
           </button>
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="p-2.5 rounded-xl bg-white/5 text-foreground active:scale-90 transition-all duration-200 border border-white/5"
+            className="min-h-11 min-w-11 flex items-center justify-center rounded-xl bg-white/5 text-foreground active:scale-90 transition-all duration-200 border border-white/5"
             aria-label="Toggle Menu"
           >
             {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}

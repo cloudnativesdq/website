@@ -15,6 +15,20 @@ export const metadata: Metadata = {
     siteName: 'Cloud Native Santo Domingo',
     locale: 'es_DO',
     type: 'website',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Cloud Native Santo Domingo',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Eventos | Cloud Native Santo Domingo',
+    description: 'Explora todos los eventos de la comunidad Cloud Native Santo Domingo.',
+    images: ['/og-image.jpg'],
   },
 };
 

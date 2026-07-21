@@ -27,11 +27,20 @@ export const metadata: Metadata = {
     siteName: 'Cloud Native Santo Domingo',
     locale: 'es_DO',
     type: 'website',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Cloud Native Santo Domingo',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Cloud Native Santo Domingo',
     description: 'Comunidad oficial de Cloud Native Computing Foundation (CNCF) en Santo Domingo, República Dominicana.',
+    images: ['/og-image.jpg'],
   },
 };
 

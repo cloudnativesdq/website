@@ -17,8 +17,8 @@ The following is a set of guidelines for contributing to our community website.
 ### Pull Requests
 1. Fork the repo and create your branch from `main`.
 2. If you've added code that should be tested, add tests.
-3. Ensure the test suite passes (`npm run build`).
-4. Make sure your code lints (`npx eslint .`).
+3. Ensure the test suite passes (`pnpm build`).
+4. Make sure your code lints (`pnpm exec eslint .`).
 5. Issue that Pull Request!
 
 ## 📜 Code Style
@@ -26,7 +26,7 @@ The following is a set of guidelines for contributing to our community website.
 - We use **TypeScript** for type safety.
 - We use **Tailwind CSS** for styling.
 - We follow the standard Next.js App Router structure.
-- Please run `npx eslint .` before committing your changes.
+- Please run `pnpm exec eslint .` before committing your changes.
 
 ## 🌍 Community
 

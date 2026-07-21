@@ -3,10 +3,9 @@
 ## Commands
 
 ```bash
-npm run dev      # Start dev server
-npm run build    # Production build
-npm run lint     # Lint
-npm run typecheck # TypeScript check
+pnpm dev      # Start dev server
+pnpm build    # Production build
+pnpm lint     # Lint
 ```
 
 ## Architecture
