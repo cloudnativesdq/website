@@ -37,7 +37,7 @@ export const translations = {
     viewEvent: "Ver Evento",
     noEventsThisMonth: "No hay eventos este mes",
     spotsRemaining: "{count} lugares disponibles",
-    upcomingPreviewSubtitle: "Los próximos encuentros de la comunidad, sin necesidad de buscar.",
+    upcomingPreviewSubtitle: "Los próximos encuentros de la comunidad.",
     seeAllEvents: "Ver todos los eventos",
   },
   en: {
@@ -77,7 +77,7 @@ export const translations = {
     viewEvent: "View Event",
     noEventsThisMonth: "No events this month",
     spotsRemaining: "{count} spots left",
-    upcomingPreviewSubtitle: "The community's next meetups, no digging required.",
+    upcomingPreviewSubtitle: "The community's next meetups.",
     seeAllEvents: "See all events",
   }
 };
