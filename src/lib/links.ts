@@ -33,5 +33,9 @@ export const links = {
       url: "https://luma.com/event/evt-zln7Flow0wdYSZR",
       type: "Meetup",
     },
+    {
+      url: "https://luma.com/domini-7g5q",
+      type: "Meetup",
+    },
   ] as { url: string; type?: string; image?: string; location?: string }[],
 };
