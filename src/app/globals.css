@@ -1,4 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
+/* Design system — cloudnativesdq/style-guide, bound as a submodule at _ds/style-guide.
+   These five files are the source of truth for every value below. They give us the
+   raw palette (--navy-*, --cyan-*, --heritage-*), the spacing/radius/type scales,
+   the effect tokens, and the [data-theme="light"] variant. */
+@import "../../_ds/style-guide/tokens/fonts.css";
+@import "../../_ds/style-guide/tokens/colors.css";
+@import "../../_ds/style-guide/tokens/typography.css";
+@import "../../_ds/style-guide/tokens/spacing.css";
+@import "../../_ds/style-guide/tokens/effects.css";
 
 @tailwind base;
 @tailwind components;
@@ -8,55 +16,106 @@
   html {
     scroll-behavior: smooth;
   }
-  
+
+  /* shadcn/Tailwind consumes colors as bare HSL triplets so that opacity
+     modifiers (bg-primary/30, bg-card/40) keep working — hex cannot be fed to
+     hsl(). Each triplet below is the exact HSL of the design-system hex noted
+     in the comment; they round-trip to the same byte values. Change a color in
+     the design system, not here. */
   :root {
-    --background: 222 47% 6%;
-    --foreground: 210 40% 98%;
+    --background: 221.5 41.9% 6.1%;      /* --navy-950  #090d16 */
+    --foreground: 221.1 33.3% 88.8%;     /* --slate-200 #d9dfec */
 
-    --card: 222 40% 8%;
-    --card-foreground: 210 40% 98%;
+    --card: 221.1 31.1% 12%;             /* --navy-700  #151b28 */
+    --card-foreground: 221.1 33.3% 88.8%;
 
-    --popover: 222 40% 8%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 220 31.9% 9.2%;           /* --navy-800  #10151f */
+    --popover-foreground: 221.1 33.3% 88.8%;
 
-    --primary: 199 89% 48%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 197.2 88.5% 47.8%;        /* --cyan-500  #0ea8e6 */
+    --primary-foreground: 200 82% 9%;    /* readable ink on the accent */
 
-    --secondary: 222 30% 12%;
-    --secondary-foreground: 210 40% 90%;
+    --secondary: 220.9 28.9% 14.9%;      /* --navy-600  #1b2231 */
+    --secondary-foreground: 221.1 33.3% 88.8%;
 
-    --muted: 222 30% 10%;
-    --muted-foreground: 215 20% 65%;
+    --muted: 220 31.9% 9.2%;             /* --navy-800  #10151f */
+    --muted-foreground: 221.4 14% 59.4%; /* --slate-400 #8992a6 */
 
-    --accent: 199 89% 48%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 197.2 88.5% 47.8%;         /* --cyan-500  #0ea8e6 */
+    --accent-foreground: 200 82% 9%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 83.8% 61.4%;        /* --red-500   #ef4a4a */
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 222 30% 16%;
-    --input: 222 30% 16%;
-    --ring: 199 89% 48%;
+    --border: 220.9 28.9% 14.9%;         /* --navy-600  #1b2231 */
+    --input: 220.9 28.9% 14.9%;
+    --ring: 197.2 88.5% 47.8%;
 
-    --radius: 1rem;
+    --radius: 1rem;                      /* --radius-md */
 
-    --sidebar-background: 222 40% 6%;
-    --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 199 89% 48%;
-    --sidebar-primary-foreground: 222 47% 6%;
-    --sidebar-accent: 222 30% 12%;
-    --sidebar-accent-foreground: 210 40% 98%;
-    --sidebar-border: 222 30% 16%;
-    --sidebar-ring: 199 89% 48%;
+    --sidebar-background: 221.5 41.9% 6.1%;
+    --sidebar-foreground: 221.1 33.3% 88.8%;
+    --sidebar-primary: 197.2 88.5% 47.8%;
+    --sidebar-primary-foreground: 200 82% 9%;
+    --sidebar-accent: 220.9 28.9% 14.9%;
+    --sidebar-accent-foreground: 221.1 33.3% 88.8%;
+    --sidebar-border: 220.9 28.9% 14.9%;
+    --sidebar-ring: 197.2 88.5% 47.8%;
 
-    --glow: 199 89% 48%;
-    --surface: 222 35% 10%;
+    --glow: 197.2 88.5% 47.8%;           /* --cyan-500 */
+    --surface: 220 31.9% 9.2%;           /* --navy-800 */
 
-    --warning: 38 92% 55%;
-    --warning-foreground: 222 47% 6%;
+    --warning: 35.9 87.5% 59.2%;         /* --amber-500 #f2a93c */
+    --warning-foreground: 42 100% 5%;    /* --status-warning-fg */
 
-    --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
-    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    /* Dominican heritage accents — flag-derived colors only, never the flag or
+       shield itself. Use sparingly: footer flourish, "Made in RD" badge, map pin. */
+    --heritage: 216.3 100% 22.4%;        /* --heritage-ultramarine #002d72 */
+    --heritage-2: 353.3 84.8% 43.7%;     /* --heritage-vermillion  #ce1126 */
+  }
+
+  /* Light variant — opt in with data-theme="light" on <html> or any container.
+     Mirrors the [data-theme="light"] block in the design system's colors.css so
+     both the Tailwind layer and raw var() consumers flip together. */
+  [data-theme="light"] {
+    --background: 216 45.5% 97.8%;       /* --fog-50  #f7f9fc */
+    --foreground: 221.1 31.1% 12%;       /* --fog-900 #151b28 */
+
+    --card: 0 0% 100%;
+    --card-foreground: 221.1 31.1% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 221.1 31.1% 12%;
+
+    --primary: 200.4 98% 39.4%;          /* light accent #0284c7 */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 36% 95.1%;          /* --fog-100 #eef1f7 */
+    --secondary-foreground: 221.1 31.1% 12%;
+
+    --muted: 220 36% 95.1%;
+    --muted-foreground: 220 16.9% 34.9%; /* --fog-700 #4a5468 */
+
+    --accent: 200.4 98% 39.4%;
+    --accent-foreground: 0 0% 100%;
+
+    --border: 218.6 31.8% 91.4%;         /* --fog-200 #e2e7f0 */
+    --input: 218.6 31.8% 91.4%;
+    --ring: 200.4 98% 39.4%;
+
+    --sidebar-background: 216 45.5% 97.8%;
+    --sidebar-foreground: 221.1 31.1% 12%;
+    --sidebar-primary: 200.4 98% 39.4%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 36% 95.1%;
+    --sidebar-accent-foreground: 221.1 31.1% 12%;
+    --sidebar-border: 218.6 31.8% 91.4%;
+    --sidebar-ring: 200.4 98% 39.4%;
+
+    --glow: 200.4 98% 39.4%;
+    --surface: 0 0% 100%;
+
+    --warning-foreground: 40 100% 12%;
   }
 }
 
@@ -65,14 +124,14 @@
     @apply border-border selection:bg-primary/30 selection:text-primary-foreground;
     transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
     transition-timing-function: var(--ease-out-quart);
-    transition-duration: 300ms;
+    transition-duration: var(--duration-base);
   }
 
   body {
     @apply bg-background text-foreground font-body antialiased;
     background-image:
-      radial-gradient(at 0% 0%, hsla(199, 89%, 48%, 0.08) 0, transparent 50%),
-      radial-gradient(at 100% 0%, hsla(199, 89%, 48%, 0.08) 0, transparent 50%);
+      radial-gradient(at 0% 0%, hsl(var(--glow) / 0.08) 0, transparent 50%),
+      radial-gradient(at 100% 0%, hsl(var(--glow) / 0.08) 0, transparent 50%);
     background-attachment: fixed;
   }
 
@@ -92,10 +151,14 @@
 
 @layer utilities {
   .glass {
-    @apply bg-card/40 backdrop-blur-md border border-white/5;
+    background: var(--bg-glass);
+    backdrop-filter: var(--blur-card);
+    @apply border border-white/5;
   }
   .glass-darker {
-    @apply bg-black/40 backdrop-blur-xl border border-white/5;
+    background: var(--bg-glass-dark);
+    backdrop-filter: var(--blur-heavy);
+    @apply border border-white/5;
   }
   .glow-sm {
     box-shadow: 0 0 20px -5px hsl(var(--glow) / 0.3);
@@ -133,12 +196,12 @@
   .transition-card {
     transition-property: color, background-color, border-color, box-shadow, transform, filter, backdrop-filter;
     transition-timing-function: var(--ease-out-quart);
-    transition-duration: 500ms;
+    transition-duration: var(--duration-slow);
   }
 
   .transition-control {
     transition-property: color, background-color, border-color, box-shadow, transform, filter, backdrop-filter;
     transition-timing-function: var(--ease-out-quart);
-    transition-duration: 300ms;
+    transition-duration: var(--duration-base);
   }
 }
