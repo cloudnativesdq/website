@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import heroBanner from "@/assets/hero-banner.jpg";
-import { MapPin, Users, ArrowRight, CalendarCheck, Sparkles } from "lucide-react";
+import { MapPin, Users, ArrowRight, CalendarCheck } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 import { links } from "@/lib/links";
 import { cn } from "@/lib/utils";
@@ -72,12 +72,6 @@ const HeroSection = ({ membersCount, pastCount, upcomingCount }: HeroSectionProp
       </div>
 
       <div className="relative z-10 container px-6 flex flex-col items-center text-center">
-        {/* Community Badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-darker text-[10px] md:text-xs font-heading font-bold tracking-[0.2em] uppercase text-primary mb-6 md:mb-8 animate-fade-up border border-primary/20 shadow-xl shadow-primary/5">
-          <Sparkles className="w-3 h-3 animate-pulse" />
-          Latin America · CNCF Community Group
-        </div>
-
         {/* Main Heading */}
         <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-[8rem] font-heading font-black mb-6 md:mb-8 animate-fade-up leading-[0.9] tracking-tighter" style={{ animationDelay: "0.1s" }}>
           <span className="block opacity-90">{t.heroTitle1}</span>
