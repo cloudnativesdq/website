@@ -82,9 +82,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" data-scroll-behavior="smooth">
-      <head>
-        <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-      </head>
+      {/* Fonts are self-hosted from the design system — see the @font-face rules
+          in _ds/style-guide/tokens/fonts.css, imported by globals.css. The
+          previous Google Fonts <link> was removed: it duplicated the download
+          and only shipped static weights (Inter 400/500/600, Space Grotesk
+          400-700), which cannot render font-black headings or the design
+          system's full 100-900 / 300-700 variable ranges. */}
       <body>
         <LanguageProvider>
           <TooltipProvider>
