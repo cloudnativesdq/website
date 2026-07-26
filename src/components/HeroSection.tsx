@@ -73,7 +73,10 @@ const HeroSection = ({ membersCount, pastCount, upcomingCount }: HeroSectionProp
 
       <div className="relative z-10 container px-6 flex flex-col items-center text-center">
         {/* Main Heading */}
-        <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-[8rem] font-heading font-black mb-6 md:mb-8 animate-fade-up leading-[0.9] tracking-tighter" style={{ animationDelay: "0.1s" }}>
+        {/* Desktop caps at 7rem — the design system's display maximum
+            (--fs-display: clamp(2.75rem, 6vw, 7rem)). The size is flat from lg
+            up, so this is the ceiling on every desktop width. */}
+        <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-[7rem] font-heading font-black mb-6 md:mb-8 animate-fade-up leading-[0.9] tracking-tighter" style={{ animationDelay: "0.1s" }}>
           <span className="block opacity-90">{t.heroTitle1}</span>
           <span className="text-gradient block pb-2">{t.heroTitle2}</span>
         </h1>
