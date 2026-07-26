@@ -20,7 +20,10 @@ function parseStructuredDate(dateStr: string): string {
         timeZone: "America/Santo_Domingo",
       });
     }
-  } catch {}
+  } catch {
+    // Luma occasionally returns a date we cannot parse or format; fall back to
+    // showing the raw string rather than dropping the event's date entirely.
+  }
   return dateStr;
 }
 

@@ -40,8 +40,8 @@ export async function sendEmail(formData: FormData) {
     }
 
     return { success: true, data };
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Server Action error:", err);
-    return { error: err.message || "Failed to send email" };
+    return { error: err instanceof Error ? err.message : "Failed to send email" };
   }
 }

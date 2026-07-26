@@ -44,13 +44,13 @@ export default function ContactView() {
               <h1 className="text-4xl md:text-6xl font-heading font-extrabold mb-6 animate-fade-up">
                 <span className="text-gradient">{t.contactTitle}</span>
               </h1>
-              <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto animate-fade-up" style={{ animationDelay: "0.1s" }}>
+              <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto animate-fade-up animate-delay-100">
                 {t.contactSubtitle}
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-              <div className="space-y-8 animate-fade-up" style={{ animationDelay: "0.2s" }}>
+              <div className="space-y-8 animate-fade-up animate-delay-200">
                 <div className="p-8 rounded-[2rem] bg-white/5 border border-white/10 glass shadow-2xl">
                   <h2 className="text-2xl font-heading font-bold mb-6 flex items-center gap-3">
                     <Mail className="w-6 h-6 text-primary" />
@@ -91,7 +91,7 @@ export default function ContactView() {
                 </div>
               </div>
 
-              <div className="animate-fade-up" style={{ animationDelay: "0.3s" }}>
+              <div className="animate-fade-up animate-delay-300">
                 {formState === "success" ? (
                   <div className="p-8 md:p-12 rounded-[2rem] bg-white/5 border border-primary/20 glass-darker text-center space-y-6">
                     <div className="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center mx-auto">

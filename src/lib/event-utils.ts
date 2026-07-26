@@ -9,9 +9,12 @@ export function parseEventDate(dateStr: string): Date | null {
   if (!dateStr) return null;
 
   try {
-    let d = new Date(dateStr);
+    const d = new Date(dateStr);
     if (!isNaN(d.getTime())) return d;
-  } catch {}
+  } catch {
+    // Unparseable by the Date constructor — fall through to the explicit
+    // ISO and "12 de julio" patterns below.
+  }
 
   const isoMatch = dateStr.match(
     /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2}))?/

@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useLanguage } from "@/hooks/use-language";
 import { cn } from "@/lib/utils";
+import { staggerDelay } from "@/lib/stagger";
 import { Menu, X, Globe } from "lucide-react";
 
 const Navbar = () => {
@@ -95,9 +96,9 @@ const Navbar = () => {
               onClick={() => setIsMobileMenuOpen(false)}
               className={cn(
                 "text-2xl font-heading font-black text-foreground hover:text-primary transition-all duration-300 transform",
-                isMobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+                isMobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0",
+                staggerDelay(i)
               )}
-              style={{ transitionDelay: `${i * 100}ms` }}
             >
               {link.label}
             </Link>

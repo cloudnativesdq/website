@@ -76,18 +76,18 @@ const HeroSection = ({ membersCount, pastCount, upcomingCount }: HeroSectionProp
         {/* Desktop caps at 7rem — the design system's display maximum
             (--fs-display: clamp(2.75rem, 6vw, 7rem)). The size is flat from lg
             up, so this is the ceiling on every desktop width. */}
-        <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-[7rem] font-heading font-black mb-6 md:mb-8 animate-fade-up leading-[0.9] tracking-tighter" style={{ animationDelay: "0.1s" }}>
+        <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-[7rem] font-heading font-black mb-6 md:mb-8 animate-fade-up leading-[0.9] tracking-tighter animate-delay-100">
           <span className="block opacity-90">{t.heroTitle1}</span>
           <span className="text-gradient block pb-2">{t.heroTitle2}</span>
         </h1>
 
         {/* Subtitle */}
-        <p className="text-muted-foreground/80 max-w-2xl mx-auto text-sm md:text-xl mb-8 md:mb-12 animate-fade-up leading-relaxed font-medium" style={{ animationDelay: "0.2s" }}>
+        <p className="text-muted-foreground/80 max-w-2xl mx-auto text-sm md:text-xl mb-8 md:mb-12 animate-fade-up leading-relaxed font-medium animate-delay-200">
           {t.heroSubtitle}
         </p>
 
         {/* Metrics Grid */}
-        <div className="flex flex-wrap items-center justify-center gap-2 md:gap-6 mb-8 md:mb-12 animate-fade-up w-full max-w-sm sm:max-w-none mx-auto" style={{ animationDelay: "0.3s" }}>
+        <div className="flex flex-wrap items-center justify-center gap-2 md:gap-6 mb-8 md:mb-12 animate-fade-up w-full max-w-sm sm:max-w-none mx-auto animate-delay-300">
           <div className="group flex-1 min-w-[130px] flex flex-col items-center gap-0.5 md:gap-1 px-3 sm:px-5 md:px-8 py-3 md:py-4 rounded-2xl md:rounded-[2.5rem] bg-white/[0.06] hover:bg-white/10 transition-card border border-white/10 hover:border-primary/30 shadow-2xl">
             <div className="flex items-center gap-1.5 md:gap-3">
               <Users className="w-3.5 h-3.5 md:w-5 md:h-5 text-primary" />
@@ -118,7 +118,7 @@ const HeroSection = ({ membersCount, pastCount, upcomingCount }: HeroSectionProp
         </div>
 
         {/* Call to Actions */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 w-full max-w-[280px] sm:max-w-none mx-auto animate-fade-up" style={{ animationDelay: "0.4s" }}>
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 w-full max-w-[280px] sm:max-w-none mx-auto animate-fade-up animate-delay-400">
           <a
             href={links.cncfCommunity}
             target="_blank"
@@ -148,7 +148,7 @@ const HeroSection = ({ membersCount, pastCount, upcomingCount }: HeroSectionProp
 
       {/* Decorative Blur Blobs */}
       <div className="absolute top-[10%] -left-20 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] mix-blend-screen pointer-events-none animate-float" />
-      <div className="hidden md:block absolute bottom-[10%] -right-20 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] mix-blend-screen pointer-events-none animate-float" style={{ animationDelay: "3s" }} />
+      <div className="hidden md:block absolute bottom-[10%] -right-20 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] mix-blend-screen pointer-events-none animate-float animate-delay-float" />
     </section>
   );
 };

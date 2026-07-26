@@ -4,12 +4,13 @@ import React from "react";
 import Navbar from "@/components/Navbar";
 import OrganizersSection from "@/components/OrganizersSection";
 import { useLanguage } from "@/hooks/use-language";
+import type { CommunityData } from "@/lib/types";
 import { links } from "@/lib/links";
 import { Linkedin, Mail, Github } from "lucide-react";
 import Link from "next/link";
 
 interface TeamPageProps {
-  data: any;
+  data: CommunityData;
 }
 
 export default function TeamPage({ data }: TeamPageProps) {

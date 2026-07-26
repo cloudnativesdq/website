@@ -8,10 +8,11 @@ import UpcomingEventsPreview from "@/components/UpcomingEventsPreview";
 import OrganizersSection from "@/components/OrganizersSection";
 import { Instagram, Linkedin, Mail, Github, Youtube, Presentation, Mic2 } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
+import type { CommunityData, Organizer, CommunityEvent } from "@/lib/types";
 import { links } from "@/lib/links";
 
 interface HomeViewProps {
-  data: any;
+  data: CommunityData;
 }
 
 export default function HomeView({ data }: HomeViewProps) {
@@ -52,7 +53,7 @@ export default function HomeView({ data }: HomeViewProps) {
       "@type": "Country",
       "name": "Dominican Republic"
     },
-    "member": data.organizers.map((org: any) => ({
+    "member": data.organizers.map((org: Organizer) => ({
       "@type": "Person",
       "name": org.name,
       "jobTitle": org.role,
@@ -61,7 +62,7 @@ export default function HomeView({ data }: HomeViewProps) {
         "name": org.company
       }
     })),
-    "event": data.upcoming.map((event: any) => {
+    "event": data.upcoming.map((event: CommunityEvent) => {
       const eventDate = parseEventDate(event.date);
       return {
         "@type": "Event",

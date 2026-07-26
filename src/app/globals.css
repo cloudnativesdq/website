@@ -204,4 +204,22 @@
     transition-timing-function: var(--ease-out-quart);
     transition-duration: var(--duration-base);
   }
+
+  /* Entrance stagger. Tailwind ships no animation-delay utility, so these exist
+     to keep index-driven delays out of inline style attributes — see
+     `staggerDelay()` in src/lib/stagger.ts. Each class sets both animation- and
+     transition-delay: an element either animates in or transitions in, and the
+     unused property is inert, so one family covers both cases. */
+  .animate-delay-0 { animation-delay: 0ms; transition-delay: 0ms; }
+  .animate-delay-100 { animation-delay: 100ms; transition-delay: 100ms; }
+  .animate-delay-200 { animation-delay: 200ms; transition-delay: 200ms; }
+  .animate-delay-300 { animation-delay: 300ms; transition-delay: 300ms; }
+  .animate-delay-400 { animation-delay: 400ms; transition-delay: 400ms; }
+  .animate-delay-500 { animation-delay: 500ms; transition-delay: 500ms; }
+  .animate-delay-600 { animation-delay: 600ms; transition-delay: 600ms; }
+  .animate-delay-700 { animation-delay: 700ms; transition-delay: 700ms; }
+
+  /* Long offset for the decorative floating blobs, so the two do not bob in
+     lockstep. Not part of the entrance-stagger scale. */
+  .animate-delay-float { animation-delay: 3s; }
 }

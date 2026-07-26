@@ -5,11 +5,12 @@ import Navbar from "@/components/Navbar";
 import EventCalendar from "@/components/EventCalendar";
 import EventsSection from "@/components/EventsSection";
 import { useLanguage } from "@/hooks/use-language";
+import type { CommunityData } from "@/lib/types";
 import { Calendar, History } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface EventsPageProps {
-  data: any;
+  data: CommunityData;
 }
 
 export default function EventsPage({ data }: EventsPageProps) {
