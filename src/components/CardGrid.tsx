@@ -2,7 +2,6 @@
 
 import React, { useMemo, useState } from "react";
 import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 import BrandLogo from "@/components/BrandLogo";
 
@@ -61,7 +60,6 @@ export default function CardGrid({
   const locale = language === "es" ? "es-DO" : "en-US";
   const day = new Intl.DateTimeFormat(locale, { day: "numeric", timeZone: "UTC" });
   const month = new Intl.DateTimeFormat(locale, { month: "short", timeZone: "UTC" });
-  const year = new Intl.DateTimeFormat(locale, { year: "numeric", timeZone: "UTC" });
 
   const tabs = [{ id: "all", label: t.eventsGrid.all, logo: "" }, ...categories].filter((c) => counts[c.id]);
 
@@ -98,54 +96,56 @@ export default function CardGrid({
       <div className="mt-3 min-h-5">{hint}</div>
 
       {filtered.length ? (
-        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2.5 sm:gap-4">
           {filtered.slice(0, shown).map((item) => {
             const cat = byId.get(item.category);
             return (
               <li key={item.url + (item.date ?? "")}>
+                {/* Compact row on phones (thumbnail + text), image card from sm up. */}
                 <a
                   href={item.url}
                   {...(item.external === false ? {} : { target: "_blank", rel: "noopener noreferrer" })}
-                  className="group flex flex-col h-full rounded-3xl overflow-hidden bg-card/60 border border-foreground/10 hover:border-primary/50 hover:-translate-y-0.5 transition-all"
+                  className="group flex sm:flex-col gap-3 sm:gap-0 h-full p-2.5 sm:p-0 rounded-2xl sm:rounded-3xl overflow-hidden bg-card/60 border border-foreground/10 hover:border-primary/50 transition-colors"
                 >
-                  <span className="relative block aspect-[16/9] bg-muted overflow-hidden">
+                  <span className="relative block w-24 sm:w-auto shrink-0 aspect-square sm:aspect-[16/9] rounded-xl sm:rounded-none bg-muted overflow-hidden">
                     {item.image ? (
                       <Image
                         src={item.image}
                         alt=""
                         fill
-                        sizes="(max-width: 640px) 100vw, (max-width: 1280px) 33vw, 25vw"
+                        sizes="(max-width: 640px) 96px, (max-width: 1280px) 33vw, 25vw"
                         className={`transition-transform duration-500 group-hover:scale-105 ${
-                          item.imageFit === "contain" ? "object-contain p-6 bg-gradient-to-br from-primary/10 via-background to-primary/5" : "object-cover"
+                          item.imageFit === "contain" ? "object-contain p-2 sm:p-6 bg-gradient-to-br from-primary/10 via-background to-primary/5" : "object-cover"
                         }`}
                       />
                     ) : (
                       <span className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/15 via-background to-primary/5">
-                        {cat && <BrandLogo src={cat.logo} size={64} className="w-14 h-14 opacity-90" />}
+                        {cat && <BrandLogo src={cat.logo} size={64} className="w-10 h-10 sm:w-14 sm:h-14 opacity-90" />}
                       </span>
                     )}
                     {item.date && (
-                      <span className="absolute top-3 left-3 flex flex-col items-center min-w-12 px-2 py-1 rounded-xl bg-background/90 backdrop-blur text-foreground shadow">
+                      <span className="hidden sm:flex absolute top-3 left-3 flex-col items-center min-w-11 px-2 py-1 rounded-xl bg-background/90 backdrop-blur text-foreground shadow">
                         <span className="text-[10px] font-bold uppercase tracking-wide text-primary">{month.format(new Date(item.date))}</span>
                         <span className="text-lg font-heading font-bold leading-none">{day.format(new Date(item.date))}</span>
-                        <span className="text-[10px] text-muted-foreground">{year.format(new Date(item.date))}</span>
                       </span>
                     )}
-                    {cat && (
-                      <span className="absolute top-3 right-3 inline-flex items-center gap-1.5 px-2 py-1 rounded-full bg-background/90 backdrop-blur text-[11px] font-semibold shadow">
+                    {cat && active === "all" && (
+                      <span className="hidden sm:inline-flex absolute top-3 right-3 items-center gap-1.5 px-2 py-1 rounded-full bg-background/90 backdrop-blur text-[11px] font-semibold shadow">
                         <BrandLogo src={cat.logo} size={14} className="w-3.5 h-3.5" />
                         {cat.badge ?? cat.label}
                       </span>
                     )}
                   </span>
 
-                  <span className="flex flex-col flex-1 p-4">
-                    <span className="font-heading font-semibold leading-snug line-clamp-2 group-hover:text-primary">{item.title}</span>
-                    {item.subtitle && <span className="mt-1 text-xs text-muted-foreground line-clamp-2">{item.subtitle}</span>}
-                    <span className="mt-auto pt-3 flex items-center gap-1.5 text-xs text-muted-foreground min-w-0">
-                      <span className="min-w-0 flex-1 truncate">{item.footer}</span>
-                      <ArrowUpRight className="w-3.5 h-3.5 shrink-0 opacity-50 group-hover:opacity-100" />
-                    </span>
+                  <span className="flex flex-col flex-1 min-w-0 sm:p-4">
+                    {item.date && (
+                      <span className="sm:hidden text-[11px] font-bold uppercase tracking-wide text-primary">
+                        {day.format(new Date(item.date))} {month.format(new Date(item.date))}
+                      </span>
+                    )}
+                    <span className="font-heading font-semibold text-[15px] sm:text-base leading-snug line-clamp-2 group-hover:text-primary">{item.title}</span>
+                    {item.subtitle && <span className="mt-0.5 sm:mt-1 text-xs text-muted-foreground line-clamp-1 sm:line-clamp-2">{item.subtitle}</span>}
+                    <span className="mt-auto pt-1.5 sm:pt-3 text-xs text-muted-foreground truncate">{item.footer}</span>
                   </span>
                 </a>
               </li>

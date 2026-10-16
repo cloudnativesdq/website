@@ -7,7 +7,7 @@ import { getDominicanCncfPeople } from "@/lib/cncf-people";
 export const revalidate = 21600;
 
 export const metadata: Metadata = {
-  title: 'Mapa de la comunidad CNCF | Cloud Native Santo Domingo',
+  title: 'Cloud Native en el mundo | Cloud Native Santo Domingo',
   description: 'Capítulos CNCF del mundo en un mapa: próximos eventos, KCDs, Cloud Native Days y Kubestronauts por país.',
   alternates: {
     canonical: 'https://cloudnativesdq.org/map',

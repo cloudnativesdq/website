@@ -5,7 +5,6 @@ import dynamic from "next/dynamic";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import EventsGrid, { type GridEvent } from "@/components/EventsGrid";
-import BrandLogo from "@/components/BrandLogo";
 import { useLanguage } from "@/hooks/use-language";
 import { flag, type MapData } from "@/lib/chapters";
 import type { DominicanCncfPeople } from "@/lib/cncf-people";
@@ -112,7 +111,7 @@ export default function MapView({ data, people, lfEvents }: { data: MapData; peo
     { value: countryCount, label: t.mapCountries },
     { value: totalKubestronauts, label: t.mapKubestronauts },
     { value: totalAmbassadors, label: t.mapAmbassadors },
-    { value: upcomingCount, label: t.mapUpcoming },
+    { value: upcomingCount, label: t.mapUpcoming.toLowerCase() },
   ];
 
   const dr = selected === "do" && (people.kubestronauts.length > 0 || people.ambassadors.length > 0);
@@ -125,12 +124,17 @@ export default function MapView({ data, people, lfEvents }: { data: MapData; peo
 
       <section className="pt-20 md:pt-24 pb-16">
         <div className="container px-4 sm:px-6">
-          <header className="flex flex-wrap items-end justify-between gap-x-6 gap-y-1 mb-3">
-            <h1 className="flex items-center gap-2 text-2xl md:text-3xl font-heading font-bold">
-              <BrandLogo src="cncg.svg" size={36} className="w-8 h-8 md:w-9 md:h-9" />
-              {t.mapTitle}
-            </h1>
-            <Link href="/start-a-chapter" className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline">
+          <header className="mb-8">
+            <h1 className="text-3xl md:text-5xl font-heading font-bold tracking-tight mb-3">{t.mapTitle}</h1>
+            {/* Key numbers as one readable line instead of a block of big figures. */}
+            <p className="flex flex-wrap gap-x-4 gap-y-1 text-muted-foreground text-base md:text-lg">
+              {stats.map((s) => (
+                <span key={s.label} className="whitespace-nowrap">
+                  <strong className="font-semibold text-foreground tabular-nums">{s.value.toLocaleString(language === "es" ? "es-DO" : "en-US")}</strong> {s.label}
+                </span>
+              ))}
+            </p>
+            <Link href="/start-a-chapter" className="inline-flex items-center gap-1 mt-3 text-sm font-medium text-primary hover:underline">
               {t.chapterGuide.cta}
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
@@ -272,15 +276,6 @@ export default function MapView({ data, people, lfEvents }: { data: MapData; peo
             </div>
           )}
 
-          <dl className="grid grid-cols-2 md:grid-cols-5 gap-4 mt-8">
-            {stats.map((s) => (
-              <div key={s.label} className="flex flex-col-reverse">
-                <dt className="text-xs uppercase tracking-wider text-muted-foreground">{s.label}</dt>
-                <dd className="text-2xl md:text-3xl font-heading font-bold">{s.value}</dd>
-              </div>
-            ))}
-          </dl>
-          <p className="text-sm text-muted-foreground max-w-3xl mt-4">{t.mapSubtitle}</p>
 
         </div>
       </section>
