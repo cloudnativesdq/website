@@ -2,12 +2,14 @@
 
 import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
+import PageHeader from "@/components/PageHeader";
+import Link from "next/link";
 import Footer from "@/components/Footer";
 import EventCalendar from "@/components/EventCalendar";
 import EventsSection from "@/components/EventsSection";
 import { useLanguage } from "@/hooks/use-language";
 import type { CommunityData } from "@/lib/types";
-import { Calendar, History } from "lucide-react";
+import { ArrowRight, Calendar, History } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface EventsPageProps {
@@ -37,32 +39,32 @@ export default function EventsPage({ data }: EventsPageProps) {
     <main className="min-h-screen">
       <Navbar />
       
-      <section className="pt-32 pb-16 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/10 via-transparent to-transparent" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-primary/20 rounded-full blur-[120px]" />
-        
-        <div className="container px-6 relative z-10">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-6xl font-heading font-black mb-4">
-              <span className="text-gradient">{language === "es" ? "Nuestros Eventos" : "Our Events"}</span>
-            </h1>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              {language === "es" 
-                ? "Meetups, talleres y encuentros sobre tecnologías Cloud Native en Santo Domingo"
-                : "Meetups, workshops and gatherings about Cloud Native technologies in Santo Domingo"}
-            </p>
-          </div>
+      <section className="pt-28 md:pt-32 pb-12">
+        <div className="container px-4 sm:px-6">
+          <PageHeader
+            title={language === "es" ? "Nuestros eventos" : "Our events"}
+            subtitle={
+              language === "es"
+                ? "Meetups, talleres y encuentros sobre tecnologías Cloud Native en Santo Domingo."
+                : "Meetups, workshops and gatherings about Cloud Native technologies in Santo Domingo."
+            }
+          >
+            <Link href="/map#events-grid-title" className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline">
+              {language === "es" ? "Ver eventos Cloud Native en todo el mundo" : "See Cloud Native events worldwide"}
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </PageHeader>
 
-          <div className="flex justify-center mb-12">
+          <div className="flex mb-10">
             <div className="inline-flex items-center gap-1 p-1.5 rounded-2xl bg-foreground/5 border border-foreground/10">
               {tabs.map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={cn(
-                    "flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all duration-300",
+                    "flex items-center gap-2 px-4 sm:px-6 py-3 rounded-xl font-bold text-sm transition-all duration-300",
                     activeTab === tab.id
-                      ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30"
+                      ? "bg-primary text-primary-foreground"
                       : "text-muted-foreground hover:text-foreground hover:bg-foreground/5"
                   )}
                 >
@@ -85,8 +87,8 @@ export default function EventsPage({ data }: EventsPageProps) {
         </div>
       </section>
 
-      <section className="pb-24">
-        <div className="container px-6">
+      <section className="pb-16">
+        <div className="container px-4 sm:px-6">
           <EventsSection 
             events={activeTab === "upcoming" ? data.upcoming : data.past} 
             title={activeTab === "upcoming" ? t.upcomingEvents : t.pastEvents}

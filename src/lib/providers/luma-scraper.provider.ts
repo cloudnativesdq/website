@@ -30,6 +30,8 @@ function parseStructuredDate(dateStr: string): string {
 async function fetchLumaEvent(config: LumaEventConfig): Promise<CommunityEvent | null> {
   try {
     const res = await fetch(config.url, {
+      // Cached like the OCG data; uncached requests on every render got rate-limited (429) by Luma.
+      next: { revalidate: 3600 },
       headers: {
         "User-Agent": "cloudnativesdq-website/1.0",
       },

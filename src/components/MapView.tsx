@@ -12,7 +12,7 @@ import type { DominicanCncfPeople } from "@/lib/cncf-people";
 import type { LfEvents } from "@/lib/cncf-resources";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Globe2, Search } from "lucide-react";
+import { ArrowRight, Globe2, Search, X } from "lucide-react";
 
 // Leaflet touches `window`, so the map only renders in the browser.
 const ChaptersMap = dynamic(() => import("@/components/ChaptersMap"), {
@@ -26,6 +26,7 @@ export default function MapView({ data, people, lfEvents }: { data: MapData; peo
   const { t, language } = useLanguage();
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState<string | null>("do"); // open on the Dominican Republic
+  const [panelOpen, setPanelOpen] = useState(false); // countries panel on small screens
 
   const fmt = useMemo(
     () => new Intl.DateTimeFormat(language === "es" ? "es-DO" : "en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" }),
@@ -135,10 +136,9 @@ export default function MapView({ data, people, lfEvents }: { data: MapData; peo
             </Link>
           </header>
 
-          {/* Map first: fills the first screen on mobile and desktop. */}
-          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_340px] gap-4 lg:gap-6">
-            <div className="flex flex-col gap-3 min-w-0">
-              <div className="h-[calc(100svh-12.5rem)] md:h-[calc(100svh-10rem)] min-h-[340px] max-h-[760px] rounded-3xl overflow-hidden border border-foreground/10" data-testid="chapters-map">
+          {/* Full-width map with the countries list floating over it (a toggle on small screens). */}
+          <div className="relative h-[calc(100svh-12.5rem)] md:h-[calc(100svh-10rem)] min-h-[380px] max-h-[780px] rounded-3xl overflow-hidden border border-foreground/10">
+            <div className="absolute inset-0" data-testid="chapters-map">
                 <ChaptersMap
                   chapters={data.chapters}
                   kcds={data.kcds}
@@ -156,20 +156,27 @@ export default function MapView({ data, people, lfEvents }: { data: MapData; peo
                     ourPeople: t.mapOurPeople,
                     kubecon: "KubeCon",
                     aaif: "AAIF",
+                    loading: t.mapLoadingEvents,
+                    soldOut: t.mapSoldOut,
                   }}
                 />
-              </div>
-              <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
-                <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-[hsl(199_89%_45%)]" />{t.mapLegendChapter}</span>
-                <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-full bg-[hsl(160_84%_39%)]" />{t.mapLegendActive}</span>
-                <span className="flex items-center gap-1.5"><span className="w-3.5 h-3.5 rounded-full border-2 border-[hsl(38_92%_50%)]" />{t.mapKcd}</span>
-                <span className="flex items-center gap-1.5"><span className="w-3.5 h-3.5 rounded-full border-2 border-[hsl(262_83%_58%)]" />KubeCon</span>
-                <span className="flex items-center gap-1.5"><span className="w-3.5 h-3.5 rounded-full border-2 border-[hsl(330_81%_60%)]" />AAIF</span>
-              </div>
             </div>
 
+            <button
+              onClick={() => setPanelOpen((o) => !o)}
+              aria-expanded={panelOpen}
+              aria-controls="countries-panel"
+              className="lg:hidden absolute top-3 right-3 z-[1001] inline-flex items-center gap-2 h-10 px-4 rounded-full bg-background/95 backdrop-blur border border-foreground/10 shadow text-sm font-semibold"
+            >
+              {panelOpen ? <X className="w-4 h-4" /> : <Globe2 className="w-4 h-4 text-primary" />}
+              {t.mapCountriesTitle}
+            </button>
+
             {/* Countries */}
-            <div className={`${card} flex flex-col h-[420px] lg:h-[calc(100svh-10rem)] lg:min-h-[340px] lg:max-h-[760px]`}>
+            <div
+              id="countries-panel"
+              className={`${panelOpen ? "flex" : "hidden"} lg:flex flex-col absolute z-[1000] top-16 left-3 right-3 bottom-3 lg:top-3 lg:left-auto lg:w-[340px] p-4 rounded-2xl bg-background/95 backdrop-blur border border-foreground/10 shadow-xl`}
+            >
               <div className="flex items-center justify-between mb-3">
                 <h2 className="flex items-center gap-2 font-heading font-bold text-lg">
                   <Globe2 className="w-5 h-5 text-primary" />
@@ -201,7 +208,10 @@ export default function MapView({ data, people, lfEvents }: { data: MapData; peo
                 {visibleCountries.map((c) => (
                   <li key={c.code}>
                     <button
-                      onClick={() => setSelected(c.code)}
+                      onClick={() => {
+                        setSelected(c.code);
+                        setPanelOpen(false);
+                      }}
                       disabled={!c.chapters}
                       className={`w-full flex items-center gap-2 px-2 py-2 rounded-lg text-sm text-left transition-colors disabled:opacity-60 disabled:cursor-default enabled:hover:bg-foreground/5 ${selected === c.code ? "bg-primary/10 text-primary" : ""}`}
                     >
@@ -215,6 +225,13 @@ export default function MapView({ data, people, lfEvents }: { data: MapData; peo
               </ul>
             </div>
           </div>
+          <div className="flex flex-wrap gap-x-4 gap-y-1 mt-3 text-xs text-muted-foreground">
+                <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-[hsl(199_89%_45%)]" />{t.mapLegendChapter}</span>
+                <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-full bg-[hsl(160_84%_39%)]" />{t.mapLegendActive}</span>
+                <span className="flex items-center gap-1.5"><span className="w-3.5 h-3.5 rounded-full border-2 border-[hsl(38_92%_50%)]" />{t.mapKcd}</span>
+                <span className="flex items-center gap-1.5"><span className="w-3.5 h-3.5 rounded-full border-2 border-[hsl(262_83%_58%)]" />KubeCon</span>
+                <span className="flex items-center gap-1.5"><span className="w-3.5 h-3.5 rounded-full border-2 border-[hsl(330_81%_60%)]" />AAIF</span>
+              </div>
 
           {/* Our people, when the Dominican Republic is selected */}
           {dr && (

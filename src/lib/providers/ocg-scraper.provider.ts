@@ -291,3 +291,14 @@ export class OcgScraperProvider implements CommunityDataSource {
     };
   }
 }
+
+// Upcoming events of any CNCF chapter, read from its OCG group page (used by the map popups).
+export async function fetchGroupUpcomingEvents(groupSlug: string, baseUrl: string = OCG_BASE_URL): Promise<CommunityEvent[]> {
+  const res = await fetch(`${baseUrl}/cncf/group/${groupSlug}`, {
+    next: { revalidate: 3600 },
+    headers: { "User-Agent": "cloudnativesdq-website/1.0" },
+  });
+  if (!res.ok) throw new Error(`OCG fetch failed: ${res.status}`);
+  const decode = (t: string) => t.replace(/&#38;|&amp;/g, "&").replace(/&#39;/g, "'").replace(/&#34;|&quot;/g, '"');
+  return parseEvents(await res.text(), baseUrl).upcoming.map((e) => ({ ...e, title: decode(e.title) }));
+}

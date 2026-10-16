@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
+import PageHeader from "@/components/PageHeader";
 import Footer from "@/components/Footer";
 import { useLanguage } from "@/hooks/use-language";
 import Image from "next/image";
@@ -16,31 +17,23 @@ export default function GalleryPage() {
     <main className="min-h-screen">
       <Navbar />
       
-      <section className="pt-32 pb-16 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/10 via-transparent to-transparent" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-primary/10 rounded-full blur-[120px]" />
-        
-        <div className="container px-6 relative z-10">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-6xl font-heading font-black mb-4">
-              <span className="text-gradient">{language === "es" ? "Galería" : "Gallery"}</span>
-            </h1>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              {language === "es"
-                ? "Fotos de nuestros encuentros, meetups y eventos"
-                : "Photos from our gatherings, meetups and events"}
-            </p>
-            <p className="text-muted-foreground/80 text-sm mt-4">
-              {galleryImages.length} {language === "es" ? "fotos" : "photos"}
-            </p>
-          </div>
+      <section className="pt-28 md:pt-32 pb-16">
+        <div className="container px-4 sm:px-6">
+          <PageHeader
+            title={language === "es" ? "Galería" : "Gallery"}
+            subtitle={
+              language === "es"
+                ? `Fotos de nuestros encuentros, meetups y eventos · ${galleryImages.length} fotos`
+                : `Photos from our gatherings, meetups and events · ${galleryImages.length} photos`
+            }
+          />
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {galleryImages.map((img, index) => (
               <button
                 key={index}
                 onClick={() => setSelectedImage(index)}
-                className="relative aspect-square rounded-2xl overflow-hidden group cursor-zoom-in"
+                className="relative aspect-square rounded-2xl overflow-hidden group cursor-zoom-in bg-muted"
               >
                 <Image
                   src={img.url}

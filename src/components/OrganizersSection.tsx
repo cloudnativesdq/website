@@ -16,16 +16,18 @@ interface Organizer {
 
 interface OrganizersSectionProps {
   organizers: Organizer[];
+  /** /team renders its own page header. */
+  showHeader?: boolean;
 }
 
-const OrganizersSection = ({ organizers }: OrganizersSectionProps) => {
+const OrganizersSection = ({ organizers, showHeader = true }: OrganizersSectionProps) => {
   const { t } = useLanguage();
   if (!organizers || organizers.length === 0) return null;
 
   return (
-    <section className="py-24 relative overflow-hidden">
-      <div className="container px-6 relative z-10">
-        <div className="text-center mb-16">
+    <section className={showHeader ? "py-24 relative overflow-hidden" : "relative overflow-hidden"}>
+      <div className={showHeader ? "container px-6 relative z-10" : "relative z-10"}>
+        <div className={showHeader ? "text-center mb-16" : "hidden"}>
           <h2 className="text-3xl md:text-5xl font-heading font-bold mb-4">
             <span className="text-gradient">{t.teamTitle}</span>
           </h2>
@@ -34,7 +36,7 @@ const OrganizersSection = ({ organizers }: OrganizersSectionProps) => {
           </p>
         </div>
         
-        <div className="flex flex-wrap justify-center gap-4 md:gap-6">
+        <div className={`flex flex-wrap gap-4 md:gap-6 ${showHeader ? "justify-center" : "justify-start"}`}>
           {organizers.map((org, i) => (
             <OrganizerCard key={org.name + i} organizer={org} />
           ))}
@@ -55,7 +57,7 @@ function OrganizerCard({ organizer }: { organizer: Organizer }) {
       href={organizer.profileUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="group flex flex-col items-center text-center p-6 rounded-[2rem] bg-foreground/5 border border-foreground/10 hover:border-primary/50 hover:bg-foreground/[0.08] transition-all duration-500 hover-lift shadow-xl shadow-black/20 w-[calc(50%-1rem)] sm:w-[calc(33.333%-1.5rem)] lg:w-[calc(20%-1.5rem)] min-w-[160px]"
+      className="group flex flex-col items-center text-center p-6 rounded-3xl bg-card/60 border border-foreground/10 hover:border-primary/50 transition-all duration-500 hover:-translate-y-0.5 w-[calc(50%-1rem)] sm:w-[calc(33.333%-1.5rem)] lg:w-[calc(20%-1.5rem)] min-w-[160px]"
     >
       <div className="relative w-20 h-20 md:w-28 md:h-28 rounded-[1.5rem] md:rounded-[2rem] overflow-hidden mb-6 border-2 border-foreground/10 group-hover:border-primary/50 transition-all duration-500 rotate-3 group-hover:rotate-0 bg-muted">
         <Image

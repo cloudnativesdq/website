@@ -3,6 +3,7 @@
 
 import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
+import PageHeader from "@/components/PageHeader";
 import Footer from "@/components/Footer";
 import { useLanguage } from "@/hooks/use-language";
 import { Mail, Send, CheckCircle2, AlertCircle, Github, Instagram, Linkedin, Youtube } from "lucide-react";
@@ -36,24 +37,14 @@ export default function ContactView() {
     <main className="min-h-screen bg-background">
       <Navbar />
       
-      <section className="relative pt-32 pb-24 overflow-hidden">
-        <div className="absolute top-1/4 -left-12 w-64 h-64 bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-1/4 -right-12 w-64 h-64 bg-blue-500/10 rounded-full blur-[120px] pointer-events-none" />
-
-        <div className="container px-6 relative z-10">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-16">
-              <h1 className="text-4xl md:text-6xl font-heading font-extrabold mb-6 animate-fade-up">
-                <span className="text-gradient">{t.contactTitle}</span>
-              </h1>
-              <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto animate-fade-up animate-delay-100">
-                {t.contactSubtitle}
-              </p>
-            </div>
+      <section className="pt-28 md:pt-32 pb-16">
+        <div className="container px-4 sm:px-6">
+          <div className="max-w-4xl">
+            <PageHeader title={t.contactTitle} subtitle={t.contactSubtitle} />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
               <div className="space-y-8 animate-fade-up animate-delay-200">
-                <div className="p-8 rounded-[2rem] bg-foreground/5 border border-foreground/10 glass shadow-2xl">
+                <div className="p-8 rounded-3xl bg-card/60 border border-foreground/10">
                   <h2 className="text-2xl font-heading font-bold mb-6 flex items-center gap-3">
                     <Mail className="w-6 h-6 text-primary" />
                     Email
@@ -69,8 +60,8 @@ export default function ContactView() {
                   </p>
                 </div>
 
-                <div className="p-8 rounded-[2rem] bg-foreground/5 border border-foreground/10 glass shadow-2xl">
-                  <h2 className="text-2xl font-heading font-bold mb-6">Social Media</h2>
+                <div className="p-8 rounded-3xl bg-card/60 border border-foreground/10">
+                  <h2 className="text-2xl font-heading font-bold mb-6">{t.contactSocial}</h2>
                   <div className="flex flex-wrap gap-4">
                     {[
                       { icon: Instagram, href: links.instagram, label: "Instagram" },
@@ -109,7 +100,7 @@ export default function ContactView() {
                     </button>
                   </div>
                 ) : (
-                  <form onSubmit={handleSubmit} className="p-8 md:p-10 rounded-[2rem] bg-foreground/5 border border-foreground/10 glass shadow-2xl space-y-6">
+                  <form onSubmit={handleSubmit} className="p-8 md:p-10 rounded-3xl bg-card/60 border border-foreground/10 space-y-6">
                     <div className="space-y-2">
                       <label className="text-sm font-bold uppercase tracking-wider text-muted-foreground ml-1">
                         {t.nameLabel}
@@ -119,7 +110,7 @@ export default function ContactView() {
                         name="name"
                         type="text" 
                         className="w-full bg-foreground/5 border border-foreground/10 rounded-2xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
-                        placeholder="John Doe"
+                        placeholder={t.contactNamePlaceholder}
                       />
                     </div>
                     
@@ -132,7 +123,7 @@ export default function ContactView() {
                         name="email"
                         type="email" 
                         className="w-full bg-foreground/5 border border-foreground/10 rounded-2xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
-                        placeholder="john@example.com"
+                        placeholder={t.contactEmailPlaceholder}
                       />
                     </div>
 
@@ -175,13 +166,6 @@ export default function ContactView() {
         </div>
       </section>
 
-      <footer className="py-12 border-t border-foreground/5 text-center">
-        <div className="container px-6">
-          <p className="text-muted-foreground text-xs md:text-sm font-medium">
-            {t.footerText}
-          </p>
-        </div>
-      </footer>
       <Footer />
     </main>
   );

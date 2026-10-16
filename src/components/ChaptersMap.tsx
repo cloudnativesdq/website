@@ -1,7 +1,7 @@
 "use client";
 
 import "leaflet/dist/leaflet.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, CircleMarker, Popup, useMap } from "react-leaflet";
 import { latLngBounds } from "leaflet";
 import { useTheme } from "next-themes";
@@ -17,6 +17,8 @@ export interface MapLabels {
   ourPeople: string;
   kubecon: string;
   aaif: string;
+  loading: string;
+  soldOut: string;
 }
 
 export interface Conference {
@@ -40,11 +42,56 @@ interface ChaptersMapProps {
 }
 
 // Fits the map to the selected country's chapters.
+type LiveEvent = { title: string; url: string; date: string; location?: string; soldOut?: boolean };
+
+// Loads the chapter's upcoming events from its ocgroups.dev page when the popup opens;
+// shows the events from the map feed until then (or if that request fails).
+function ChapterEvents({ chapter, labels, formatDate }: { chapter: Chapter; labels: MapLabels; formatDate: (iso: string) => string }) {
+  const [live, setLive] = useState<LiveEvent[] | null>(null);
+  const [loading, setLoading] = useState(true);
+  const slug = chapter.url.split("/").pop() ?? "";
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch(`/api/chapters/${slug}/events`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => !cancelled && d && setLive(d.events))
+      .catch(() => {})
+      .finally(() => !cancelled && setLoading(false));
+    return () => {
+      cancelled = true;
+    };
+  }, [slug]);
+
+  const events: LiveEvent[] =
+    live ?? chapter.events.map((e) => ({ title: e.name, url: e.url, date: formatDate(e.start) }));
+
+  if (!events.length) return <p className="text-xs opacity-70">{loading ? labels.loading : labels.noEvents}</p>;
+  return (
+    <ul className="mt-1 space-y-1.5 max-h-48 overflow-y-auto">
+      {events.slice(0, 5).map((e) => (
+        <li key={e.url}>
+          <a href={e.url} target="_blank" rel="noopener noreferrer" className="block">
+            <span className="font-medium">{e.title}</span>
+            <span className="block text-xs opacity-70">
+              {e.date}
+              {e.location ? ` · ${e.location}` : ""}
+              {e.soldOut ? ` · ${labels.soldOut}` : ""}
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 // null means the whole world.
 function FocusBounds({ points }: { points: [number, number][] | null }) {
   const map = useMap();
   useEffect(() => {
-    if (points?.length) map.flyToBounds(latLngBounds(points).pad(0.4), { maxZoom: 7, duration: 0.8 });
+    // On wide screens the countries panel covers the right 340px of the map; keep the focus clear of it.
+    const panel: [number, number] = window.innerWidth >= 1024 ? [360, 0] : [0, 0];
+    if (points?.length) map.flyToBounds(latLngBounds(points).pad(0.4), { maxZoom: 7, duration: 0.8, paddingBottomRight: panel });
     else map.flyTo([20, 0], 2, { duration: 0.8 });
   }, [map, points]);
   return null;
@@ -94,19 +141,7 @@ export default function ChaptersMap({ chapters, kcds, conferences, countries, fo
                   </p>
                 )}
                 <p className="mt-2 text-xs font-semibold uppercase tracking-wide opacity-70">{labels.upcoming}</p>
-                {c.events.length ? (
-                  <ul className="mt-1 space-y-1">
-                    {c.events.slice(0, 3).map((e) => (
-                      <li key={e.url}>
-                        <a href={e.url} target="_blank" rel="noopener noreferrer">
-                          {formatDate(e.start)} · {e.name}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="text-xs opacity-70">{labels.noEvents}</p>
-                )}
+                <ChapterEvents chapter={c} labels={labels} formatDate={formatDate} />
                 <a href={c.url} target="_blank" rel="noopener noreferrer" className="inline-block mt-2 font-medium">
                   {labels.viewChapter} →
                 </a>
