@@ -8,13 +8,11 @@ import { ArrowRight } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 import { links, latamCommunities } from "@/lib/links";
 
-// From the CNCF Kubestronaut directory (country filter "do"), checked 2026-10-16. Update by hand.
-const KUBESTRONAUTS_DR = 7;
-
 interface HeroSectionProps {
   membersCount: number;
   pastCount: number;
   upcomingCount: number;
+  kubestronautsCount: number;
 }
 
 const CountUp = ({ end, duration = 2000, prefix = "" }: { end: number; duration?: number; prefix?: string }) => {
@@ -53,7 +51,7 @@ const CountUp = ({ end, duration = 2000, prefix = "" }: { end: number; duration?
   return <span className="tabular-nums font-bold">{prefix}{count}</span>;
 };
 
-const HeroSection = ({ membersCount, pastCount, upcomingCount }: HeroSectionProps) => {
+const HeroSection = ({ membersCount, pastCount, upcomingCount, kubestronautsCount }: HeroSectionProps) => {
   const { t, mounted } = useLanguage();
 
   return (
@@ -110,11 +108,13 @@ const HeroSection = ({ membersCount, pastCount, upcomingCount }: HeroSectionProp
         </div>
 
         {/* Metrics */}
-        <dl className="grid grid-cols-3 w-full max-w-2xl divide-x divide-foreground/10 animate-fade-up animate-delay-400">
+        <dl className={`grid ${kubestronautsCount ? "grid-cols-3" : "grid-cols-2"} w-full max-w-2xl divide-x divide-foreground/10 animate-fade-up animate-delay-400`}>
           {[
             { value: membersCount, label: t.members },
             { value: pastCount, label: t.eventsLabel },
-            { value: KUBESTRONAUTS_DR, label: t.kubestronautsLabel, href: links.kubestronautsDR },
+            ...(kubestronautsCount
+              ? [{ value: kubestronautsCount, label: t.kubestronautsLabel, href: "/team#kubestronauts" }]
+              : []),
           ].map((stat) => {
             const body = (
               <>
@@ -127,7 +127,7 @@ const HeroSection = ({ membersCount, pastCount, upcomingCount }: HeroSectionProp
             return (
               <div key={stat.label} className="flex flex-col-reverse items-center px-2">
                 {stat.href ? (
-                  <a href={stat.href} target="_blank" rel="noopener noreferrer" className="flex flex-col-reverse items-center hover:text-primary [&_dt]:hover:text-primary transition-colors">
+                  <a href={stat.href} className="flex flex-col-reverse items-center hover:text-primary [&_dt]:hover:text-primary transition-colors">
                     {body}
                   </a>
                 ) : body}

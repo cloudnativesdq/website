@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { getCncfData } from "@/lib/cncf";
+import { getDominicanCncfPeople } from "@/lib/cncf-people";
 import TeamPage from "@/components/TeamPage";
 
 export const metadata: Metadata = {
@@ -19,6 +20,6 @@ export const metadata: Metadata = {
 };
 
 export default async function Team() {
-  const data = await getCncfData();
-  return <TeamPage data={data} />;
+  const [data, people] = await Promise.all([getCncfData(), getDominicanCncfPeople()]);
+  return <TeamPage data={data} people={people} />;
 }

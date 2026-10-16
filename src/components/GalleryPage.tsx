@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { useLanguage } from "@/hooks/use-language";
 import Image from "next/image";
 import { X, ZoomIn } from "lucide-react";
@@ -108,6 +109,7 @@ export default function GalleryPage() {
           </div>
         </div>
       )}
+      <Footer />
     </main>
   );
 }

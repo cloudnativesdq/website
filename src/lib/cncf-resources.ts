@@ -17,6 +17,7 @@ export interface CncfEvent {
   end: string;
   city: string;
   url: string;
+  image?: string | null;
 }
 
 export interface CncfCourse {
@@ -45,40 +46,6 @@ export async function getCoupon(): Promise<Coupon | null> {
     return { title: title.replace(/\[|\]/g, "").trim(), code: coupon[1], url: coupon[2] };
   } catch {
     return null;
-  }
-}
-
-type WpEvent = {
-  title: { rendered: string };
-  link: string;
-  meta: { lf_event_date_start: string; lf_event_date_end: string; lf_event_city: string; lf_event_external_url: string };
-};
-
-export async function getUpcomingEvents(limit = 8): Promise<CncfEvent[]> {
-  try {
-    const raw = await getJson<WpEvent[]>(`${CNCF_API}/lf_event?per_page=100&_fields=title,link,meta`);
-    const today = new Date().toISOString().slice(0, 10);
-    const events = raw
-      .map((e) => ({
-        title: decode(e.title.rendered),
-        start: e.meta.lf_event_date_start.replace(/\//g, "-"),
-        end: (e.meta.lf_event_date_end || e.meta.lf_event_date_start).replace(/\//g, "-"),
-        city: e.meta.lf_event_city,
-        url: e.meta.lf_event_external_url || e.link,
-      }))
-      .filter((e) => e.end >= today)
-      .sort((a, b) => a.start.localeCompare(b.start));
-
-    // KubeCon co-located events share a date and city; keep only the KubeCon entry.
-    const byVenue = new Map<string, CncfEvent>();
-    for (const e of events) {
-      const key = `${e.start}|${e.city}`;
-      const kept = byVenue.get(key);
-      if (!kept || (/kubecon/i.test(e.title) && !/kubecon/i.test(kept.title))) byVenue.set(key, e);
-    }
-    return Array.from(byVenue.values()).slice(0, limit);
-  } catch {
-    return [];
   }
 }
 
@@ -118,12 +85,45 @@ const latest = (items: Article[], limit: number) =>
     .sort((a, b) => b.date.localeCompare(a.date))
     .slice(0, limit);
 
-// Latest freeCodeCamp articles tagged kubernetes or cloud-native.
-export async function getFreeCodeCampArticles(limit = 8): Promise<Article[]> {
-  const feeds = await Promise.all(
-    ["kubernetes", "cloud-native"].map((tag) => getRss(`https://www.freecodecamp.org/news/tag/${tag}/rss/`))
-  );
-  return latest(feeds.flat(), limit);
+export interface Video {
+  id: string;
+  title: string;
+  url: string;
+  thumbnail: string;
+  date: string;
+}
+
+const FCC_CHANNEL = "UC8butISFwT-Wl7EV0hUK0BQ";
+const FCC_DEVOPS_PLAYLIST = "PLWKjhJtqVAbkzvvpY12KkfiIGso9A_Ixs";
+const CLOUD_NATIVE_TOPICS = /kubernetes|k8s|docker|container|devops|cloud|aws|azure|gcp|terraform|helm|linux|platform engineering|observability|microservices/i;
+
+async function getYouTubeFeed(query: string): Promise<Video[]> {
+  const xml = await fetch(`https://www.youtube.com/feeds/videos.xml?${query}`, { next: { revalidate: REVALIDATE } })
+    .then((r) => (r.ok ? r.text() : ""))
+    .catch(() => "");
+  return xml
+    .split("<entry>")
+    .slice(1)
+    .flatMap((entry) => {
+      const id = entry.match(/<yt:videoId>([\w-]{11})<\/yt:videoId>/)?.[1];
+      const title = entry.match(/<title>([^<]+)<\/title>/)?.[1];
+      const date = entry.match(/<published>([^<]+)<\/published>/)?.[1];
+      if (!id || !title || !date) return [];
+      return [{ id, title: decode(title), url: `https://www.youtube.com/watch?v=${id}`, thumbnail: `https://i.ytimg.com/vi/${id}/hqdefault.jpg`, date }];
+    });
+}
+
+// freeCodeCamp videos on cloud native topics: its DevOps playlist plus recent channel uploads
+// that match CLOUD_NATIVE_TOPICS, newest first. YouTube's feeds return the latest 15 items each.
+export async function getFreeCodeCampVideos(limit = 6): Promise<Video[]> {
+  const [playlist, channel] = await Promise.all([
+    getYouTubeFeed(`playlist_id=${FCC_DEVOPS_PLAYLIST}`),
+    getYouTubeFeed(`channel_id=${FCC_CHANNEL}`),
+  ]);
+  const videos = [...playlist, ...channel.filter((v) => CLOUD_NATIVE_TOPICS.test(v.title))];
+  return Array.from(new Map(videos.map((v) => [v.id, v])).values())
+    .sort((a, b) => b.date.localeCompare(a.date))
+    .slice(0, limit);
 }
 
 // kubernetes.io (user blog) and kubernetes.dev (contributor blog).
@@ -167,4 +167,59 @@ export async function getNewContributorOrientations(limit = 4): Promise<Orientat
   } catch {
     return [];
   }
+}
+
+type LfPage = {
+  title: { rendered: string };
+  link: string;
+  featured_media: number;
+  meta: { lfes_date_start: string; lfes_date_end: string; lfes_city: string; lfes_external_url: string };
+};
+
+export interface LfEvents {
+  kubecons: CncfEvent[];
+  aaif: CncfEvent[];
+}
+
+// Upcoming KubeCon + CloudNativeCon and Agentic AI Foundation (AGNTCon + MCPCon, MCP Dev Summit,
+// Agentics Day) events from the Linux Foundation events site. Top-level pages are the events.
+export async function getLfEvents(): Promise<LfEvents> {
+  const fields = "title,link,featured_media,meta.lfes_date_start,meta.lfes_date_end,meta.lfes_city,meta.lfes_external_url";
+  const pages = await Promise.all(
+    [1, 2, 3, 4].map((page) =>
+      getJson<LfPage[]>(`https://events.linuxfoundation.org/wp-json/wp/v2/pages?parent=0&per_page=100&page=${page}&_fields=${fields}`).catch(
+        () => [] as LfPage[]
+      )
+    )
+  );
+  const today = new Date().toISOString().slice(0, 10);
+  const events = pages
+    .flat()
+    .filter((p) => p.meta?.lfes_date_start)
+    .map((p) => ({
+      title: decode(p.title.rendered),
+      start: p.meta.lfes_date_start.replace(/\//g, "-"),
+      end: (p.meta.lfes_date_end || p.meta.lfes_date_start).replace(/\//g, "-"),
+      city: p.meta.lfes_city,
+      url: p.meta.lfes_external_url || p.link,
+      media: p.featured_media,
+    }))
+    .filter((e) => e.end >= today)
+    .sort((a, b) => a.start.localeCompare(b.start))
+    .filter((e) => /KubeCon|AGNTCon|MCPCon|MCP Dev Summit|Agentics Day/i.test(e.title));
+
+  // One request for every featured image.
+  const ids = Array.from(new Set(events.map((e) => e.media).filter(Boolean)));
+  const media = ids.length
+    ? await getJson<{ id: number; source_url: string; media_details?: { sizes?: Record<string, { source_url: string }> } }[]>(
+        `https://events.linuxfoundation.org/wp-json/wp/v2/media?include=${ids.join(",")}&per_page=100&_fields=id,source_url,media_details.sizes`
+      ).catch(() => [])
+    : [];
+  const imageById = new Map(media.map((m) => [m.id, m.media_details?.sizes?.medium_large?.source_url ?? m.source_url]));
+  const withImages = events.map(({ media: id, ...e }) => ({ ...e, image: imageById.get(id) ?? null }));
+
+  return {
+    kubecons: withImages.filter((e) => /KubeCon/i.test(e.title)),
+    aaif: withImages.filter((e) => /AGNTCon|MCPCon|MCP Dev Summit|Agentics Day/i.test(e.title)),
+  };
 }

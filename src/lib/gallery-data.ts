@@ -12,7 +12,6 @@ export const galleryImages: GalleryImage[] = [
   { url: "https://lh3.googleusercontent.com/pw/AP1GczO5TPqxuEN35yuNjsLLycKHubTXlEc4wPaYhLTSaVlydArOB8ZOJe-9U-c66W8cu0q4URGnrY0Q46ZRYoq6PWllNE-NH3IdzR-MNfQz3O_e4bFxmOI=w1200" },
   { url: "https://lh3.googleusercontent.com/pw/AP1GczMsOKUxkbbLY24lvm6hhNb7gY1goDeWu1sz3FwNQNO69XtDS--l9k7ET_W6-y5J1vPlxsOXJayK-tWKZjs7FNHgWBu-bSwuR7IkKOwFnrXsZsGtIUI=w1200" },
   { url: "https://lh3.googleusercontent.com/pw/AP1GczMUdC76Mzeg5m5595ReWkPKanCrX_leTJH__TiWsBi2zK9AwAcXiKaezdWXFazCmwq7fPjDuxUC_Y4WetaL5-23AC4i9WgxaMBQOa1_NvNM3HFekE4=w1200" },
-  { url: "https://lh3.googleusercontent.com/pw/AP1GczMVjZegrvXGA5wAS7wcTCR3z9xI99T3I7fwcT3z-QCI6qXwtERwP7rW623jQnNq1EeCLuhxzCD1Voragj1_-ybujRmHMQzDf9HHzh159-Imn7LoHjE=w1200" },
   { url: "https://lh3.googleusercontent.com/d/1R0lpW1Y_4xOyVRuGe0UQ_uLwSAwW2Z3g=w1200" },
   { url: "https://lh3.googleusercontent.com/d/1ok4_aMmu01zuH0utAURbtDcLkwfw5HfQ=w1200" },
   { url: "https://lh3.googleusercontent.com/d/15ToewxUrZwoqWm7q4gYMOaELfagxXfPH=w1200" },

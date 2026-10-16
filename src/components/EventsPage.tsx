@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import EventCalendar from "@/components/EventCalendar";
 import EventsSection from "@/components/EventsSection";
 import { useLanguage } from "@/hooks/use-language";
@@ -92,6 +93,7 @@ export default function EventsPage({ data }: EventsPageProps) {
           />
         </div>
       </section>
+      <Footer />
     </main>
   );
 }

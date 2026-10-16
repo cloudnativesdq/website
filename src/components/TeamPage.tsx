@@ -2,18 +2,23 @@
 
 import React from "react";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import OrganizersSection from "@/components/OrganizersSection";
+import CncfPeopleSection from "@/components/CncfPeopleSection";
+import type { DominicanCncfPeople } from "@/lib/cncf-people";
 import { useLanguage } from "@/hooks/use-language";
 import type { CommunityData } from "@/lib/types";
 import { links } from "@/lib/links";
-import { Linkedin, Mail, Github } from "lucide-react";
+import { Linkedin, Mail, Github, Users, CalendarCheck } from "lucide-react";
+import BrandLogo from "@/components/BrandLogo";
 import Link from "next/link";
 
 interface TeamPageProps {
   data: CommunityData;
+  people: DominicanCncfPeople;
 }
 
-export default function TeamPage({ data }: TeamPageProps) {
+export default function TeamPage({ data, people }: TeamPageProps) {
   const { t, language } = useLanguage();
 
   return (
@@ -29,6 +34,8 @@ export default function TeamPage({ data }: TeamPageProps) {
           <OrganizersSection organizers={data.organizers} />
         </div>
       </section>
+
+      <CncfPeopleSection people={people} />
 
       <section className="py-20 relative">
         <div className="container px-6">
@@ -65,43 +72,31 @@ export default function TeamPage({ data }: TeamPageProps) {
 
       <section className="py-16 pb-24">
         <div className="container px-6">
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center p-8 rounded-[2rem] bg-foreground/5 border border-foreground/10">
-              <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-primary/20 flex items-center justify-center">
-                <span className="text-3xl font-heading font-black text-primary">+{data.membersCount}</span>
-              </div>
-              <h3 className="text-lg font-heading font-bold mb-2">{language === "es" ? "Miembros" : "Members"}</h3>
-              <p className="text-muted-foreground text-sm">
-                {language === "es" 
-                  ? "En nuestra comunidad de Meetup" 
-                  : "In our Meetup community"}
-              </p>
-            </div>
-            <div className="text-center p-8 rounded-[2rem] bg-foreground/5 border border-foreground/10">
-              <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-blue-500/20 flex items-center justify-center">
-                <span className="text-3xl font-heading font-black text-blue-400">+{data.pastCount}</span>
-              </div>
-              <h3 className="text-lg font-heading font-bold mb-2">{language === "es" ? "Eventos Realizados" : "Events Held"}</h3>
-              <p className="text-muted-foreground text-sm">
-                {language === "es" 
-                  ? "Meetups, talleres y más" 
-                  : "Meetups, workshops and more"}
-              </p>
-            </div>
-            <div className="text-center p-8 rounded-[2rem] bg-foreground/5 border border-foreground/10">
-              <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-cyan-500/20 flex items-center justify-center">
-                <span className="text-3xl font-heading font-black text-cyan-400">CNCF</span>
-              </div>
-              <h3 className="text-lg font-heading font-bold mb-2">{language === "es" ? "Comunidad Oficial" : "Official Community"}</h3>
-              <p className="text-muted-foreground text-sm">
-                {language === "es" 
-                  ? "Grupo comunitario oficial de CNCF" 
-                  : "Official CNCF Community Group"}
-              </p>
-            </div>
+          <div className="max-w-4xl mx-auto rounded-[2rem] bg-card/60 border border-foreground/10 p-6 md:p-10">
+            <dl className="grid grid-cols-2 md:grid-cols-4 gap-y-8 md:divide-x divide-foreground/10">
+              {[
+                { icon: <Users className="w-5 h-5 text-primary" />, value: data.membersCount, label: language === "es" ? "Miembros" : "Members" },
+                { icon: <CalendarCheck className="w-5 h-5 text-primary" />, value: data.pastCount, label: language === "es" ? "Eventos realizados" : "Events held" },
+                { icon: <BrandLogo src="kubestronaut.svg" size={20} className="w-5 h-5" />, value: people.kubestronauts.length, label: t.mapKubestronauts },
+                { icon: <BrandLogo src="cncf.svg" size={20} className="w-5 h-5" />, value: people.ambassadors.length, label: t.mapAmbassadors },
+              ].map((stat) => (
+                <div key={stat.label} className="flex flex-col items-center text-center px-2">
+                  <dt className="order-2 mt-1 text-xs font-medium uppercase tracking-wider text-muted-foreground">{stat.label}</dt>
+                  <dd className="order-1 flex items-center gap-2 text-3xl md:text-4xl font-heading font-bold tabular-nums">
+                    {stat.icon}
+                    {stat.value}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+            <p className="flex items-center justify-center gap-2 mt-8 pt-6 border-t border-foreground/10 text-sm text-muted-foreground text-center">
+              <BrandLogo src="cncg.svg" size={20} />
+              {language === "es" ? "Grupo comunitario oficial de la CNCF" : "Official CNCF Community Group"}
+            </p>
           </div>
         </div>
       </section>
+      <Footer />
     </main>
   );
 }

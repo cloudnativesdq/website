@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { getMapData } from "@/lib/chapters";
+import { getLfEvents } from "@/lib/cncf-resources";
 import MapView from "@/components/MapView";
+import { getDominicanCncfPeople } from "@/lib/cncf-people";
 
 export const revalidate = 21600;
 
@@ -13,6 +15,6 @@ export const metadata: Metadata = {
 };
 
 export default async function CommunityMap() {
-  const data = await getMapData();
-  return <MapView data={data} />;
+  const [data, people, lfEvents] = await Promise.all([getMapData(), getDominicanCncfPeople(), getLfEvents()]);
+  return <MapView data={data} people={people} lfEvents={lfEvents} />;
 }

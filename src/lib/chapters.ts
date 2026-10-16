@@ -13,6 +13,7 @@ export interface MapEvent {
   name: string;
   start: string; // ISO date
   url: string;
+  image?: string | null;
 }
 
 export interface Chapter {
@@ -128,9 +129,11 @@ type OcgMapEvent = { group_slug: string; name: string; slug: string; starts_at: 
 
 // OCG's explore page renders full group cards (with location); its JSON endpoint only has coordinates.
 async function getChapters(countryByName: Map<string, string>): Promise<Chapter[]> {
-  const [coordsRes, eventsRes, ...pages] = await Promise.all([
+  const [coordsRes, eventsRes, eventCardsHtml, ...pages] = await Promise.all([
     get(`${OCG}/explore/groups/search?community%5B0%5D=cncf&view_mode=map`),
     get(`${OCG}/explore/events/search?community%5B0%5D=cncf&view_mode=map`),
+    // The events JSON has no images; the explore page's event cards do.
+    get(`${OCG}/explore?entity=events&community%5B0%5D=cncf&limit=100`).then((r) => r.text()).catch(() => ""),
     ...[0, 100, 200, 300].map((offset) =>
       get(`${OCG}/explore?entity=groups&community%5B0%5D=cncf&limit=100&offset=${offset}`).then((r) => r.text())
     ),
@@ -140,6 +143,14 @@ async function getChapters(countryByName: Map<string, string>): Promise<Chapter[
     coords.set(g.slug, g);
     if (g.slug_pretty) coords.set(g.slug_pretty, g);
   }
+  const eventImages = new Map<string, string>();
+  for (const card of eventCardsHtml.split('<a href="/cncf/group/').slice(1)) {
+    const eventSlug = card.match(/^[^"]*\/event\/([^"/]+)"/)?.[1];
+    const img = card.match(/<img src="([^"]+)"/)?.[1];
+    // ocgroups.dev blocks hotlinked images; serve them through our /api/ocg-image proxy.
+    if (eventSlug && img?.startsWith("/images/")) eventImages.set(eventSlug, `/api/ocg-image?path=${encodeURIComponent(img)}`);
+  }
+
   const eventsBySlug = new Map<string, MapEvent[]>();
   for (const e of ((await eventsRes.json()) as { events: OcgMapEvent[] }).events) {
     const list = eventsBySlug.get(e.group_slug) ?? [];
@@ -147,6 +158,7 @@ async function getChapters(countryByName: Map<string, string>): Promise<Chapter[
       name: decode(e.name),
       start: new Date(e.starts_at * 1000).toISOString(),
       url: `${OCG}/cncf/group/${e.group_slug}/event/${e.slug}`,
+      image: eventImages.get(e.slug) ?? null,
     });
     eventsBySlug.set(e.group_slug, list);
   }
@@ -213,16 +225,24 @@ type CndEntry = { type: string; title: string; date: string; externalUrl: string
 async function getCloudNativeDays(countryByName: Map<string, string>): Promise<MapData["cloudNativeDays"]> {
   const entries: CndEntry[] = await (await get("https://cloudnativedays.org/index.json")).json();
   const today = new Date().toISOString().slice(0, 10);
-  return entries
+  const upcoming = entries
     .filter((e) => e.type === "events" && e.permalink !== "/events/")
     .map((e) => ({
       name: `Cloud Native Days ${e.title}`,
       start: new Date(`${e.date} UTC`).toISOString().slice(0, 10),
       url: e.externalUrl || `https://cloudnativedays.org${e.permalink}`,
+      page: `https://cloudnativedays.org${e.permalink}`,
       countryCode: countryByName.get(e.title.toLowerCase()) ?? null,
     }))
     .filter((e) => e.start >= today)
     .sort((a, b) => a.start.localeCompare(b.start));
+  // Each event page on cloudnativedays.org sets og:image to its featured image.
+  return Promise.all(
+    upcoming.map(async ({ page, ...e }) => {
+      const html = await get(page).then((r) => r.text()).catch(() => "");
+      return { ...e, image: html.match(/property="og:image" content="([^"]+)"/)?.[1] ?? html.match(/og:image" content="([^"]+)"/)?.[1] ?? null };
+    })
+  );
 }
 
 export async function getMapData(): Promise<MapData> {

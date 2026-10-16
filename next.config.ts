@@ -23,6 +23,27 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'images.unsplash.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'i.ytimg.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.lumacdn.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'events.linuxfoundation.org',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cloudnativedays.org',
+      },
+      {
+        protocol: 'https',
+        hostname: 'raw.githubusercontent.com',
+        pathname: '/cncf/people/**',
+      },
     ],
     unoptimized: true,
   },

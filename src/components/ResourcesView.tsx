@@ -1,18 +1,20 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import Navbar from "@/components/Navbar";
-import EventTypeHint from "@/components/EventTypeHint";
+import Footer from "@/components/Footer";
+import BrandLogo from "@/components/BrandLogo";
 import { useLanguage } from "@/hooks/use-language";
 import { links, latamCommunities } from "@/lib/links";
-import type { Coupon, CncfEvent, CncfCourse, Article, Orientation } from "@/lib/cncf-resources";
-import { ArrowRight, ArrowUpRight, Award, BookOpen, CalendarDays, GitPullRequest, Newspaper, Tag, Users } from "lucide-react";
+import Image from "next/image";
+import type { Coupon, CncfCourse, Article, Orientation, Video } from "@/lib/cncf-resources";
+import { ArrowRight, ArrowUpRight, Award, BookOpen, Github, GitPullRequest, Newspaper, Play, Tag, Users } from "lucide-react";
 
 interface ResourcesViewProps {
   coupon: Coupon | null;
-  events: CncfEvent[];
   courses: CncfCourse[];
-  articles: Article[];
+  videos: Video[];
   blogs: { io: Article[]; dev: Article[] };
   orientations: Orientation[];
 }
@@ -21,16 +23,19 @@ const card = "p-6 md:p-8 rounded-3xl bg-card/60 border border-foreground/10";
 const linkRow =
   "group flex items-center justify-between gap-4 py-3 border-b border-foreground/5 last:border-0 text-foreground/90 hover:text-primary transition-colors";
 
-const ExternalRow = ({ href, children }: { href: string; children: React.ReactNode }) => (
+const ExternalRow = ({ href, logo, children }: { href: string; logo?: string; children: React.ReactNode }) => (
   <a href={href} target="_blank" rel="noopener noreferrer" className={linkRow}>
-    <span>{children}</span>
+    <span className="flex items-center gap-3 min-w-0 break-words">
+      {logo && <BrandLogo src={logo} />}
+      <span className="min-w-0">{children}</span>
+    </span>
     <ArrowUpRight className="w-4 h-4 shrink-0 opacity-50 group-hover:opacity-100" />
   </a>
 );
 
-const SectionTitle = ({ icon: Icon, children }: { icon: React.ElementType; children: React.ReactNode }) => (
+const SectionTitle = ({ icon: Icon, logo, children }: { icon: React.ElementType; logo?: string; children: React.ReactNode }) => (
   <h2 className="flex items-center gap-2 text-xl md:text-2xl font-heading font-bold mb-4">
-    <Icon className="w-5 h-5 text-primary" />
+    {logo ? <BrandLogo src={logo} size={24} /> : <Icon className="w-5 h-5 shrink-0 text-primary" />}
     {children}
   </h2>
 );
@@ -42,14 +47,9 @@ const MoreLink = ({ href, children }: { href: string; children: React.ReactNode 
   </a>
 );
 
-export default function ResourcesView({ coupon, events, courses, articles, blogs, orientations }: ResourcesViewProps) {
+export default function ResourcesView({ coupon, courses, videos, blogs, orientations }: ResourcesViewProps) {
   const { t, language } = useLanguage();
-  const fmt = new Intl.DateTimeFormat(language === "es" ? "es-DO" : "en-US", { month: "short", day: "numeric", timeZone: "UTC" });
   const fmtTime = new Intl.DateTimeFormat(language === "es" ? "es-DO" : "en-US", { dateStyle: "medium", timeStyle: "short" });
-  const formatRange = (e: CncfEvent) => {
-    const start = fmt.format(new Date(e.start));
-    return e.end && e.end !== e.start ? `${start} – ${fmt.format(new Date(e.end))}` : start;
-  };
 
   return (
     <main className="min-h-screen">
@@ -71,7 +71,7 @@ export default function ResourcesView({ coupon, events, courses, articles, blogs
                   <p className="font-medium mb-2">{coupon.title}</p>
                   <p className="text-sm text-muted-foreground">
                     {t.couponCode}:{" "}
-                    <code className="px-2 py-1 rounded-md bg-primary/10 text-primary font-mono font-semibold select-all">{coupon.code}</code>
+                    <code className="px-2 py-1 rounded-md bg-primary/10 text-primary font-mono font-semibold select-all break-all">{coupon.code}</code>
                   </p>
                 </div>
                 <a
@@ -87,7 +87,8 @@ export default function ResourcesView({ coupon, events, courses, articles, blogs
             ) : (
               <p className="text-muted-foreground">{t.couponFallback}</p>
             )}
-            <a href={links.lfCoupons} target="_blank" rel="noopener noreferrer" className="block mt-4 text-xs text-muted-foreground hover:text-primary">
+            <a href={links.lfCoupons} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 mt-4 text-xs text-muted-foreground hover:text-primary">
+              <Github className="w-3.5 h-3.5" />
               {t.couponSource}
             </a>
           </div>
@@ -96,21 +97,21 @@ export default function ResourcesView({ coupon, events, courses, articles, blogs
             {/* Certifications */}
             <div className={card}>
               <SectionTitle icon={Award}>{t.certsTitle}</SectionTitle>
-              <ExternalRow href={links.cncfCertifications}>{t.certsAll}</ExternalRow>
-              <ExternalRow href={links.kubestronautProgram}>{t.kubestronautProgram}</ExternalRow>
+              <ExternalRow href={links.cncfCertifications} logo="cncf.svg">{t.certsAll}</ExternalRow>
+              <ExternalRow href={links.kubestronautProgram} logo="kubestronaut.svg">{t.kubestronautProgram}</ExternalRow>
             </div>
 
             {/* Where to learn */}
             <div className={card}>
               <SectionTitle icon={BookOpen}>{t.learnTitle}</SectionTitle>
-              <ExternalRow href={links.kodekloud}>KodeKloud</ExternalRow>
-              <ExternalRow href={links.lfTraining}>Linux Foundation Training</ExternalRow>
-              <ExternalRow href={links.killercoda}>Killercoda</ExternalRow>
+              <ExternalRow href={links.kodekloud} logo="kodekloud.png">KodeKloud</ExternalRow>
+              <ExternalRow href={links.lfTraining} logo="linuxfoundation.png">Linux Foundation Training</ExternalRow>
+              <ExternalRow href={links.killercoda} logo="killercoda.png">Killercoda</ExternalRow>
             </div>
 
             {/* Free courses (live) */}
             <div className={`${card} flex flex-col`}>
-              <SectionTitle icon={BookOpen}>{t.freeCoursesTitle}</SectionTitle>
+              <SectionTitle icon={BookOpen} logo="cncf.svg">{t.freeCoursesTitle}</SectionTitle>
               {courses.length ? (
                 // Fills the card down to the height of the events card next to it; scrolls past that.
                 <div className="relative flex-1 min-h-80">
@@ -126,37 +127,14 @@ export default function ResourcesView({ coupon, events, courses, articles, blogs
               <MoreLink href={links.cncfCourses}>{t.allCourses}</MoreLink>
             </div>
 
-            {/* Global events (live) */}
-            <div className={card}>
-              <SectionTitle icon={CalendarDays}>{t.globalEventsTitle}</SectionTitle>
-              <EventTypeHint type="kcd" />
-              <EventTypeHint type="cnd" />
-              {events.length ? (
-                events.map((e) => (
-                  <a key={e.url + e.start} href={e.url} target="_blank" rel="noopener noreferrer" className={linkRow}>
-                    <span className="flex flex-col">
-                      <span>{e.title}</span>
-                      <span className="text-xs text-muted-foreground">
-                        {formatRange(e)}{e.city ? ` · ${e.city}` : ""}
-                      </span>
-                    </span>
-                    <ArrowUpRight className="w-4 h-4 shrink-0 opacity-50 group-hover:opacity-100" />
-                  </a>
-                ))
-              ) : (
-                <p className="text-muted-foreground">{t.unavailable}</p>
-              )}
-              <MoreLink href={links.cncfEvents}>{t.allEvents}</MoreLink>
-            </div>
-
             {/* Contribute to Kubernetes */}
             <div className={card}>
-              <SectionTitle icon={GitPullRequest}>{t.k8sContributeTitle}</SectionTitle>
+              <SectionTitle icon={GitPullRequest} logo="kubernetes.png">{t.k8sContributeTitle}</SectionTitle>
               <p className="text-sm font-semibold uppercase tracking-wide text-muted-foreground mt-2 mb-1">{t.ncoTitle}</p>
               {orientations.length ? (
                 orientations.map((o) => (
                   <a key={o.url + o.start} href={o.url} target="_blank" rel="noopener noreferrer" className={linkRow}>
-                    <span className="flex flex-col">
+                    <span className="flex flex-col min-w-0 break-words">
                       <span>{o.title}</span>
                       <span className="text-xs text-muted-foreground">{fmtTime.format(new Date(o.start))}</span>
                     </span>
@@ -171,17 +149,19 @@ export default function ResourcesView({ coupon, events, courses, articles, blogs
               <ExternalRow href={links.k8sMembership}>{t.k8sMaintainer}</ExternalRow>
               <ExternalRow href={links.k8sDevMailingList}>{t.k8sMailingList}</ExternalRow>
               <ExternalRow href={links.k8sCommunityGroups}>{t.k8sSigs}</ExternalRow>
+              <ExternalRow href={links.k8sVolunteer}>{t.k8sVolunteer}</ExternalRow>
             </div>
 
             {/* Kubernetes blogs (live) */}
             <div className={card}>
-              <SectionTitle icon={Newspaper}>{t.k8sBlogsTitle}</SectionTitle>
+              <SectionTitle icon={Newspaper} logo="kubernetes.png">{t.k8sBlogsTitle}</SectionTitle>
               {[
-                { label: "kubernetes.io", items: blogs.io, href: links.k8sBlog },
-                { label: "kubernetes.dev", items: blogs.dev, href: links.k8sDevBlog },
+                { label: "kubernetes.io", items: blogs.io, href: links.k8sBlog, logo: "kubernetes.png" },
+                { label: "kubernetes.dev", items: blogs.dev, href: links.k8sDevBlog, logo: "kubernetes-dev.png" },
               ].map((b) => (
                 <div key={b.label} className="mb-4 last:mb-0">
-                  <a href={b.href} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold uppercase tracking-wide text-muted-foreground hover:text-primary">
+                  <a href={b.href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-muted-foreground hover:text-primary">
+                    <BrandLogo src={b.logo} size={16} />
                     {b.label}
                   </a>
                   {b.items.length ? (
@@ -193,37 +173,54 @@ export default function ResourcesView({ coupon, events, courses, articles, blogs
               ))}
             </div>
 
-            {/* freeCodeCamp (live) */}
+            {/* freeCodeCamp videos (live) */}
             <div className={`${card} md:col-span-2`}>
-              <SectionTitle icon={BookOpen}>{t.freeCodeCampTitle}</SectionTitle>
-              {articles.length ? (
-                <div className="grid sm:grid-cols-2 gap-x-8">
-                  {articles.map((a) => (
-                    <ExternalRow key={a.url} href={a.url}>{a.title}</ExternalRow>
+              <SectionTitle icon={BookOpen} logo="freecodecamp.png">{t.freeCodeCampTitle}</SectionTitle>
+              {videos.length ? (
+                <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {videos.map((v) => (
+                    <li key={v.id}>
+                      <a href={v.url} target="_blank" rel="noopener noreferrer" className="group block">
+                        <span className="relative block aspect-video rounded-2xl overflow-hidden bg-muted">
+                          <Image src={v.thumbnail} alt="" fill sizes="(max-width: 640px) 100vw, 33vw" className="object-cover transition-transform group-hover:scale-105" />
+                          <span className="absolute inset-0 flex items-center justify-center">
+                            <span className="w-12 h-12 rounded-full bg-black/60 flex items-center justify-center">
+                              <Play className="w-5 h-5 text-white fill-white ml-0.5" />
+                            </span>
+                          </span>
+                        </span>
+                        <span className="block mt-2 text-sm font-medium leading-snug line-clamp-2 group-hover:text-primary">{v.title}</span>
+                      </a>
+                    </li>
                   ))}
-                </div>
+                </ul>
               ) : (
                 <p className="text-muted-foreground">{t.unavailable}</p>
               )}
-              <MoreLink href={links.freeCodeCampKubernetes}>{t.freeCodeCampMore}</MoreLink>
+              <MoreLink href={links.freeCodeCampDevOps}>{t.freeCodeCampMore}</MoreLink>
             </div>
 
             {/* Communities */}
             <div className={`${card} md:col-span-2`}>
               <SectionTitle icon={Users}>{t.communitiesTitle}</SectionTitle>
+              <Link href="/start-a-chapter" className="inline-flex items-center gap-1 mb-3 text-sm font-medium text-primary hover:underline">
+                {t.chapterGuide.cta}
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
               <div className="grid sm:grid-cols-2 gap-x-8">
-                <ExternalRow href={links.cncfSlack}>{t.joinSlack}</ExternalRow>
-                <ExternalRow href={links.cncfCommunityGroups}>{t.communityGroups}</ExternalRow>
-                <ExternalRow href={links.kcds}>Kubernetes Community Days (KCDs)</ExternalRow>
-                <ExternalRow href={links.cloudNativeDays}>Cloud Native Days</ExternalRow>
+                <ExternalRow href={links.cncfSlack} logo="slack.png">{t.joinSlack}</ExternalRow>
+                <ExternalRow href={links.cncfCommunityGroups} logo="cncg.svg">{t.communityGroups}</ExternalRow>
+                <ExternalRow href={links.kcds} logo="kubernetes.png">Kubernetes Community Days (KCDs)</ExternalRow>
+                <ExternalRow href={links.cloudNativeDays} logo="cloudnativedays.png">Cloud Native Days</ExternalRow>
                 {latamCommunities.map((c) => (
-                  <ExternalRow key={c.href} href={c.href}>{c.name}</ExternalRow>
+                  <ExternalRow key={c.href} href={c.href} logo="cncg.svg">{c.name}</ExternalRow>
                 ))}
               </div>
             </div>
           </div>
         </div>
       </section>
+      <Footer />
     </main>
   );
 }

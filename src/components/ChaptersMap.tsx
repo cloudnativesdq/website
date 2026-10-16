@@ -14,11 +14,25 @@ export interface MapLabels {
   noEvents: string;
   viewChapter: string;
   kcd: string;
+  ourPeople: string;
+  kubecon: string;
+  aaif: string;
+}
+
+export interface Conference {
+  name: string;
+  start: string;
+  url: string;
+  city: string;
+  kind: "kubecon" | "aaif";
+  lat: number | null;
+  lng: number | null;
 }
 
 interface ChaptersMapProps {
   chapters: Chapter[];
   kcds: Kcd[];
+  conferences: Conference[];
   countries: Map<string, Country>;
   focus: [number, number][] | null;
   labels: MapLabels;
@@ -26,11 +40,12 @@ interface ChaptersMapProps {
 }
 
 // Fits the map to the selected country's chapters.
+// null means the whole world.
 function FocusBounds({ points }: { points: [number, number][] | null }) {
   const map = useMap();
   useEffect(() => {
-    if (!points?.length) return;
-    map.flyToBounds(latLngBounds(points).pad(0.4), { maxZoom: 7, duration: 0.8 });
+    if (points?.length) map.flyToBounds(latLngBounds(points).pad(0.4), { maxZoom: 7, duration: 0.8 });
+    else map.flyTo([20, 0], 2, { duration: 0.8 });
   }, [map, points]);
   return null;
 }
@@ -38,15 +53,16 @@ function FocusBounds({ points }: { points: [number, number][] | null }) {
 const PRIMARY = "hsl(199 89% 45%)";
 const ACTIVE = "hsl(160 84% 39%)";
 const KCD = "hsl(38 92% 50%)";
+const CONFERENCE_COLOR = { kubecon: "hsl(262 83% 58%)", aaif: "hsl(330 81% 60%)" };
 
-export default function ChaptersMap({ chapters, kcds, countries, focus, labels, formatDate }: ChaptersMapProps) {
+export default function ChaptersMap({ chapters, kcds, conferences, countries, focus, labels, formatDate }: ChaptersMapProps) {
   const { resolvedTheme } = useTheme();
 
   return (
     // OSM has no dark tiles; dark mode inverts them in globals.css. The wrapper carries the class
     // because MapContainer only reads className on mount.
     <div className={`h-full w-full ${resolvedTheme === "dark" ? "map-dark" : ""}`}>
-    <MapContainer center={[20, 0]} zoom={2} minZoom={2} worldCopyJump scrollWheelZoom className="h-full w-full z-0">
+    <MapContainer center={[18.7, -70.2]} zoom={7} minZoom={2} worldCopyJump scrollWheelZoom className="h-full w-full z-0">
       <TileLayer
         url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -94,6 +110,11 @@ export default function ChaptersMap({ chapters, kcds, countries, focus, labels, 
                 <a href={c.url} target="_blank" rel="noopener noreferrer" className="inline-block mt-2 font-medium">
                   {labels.viewChapter} →
                 </a>
+                {c.countryCode === "do" && (
+                  <a href="/team#kubestronauts" className="block mt-1 font-medium">
+                    {labels.ourPeople} →
+                  </a>
+                )}
               </div>
             </Popup>
           </CircleMarker>
@@ -118,6 +139,31 @@ export default function ChaptersMap({ chapters, kcds, countries, focus, labels, 
                   {formatDate(k.start)} · {k.city}
                 </p>
                 <a href={k.url} target="_blank" rel="noopener noreferrer" className="inline-block mt-2 font-medium">
+                  {labels.viewChapter} →
+                </a>
+              </div>
+            </Popup>
+          </CircleMarker>
+        )
+      )}
+      {conferences.map((c) =>
+        c.lat === null || c.lng === null ? null : (
+          <CircleMarker
+            key={c.url + c.start}
+            center={[c.lat, c.lng]}
+            radius={13}
+            pathOptions={{ color: CONFERENCE_COLOR[c.kind], weight: 3, fillColor: CONFERENCE_COLOR[c.kind], fillOpacity: 0.2 }}
+          >
+            <Popup>
+              <div className="min-w-[200px] text-sm">
+                <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: CONFERENCE_COLOR[c.kind] }}>
+                  {labels[c.kind]}
+                </p>
+                <p className="font-semibold text-base leading-tight">{c.name}</p>
+                <p className="text-xs opacity-70 mt-0.5">
+                  {formatDate(c.start)} · {c.city}
+                </p>
+                <a href={c.url} target="_blank" rel="noopener noreferrer" className="inline-block mt-2 font-medium">
                   {labels.viewChapter} →
                 </a>
               </div>

@@ -1,6 +1,8 @@
 
 import type { Metadata } from 'next';
 import { getCncfData } from "@/lib/cncf";
+import { getDominicanCncfPeople } from "@/lib/cncf-people";
+import { getWcnfEvents } from "@/lib/wcnf";
 import HomeView from "@/components/HomeView";
 
 export const metadata: Metadata = {
@@ -45,6 +47,6 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const data = await getCncfData();
-  return <HomeView data={data} />;
+  const [data, people, wcnfEvents] = await Promise.all([getCncfData(), getDominicanCncfPeople(), getWcnfEvents()]);
+  return <HomeView data={data} kubestronautsCount={people.kubestronauts.length} wcnfEvents={wcnfEvents} />;
 }

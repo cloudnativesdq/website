@@ -1,9 +1,8 @@
 import type { Metadata } from 'next';
 import {
   getCoupon,
-  getUpcomingEvents,
   getFreeCourses,
-  getFreeCodeCampArticles,
+  getFreeCodeCampVideos,
   getKubernetesBlogs,
   getNewContributorOrientations,
 } from "@/lib/cncf-resources";
@@ -20,20 +19,18 @@ export const metadata: Metadata = {
 };
 
 export default async function Resources() {
-  const [coupon, events, courses, articles, blogs, orientations] = await Promise.all([
+  const [coupon, courses, videos, blogs, orientations] = await Promise.all([
     getCoupon(),
-    getUpcomingEvents(),
     getFreeCourses(),
-    getFreeCodeCampArticles(),
+    getFreeCodeCampVideos(),
     getKubernetesBlogs(),
     getNewContributorOrientations(),
   ]);
   return (
     <ResourcesView
       coupon={coupon}
-      events={events}
       courses={courses}
-      articles={articles}
+      videos={videos}
       blogs={blogs}
       orientations={orientations}
     />

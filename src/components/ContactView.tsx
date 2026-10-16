@@ -3,6 +3,7 @@
 
 import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { useLanguage } from "@/hooks/use-language";
 import { Mail, Send, CheckCircle2, AlertCircle, Github, Instagram, Linkedin, Youtube } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -181,6 +182,7 @@ export default function ContactView() {
           </p>
         </div>
       </footer>
+      <Footer />
     </main>
   );
 }
