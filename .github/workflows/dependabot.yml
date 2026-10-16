@@ -53,14 +53,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Merge or report
+        env:
+          # Optional fine-grained PAT (Contents, Pull requests and Workflows: read and write) so GitHub
+          # Actions updates can be merged too; GITHUB_TOKEN can't change .github/workflows.
+          GH_TOKEN: ${{ secrets.DEPENDABOT_MERGE_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           pr=$(gh pr list --state open --head "${{ github.event.workflow_run.head_branch }}" --json number --jq '.[0].number')
           [ -n "$pr" ] || exit 0
           if [ "${{ github.event.workflow_run.conclusion }}" = "success" ]; then
             if gh pr view "$pr" --json labels --jq '.labels[].name' | grep -qx automerge; then
-              # GITHUB_TOKEN can't merge changes to .github/workflows (GitHub Actions bumps).
+              # Without DEPENDABOT_MERGE_TOKEN, workflow-file changes (GitHub Actions bumps) can't be merged.
               gh pr merge "$pr" --squash --delete-branch || gh pr comment "$pr" --body \
-                "@$MAINTAINER CI passed but this PR could not be merged automatically (updates to workflow files need a maintainer). Merge it manually."
+                "@$MAINTAINER CI passed but this PR could not be merged automatically (updates to workflow files need the DEPENDABOT_MERGE_TOKEN secret). Merge it manually."
             fi
           elif [ "${{ github.event.workflow_run.conclusion }}" = "failure" ]; then
             gh pr comment "$pr" --body "@$MAINTAINER CI failed on this dependency update, so it was not merged: ${{ github.event.workflow_run.html_url }}"
