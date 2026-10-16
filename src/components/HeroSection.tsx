@@ -21,6 +21,11 @@ const CountUp = ({ end, duration = 2000, prefix = "" }: { end: number; duration?
   const [count, setCount] = useState(0);
 
   useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setCount(end);
+      return;
+    }
+
     let startTime: number | null = null;
     let animationFrame: number;
 
@@ -52,7 +57,7 @@ const HeroSection = ({ membersCount, pastCount, upcomingCount }: HeroSectionProp
   const { t, mounted } = useLanguage();
 
   return (
-    <section className="relative h-screen min-h-[660px] flex items-center justify-center overflow-hidden border-b border-foreground/5 bg-background select-none">
+    <section className="relative min-h-[560px] py-20 md:py-0 md:h-screen md:min-h-[660px] flex items-center justify-center overflow-hidden border-b border-foreground/5 bg-background select-none">
       {/* Background Layer */}
       <div className="absolute inset-0 z-0">
         <Image
@@ -65,23 +70,23 @@ const HeroSection = ({ membersCount, pastCount, upcomingCount }: HeroSectionProp
         <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/60 to-background" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,hsla(199,89%,48%,0.15),transparent_50%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,hsla(222,47%,10%,0.4),transparent_50%)]" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,hsla(199,89%,48%,0.05)_0%,transparent_70%)] animate-pulse" />
+        <div className="hidden md:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,hsla(199,89%,48%,0.05)_0%,transparent_70%)] animate-pulse" />
       </div>
 
       <div className="relative z-10 container px-6 flex flex-col items-center text-center">
         {/* Main Heading */}
-        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-bold mb-5 md:mb-6 animate-fade-up leading-[1.05] tracking-tight" style={{ animationDelay: "0.1s" }}>
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-bold mb-5 md:mb-6 animate-fade-up animate-delay-100 leading-[1.05] tracking-tight">
           <span className="block">{t.heroTitle1}</span>
           <span className="text-gradient block pb-1">{t.heroTitle2}</span>
         </h1>
 
         {/* Subtitle */}
-        <p className="text-muted-foreground max-w-xl mx-auto text-base md:text-lg mb-8 md:mb-10 animate-fade-up leading-relaxed" style={{ animationDelay: "0.2s" }}>
+        <p className="text-muted-foreground max-w-xl mx-auto text-base md:text-lg mb-8 md:mb-10 animate-fade-up animate-delay-200 leading-relaxed">
           {t.heroSubtitle}
         </p>
 
         {/* Call to Actions */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 w-full max-w-[280px] sm:max-w-none mx-auto mb-12 md:mb-14 animate-fade-up" style={{ animationDelay: "0.3s" }}>
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 w-full max-w-[280px] sm:max-w-none mx-auto mb-12 md:mb-14 animate-fade-up animate-delay-300">
           <a
             href={links.cncfCommunity}
             target="_blank"
@@ -105,7 +110,7 @@ const HeroSection = ({ membersCount, pastCount, upcomingCount }: HeroSectionProp
         </div>
 
         {/* Metrics */}
-        <dl className="grid grid-cols-3 w-full max-w-2xl divide-x divide-foreground/10 animate-fade-up" style={{ animationDelay: "0.4s" }}>
+        <dl className="grid grid-cols-3 w-full max-w-2xl divide-x divide-foreground/10 animate-fade-up animate-delay-400">
           {[
             { value: membersCount, label: t.members },
             { value: pastCount, label: t.eventsLabel },
@@ -132,7 +137,7 @@ const HeroSection = ({ membersCount, pastCount, upcomingCount }: HeroSectionProp
         </dl>
 
         {/* Latin America */}
-        <div className="mt-12 md:mt-14 animate-fade-up" style={{ animationDelay: "0.5s" }}>
+        <div className="mt-12 md:mt-14 animate-fade-up animate-delay-500">
           <p className="text-xs md:text-sm text-muted-foreground mb-3">{t.latamTitle}</p>
           <div className="flex flex-wrap justify-center gap-2 max-w-3xl">
             {latamCommunities.map((c) => (
@@ -161,7 +166,7 @@ const HeroSection = ({ membersCount, pastCount, upcomingCount }: HeroSectionProp
 
       {/* Decorative Blur Blobs */}
       <div className="absolute top-[10%] -left-20 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] mix-blend-screen pointer-events-none animate-float" />
-      <div className="absolute bottom-[10%] -right-20 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] mix-blend-screen pointer-events-none animate-float" style={{ animationDelay: "3s" }} />
+      <div className="hidden md:block absolute bottom-[10%] -right-20 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] mix-blend-screen pointer-events-none animate-float animate-delay-float" />
     </section>
   );
 };

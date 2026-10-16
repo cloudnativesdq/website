@@ -4,7 +4,9 @@ import reactHooks from "eslint-plugin-react-hooks";
 import tseslint from "typescript-eslint";
 
 export default tseslint.config(
-  { ignores: ["dist", ".next"] },
+  // _ds/style-guide is the design-system git submodule — external code with its
+  // own repo and lint setup, so it is not ours to lint or fix from here.
+  { ignores: ["dist", ".next", "_ds"] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ["**/*.{ts,tsx}"],

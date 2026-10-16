@@ -14,6 +14,8 @@ export const links = {
   
   kubestronautsDR: "https://www.cncf.io/training/kubestronaut/?_sft_lf-country=do",
   kcds: "https://www.cncf.io/kcds/",
+  cloudNativeDays: "https://cloudnativedays.org/",
+  cloudNativeDaysAbout: "https://cloudnativedays.org/about/",
   cncfCertifications: "https://www.cncf.io/training/certification/",
   kubestronautProgram: "https://www.cncf.io/training/kubestronaut/",
   cncfCourses: "https://www.cncf.io/training/courses/",
@@ -48,6 +50,18 @@ export const links = {
   // Site Info
   siteUrl: "https://cloudnativesdq.org",
   siteLogo: "https://cloudnativesdq.org/favicon.svg",
+
+  // Luma Events (fetched by LumaScraperProvider)
+  lumaEvents: [
+    {
+      url: "https://luma.com/event/evt-zln7Flow0wdYSZR",
+      type: "Meetup",
+    },
+    {
+      url: "https://luma.com/domini-7g5q",
+      type: "Meetup",
+    },
+  ] as { url: string; type?: string; image?: string; location?: string }[],
 };
 
 // Latin American CNCF chapters and KCDs shown on the landing page.

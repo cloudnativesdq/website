@@ -1,27 +1,12 @@
 
 "use client";
 
-import { useState } from "react";
-import { Calendar, Monitor, Coffee, MapPin, Mic2, Building2, ArrowRight } from "lucide-react";
-import { format } from "date-fns";
-import { es, enUS } from "date-fns/locale";
-import Image from "next/image";
+import { Mic2, Building2, ArrowRight } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 import Link from "next/link";
 import { links } from "@/lib/links";
-
-interface Event {
-  title: string;
-  type: string;
-  image: string;
-  url: string;
-  date: string;
-  location?: string;
-  soldOut?: boolean;
-  spotsRemaining?: number;
-  portraitImage?: string;
-  isPast?: boolean;
-}
+import EventCard, { type Event } from "@/components/EventCard";
+import { getEventIcon, formatEventDate } from "@/lib/event-format";
 
 interface EventsSectionProps {
   events: Event[];
@@ -30,54 +15,9 @@ interface EventsSectionProps {
 
 const EventsSection = ({ events, title }: EventsSectionProps) => {
   const { language, t } = useLanguage();
-  
-  const getIcon = (type: string) => {
-    if (type?.toLowerCase().includes("online") || type?.toLowerCase().includes("virtual")) return Monitor;
-    if (type?.toLowerCase().includes("meetup") || type?.toLowerCase().includes("brunch")) return Coffee;
-    return Calendar;
-  };
 
-  const formatDate = (dateString: string) => {
-    try {
-      const date = new Date(dateString);
-      if (!isNaN(date.getTime())) {
-        const pattern = language === "es"
-          ? "d 'de' MMMM, yyyy '·' p"
-          : "MMMM d, yyyy '·' p";
-        return format(date, pattern, {
-          locale: language === "es" ? es : enUS,
-        });
-      }
-    } catch {}
-
-    const match = dateString.match(/(\w+)\s+(\d+),\s+(\d+)\s+·\s+(\d+:\d+)\s*([AP]M)\s*([-+]\d+|AST|EST|EDT|CST|CDT|MST|PDT|PST)?/i);
-    if (!match) return dateString;
-
-    const months: Record<string, string> = {
-      Jan: "01", Feb: "02", Mar: "03", Apr: "04", May: "05", Jun: "06",
-      Jul: "07", Aug: "08", Sep: "09", Oct: "10", Nov: "11", Dec: "12"
-    };
-
-    const [, month, day, year, time, period] = match;
-    let hours = parseInt(time.split(":")[0], 10);
-    const minutes = time.split(":")[1];
-
-    if (period?.toUpperCase() === "PM" && hours !== 12) hours += 12;
-    if (period?.toUpperCase() === "AM" && hours === 12) hours = 0;
-
-    const monthNum = months[month] || "01";
-    const date = new Date(`${year}-${monthNum}-${day}T${hours.toString().padStart(2, "0")}:${minutes}:00`);
-
-    if (isNaN(date.getTime())) return dateString;
-
-    const pattern = language === "es"
-      ? "d 'de' MMMM, yyyy '·' p"
-      : "MMMM d, yyyy '·' p";
-
-    return format(date, pattern, {
-      locale: language === "es" ? es : enUS,
-    });
-  };
+  const getIcon = getEventIcon;
+  const formatDate = (dateString: string) => formatEventDate(dateString, language);
 
   const isUpcoming = title.toLowerCase().includes("próximos") || title.toLowerCase().includes("upcoming");
   const isPastEvent = title.toLowerCase().includes("pasados") || title.toLowerCase().includes("past");
@@ -174,98 +114,5 @@ const EventsSection = ({ events, title }: EventsSectionProps) => {
     </section>
   );
 };
-
-function EventCard({
-  event,
-  formatDate,
-  getIcon,
-  isPast = false,
-  isSingle = false,
-  spotsText,
-}: {
-  event: Event;
-  formatDate: (d: string) => string;
-  getIcon: (t: string) => typeof Calendar;
-  isPast?: boolean;
-  isSingle?: boolean;
-  spotsText: string;
-}) {
-  const [imgSrc, setImgSrc] = useState(event.portraitImage || event.image || links.eventFallbackImage);
-  const EventIcon = getIcon(event.type);
-  const showSoldOut = event.soldOut && !isPast;
-  const showSpots = !isPast && !showSoldOut && event.spotsRemaining !== undefined && event.spotsRemaining < 10;
-
-  return (
-    <a
-      href={event.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={`group flex flex-col sm:flex-row gap-6 p-1 rounded-3xl bg-foreground/5 border border-foreground/10 hover:border-primary/50 hover:bg-foreground/[0.08] transition-all duration-500 overflow-hidden hover-lift shadow-2xl shadow-black/20 ${isSingle ? "lg:col-span-2 lg:max-w-2xl lg:mx-auto" : ""}`}
-    >
-      <div className="relative w-full sm:w-48 h-48 sm:h-auto flex-shrink-0 overflow-hidden rounded-2xl bg-muted">
-        <Image
-          src={imgSrc}
-          alt={event.title}
-          className="object-cover transition-transform duration-700 group-hover:scale-110"
-          fill
-          sizes="(max-width: 640px) 100vw, 192px"
-          onError={() => setImgSrc(links.eventFallbackImage)}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent sm:hidden" />
-        <div className="absolute bottom-4 left-4 sm:hidden flex items-center gap-2">
-          <span className="px-2 py-1 rounded-md bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-widest">
-            {event.type}
-          </span>
-          {showSoldOut && (
-            <span className="px-2 py-1 rounded-md bg-red-500 text-white text-[10px] font-bold uppercase tracking-widest">
-              Sold Out
-            </span>
-          )}
-          {showSpots && (
-            <span className="px-2 py-1 rounded-md bg-amber-500 text-black text-[10px] font-bold uppercase tracking-widest">
-              {spotsText.replace("{count}", String(event.spotsRemaining))}
-            </span>
-          )}
-        </div>
-      </div>
-      
-      <div className="flex flex-col justify-center p-4 sm:p-2 min-w-0 flex-1">
-        <div className="hidden sm:flex items-center gap-2 mb-3 flex-wrap">
-          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-primary/10 text-[10px] uppercase tracking-wider text-primary font-bold border border-primary/20">
-            <EventIcon className="w-3 h-3" />
-            {event.type}
-          </span>
-          {showSoldOut && (
-            <span className="px-2 py-0.5 rounded-full bg-red-500/20 text-[10px] uppercase tracking-wider text-red-400 font-bold border border-red-500/20">
-              Sold Out
-            </span>
-          )}
-          {showSpots && (
-            <span className="px-2 py-0.5 rounded-full bg-amber-500/20 text-[10px] uppercase tracking-wider text-amber-400 font-bold border border-amber-500/20">
-              {spotsText.replace("{count}", String(event.spotsRemaining))}
-            </span>
-          )}
-        </div>
-        
-        <h3 className="font-heading font-bold text-xl md:text-2xl text-foreground group-hover:text-primary transition-colors leading-tight mb-4 line-clamp-2">
-          {event.title}
-        </h3>
-        
-        <div className="space-y-2 mt-auto">
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Calendar className="w-4 h-4 text-primary/60 flex-shrink-0" />
-            <span>{formatDate(event.date)}</span>
-          </div>
-          {event.location && (
-            <div className="flex items-start gap-2 text-sm text-muted-foreground">
-              <MapPin className="w-4 h-4 text-primary/60 mt-0.5 flex-shrink-0" />
-              <span className="line-clamp-1">{event.location}</span>
-            </div>
-          )}
-        </div>
-      </div>
-    </a>
-  );
-}
 
 export default EventsSection;

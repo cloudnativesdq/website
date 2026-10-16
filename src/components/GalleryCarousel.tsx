@@ -3,9 +3,14 @@
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
+import type { UseEmblaCarouselType } from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
+
+/** Embla's carousel API. Derived from the hook's own return tuple so this
+ *  never reaches into the transitive `embla-carousel` package. */
+type EmblaApi = NonNullable<UseEmblaCarouselType[1]>;
 
 interface GalleryCarouselProps {
   images: string[];
@@ -27,7 +32,7 @@ const GalleryCarousel = ({ images }: GalleryCarouselProps) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
 
-  const setTweenNodes = useCallback((emblaApi: any) => {
+  const setTweenNodes = useCallback((emblaApi: EmblaApi) => {
     const engine = emblaApi.internalEngine();
     const scrollProgress = emblaApi.scrollProgress();
     const scrollSnapList = emblaApi.scrollSnapList();
@@ -39,7 +44,7 @@ const GalleryCarousel = ({ images }: GalleryCarouselProps) => {
       let diffToTarget = scrollSnapList[slideIndex] - scrollProgress;
 
       if (engine.options.loop) {
-        engine.slideLooper.loopPoints.forEach((loopPoint: any) => {
+        engine.slideLooper.loopPoints.forEach((loopPoint) => {
           const target = loopPoint.target();
 
           if (slideIndex === loopPoint.index && target !== 0) {
@@ -79,7 +84,7 @@ const GalleryCarousel = ({ images }: GalleryCarouselProps) => {
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
 
-  const onScroll = useCallback((emblaApi: any) => {
+  const onScroll = useCallback((emblaApi: EmblaApi) => {
     const progress = Math.max(0, Math.min(1, emblaApi.scrollProgress()));
     setScrollProgress(progress * 100);
     setTweenNodes(emblaApi);
@@ -167,7 +172,12 @@ const GalleryCarousel = ({ images }: GalleryCarouselProps) => {
 
         <div className="mt-10 flex flex-col items-center gap-6">
           <div className="w-full max-w-xs h-1 bg-foreground/10 rounded-full overflow-hidden relative">
-            <div 
+            {/* The only inline style left in the app, and deliberately so:
+                scrollProgress is a continuous 0-100 value, which no utility
+                class can express. Driving it through a ref in an effect would
+                set the same property with more indirection, and snapping to
+                fixed-width buckets would make the bar visibly step. */}
+            <div
               className="absolute top-0 left-0 h-full bg-primary transition-all duration-300 ease-out rounded-full"
               style={{ width: `${scrollProgress}%` }}
             />

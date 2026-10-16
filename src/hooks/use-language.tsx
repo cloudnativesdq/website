@@ -39,7 +39,10 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <LanguageContext.Provider value={value}>
-      <div style={{ visibility: mounted ? "visible" : "hidden" }}>
+      {/* Hidden (not unmounted) until the client picks up the stored language,
+          so the server and client markup match and the tree keeps its layout
+          instead of shifting when it appears. */}
+      <div className={mounted ? "visible" : "invisible"}>
         {children}
       </div>
     </LanguageContext.Provider>

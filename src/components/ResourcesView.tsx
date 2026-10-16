@@ -2,6 +2,7 @@
 
 import React from "react";
 import Navbar from "@/components/Navbar";
+import EventTypeHint from "@/components/EventTypeHint";
 import { useLanguage } from "@/hooks/use-language";
 import { links, latamCommunities } from "@/lib/links";
 import type { Coupon, CncfEvent, CncfCourse, Article, Orientation } from "@/lib/cncf-resources";
@@ -128,6 +129,8 @@ export default function ResourcesView({ coupon, events, courses, articles, blogs
             {/* Global events (live) */}
             <div className={card}>
               <SectionTitle icon={CalendarDays}>{t.globalEventsTitle}</SectionTitle>
+              <EventTypeHint type="kcd" />
+              <EventTypeHint type="cnd" />
               {events.length ? (
                 events.map((e) => (
                   <a key={e.url + e.start} href={e.url} target="_blank" rel="noopener noreferrer" className={linkRow}>
@@ -212,6 +215,7 @@ export default function ResourcesView({ coupon, events, courses, articles, blogs
                 <ExternalRow href={links.cncfSlack}>{t.joinSlack}</ExternalRow>
                 <ExternalRow href={links.cncfCommunityGroups}>{t.communityGroups}</ExternalRow>
                 <ExternalRow href={links.kcds}>Kubernetes Community Days (KCDs)</ExternalRow>
+                <ExternalRow href={links.cloudNativeDays}>Cloud Native Days</ExternalRow>
                 {latamCommunities.map((c) => (
                   <ExternalRow key={c.href} href={c.href}>{c.name}</ExternalRow>
                 ))}

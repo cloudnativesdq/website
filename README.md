@@ -16,7 +16,7 @@ This is the official website for the **Cloud Native Santo Domingo** community, a
 ### Prerequisites
 
 - [Node.js](https://nodejs.org/) (v18 or higher)
-- [npm](https://www.npmjs.com/), [pnpm](https://pnpm.io/), [yarn](https://yarnpkg.com/), or [bun](https://bun.sh/)
+- [pnpm](https://pnpm.io/) (v9 or higher)
 
 ### Installation
 
@@ -27,12 +27,12 @@ This is the official website for the **Cloud Native Santo Domingo** community, a
 
 2. Install dependencies:
    ```bash
-   npm install
+   pnpm install
    ```
 
 3. Run the development server:
    ```bash
-   npm run dev
+   pnpm dev
    ```
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser.

@@ -57,6 +57,9 @@ export const translations = {
     mapAmbassadors: "CNCF Ambassadors",
     mapChaptersShort: "Cap.",
     mapSeeAmbassadors: "Ver CNCF Ambassadors de este país",
+    kcdHint: "Un KCD (Kubernetes Community Day) es una conferencia organizada por la comunidad local con apoyo de la CNCF, que reúne a usuarios y contribuidores de Kubernetes y Cloud Native de una ciudad o región.",
+    cndHint: "Cloud Native Days son conferencias comunitarias e independientes sobre open source y prácticas Cloud Native. Muchas fueron antes KCDs u otros eventos de la CNCF.",
+    learnMore: "Ver más",
     mapUpcoming: "Próximos eventos",
     mapNoEvents: "Sin eventos próximos publicados.",
     mapViewChapter: "Ver",
@@ -91,6 +94,8 @@ export const translations = {
     viewEvent: "Ver Evento",
     noEventsThisMonth: "No hay eventos este mes",
     spotsRemaining: "{count} lugares disponibles",
+    upcomingPreviewSubtitle: "Los próximos encuentros de la comunidad.",
+    seeAllEvents: "Ver todos los eventos",
   },
   en: {
     heroTitle1: "Cloud Native",
@@ -149,6 +154,9 @@ export const translations = {
     mapAmbassadors: "CNCF Ambassadors",
     mapChaptersShort: "Ch.",
     mapSeeAmbassadors: "See CNCF Ambassadors in this country",
+    kcdHint: "A KCD (Kubernetes Community Day) is a conference run by a local community with CNCF support, bringing together Kubernetes and Cloud Native users and contributors from a city or region.",
+    cndHint: "Cloud Native Days are independent, community-run conferences on open source and Cloud Native practices. Many were previously KCDs or other CNCF events.",
+    learnMore: "Learn more",
     mapUpcoming: "Upcoming events",
     mapNoEvents: "No upcoming events published.",
     mapViewChapter: "Open",
@@ -183,6 +191,8 @@ export const translations = {
     viewEvent: "View Event",
     noEventsThisMonth: "No events this month",
     spotsRemaining: "{count} spots left",
+    upcomingPreviewSubtitle: "The community's next meetups.",
+    seeAllEvents: "See all events",
   }
 };
 

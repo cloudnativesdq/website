@@ -3,6 +3,7 @@
 import React, { useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import Navbar from "@/components/Navbar";
+import EventTypeHint from "@/components/EventTypeHint";
 import { useLanguage } from "@/hooks/use-language";
 import { flag, ambassadorsUrl, type MapData } from "@/lib/chapters";
 import { ArrowUpRight, CalendarDays, Globe2, Search } from "lucide-react";
@@ -202,6 +203,7 @@ export default function MapView({ data }: { data: MapData }) {
                 <CalendarDays className="w-5 h-5 text-primary" />
                 {t.mapUpcomingKcds}
               </h2>
+              <EventTypeHint type="kcd" />
               {eventList(data.kcds)}
             </div>
             <div className={card}>
@@ -209,6 +211,7 @@ export default function MapView({ data }: { data: MapData }) {
                 <CalendarDays className="w-5 h-5 text-primary" />
                 {t.mapCloudNativeDays}
               </h2>
+              <EventTypeHint type="cnd" />
               {eventList(data.cloudNativeDays)}
             </div>
           </div>

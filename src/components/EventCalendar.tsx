@@ -8,6 +8,7 @@ import Image from "next/image";
 import { useLanguage } from "@/hooks/use-language";
 import { links } from "@/lib/links";
 import { cn } from "@/lib/utils";
+import { staggerDelay } from "@/lib/stagger";
 
 interface Event {
   title: string;
@@ -185,8 +186,10 @@ export default function EventCalendar({ events }: EventCalendarProps) {
                       {dayEvents.slice(0, 3).map((_, ei) => (
                         <div
                           key={ei}
-                          className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"
-                          style={{ animationDelay: `${ei * 0.2}s` }}
+                          className={cn(
+                            "w-1.5 h-1.5 rounded-full bg-primary animate-pulse",
+                            staggerDelay(ei, 2)
+                          )}
                         />
                       ))}
                     </div>
@@ -215,9 +218,9 @@ export default function EventCalendar({ events }: EventCalendarProps) {
                   onClick={() => setSelectedEvent(event)}
                   className={cn(
                     "group flex items-center gap-3 px-4 py-3 rounded-2xl glass hover:bg-foreground/10 transition-all duration-500 border border-foreground/10 hover:border-primary/50",
-                    "animate-fade-up"
+                    "animate-fade-up",
+                    staggerDelay(i)
                   )}
-                  style={{ animationDelay: `${i * 0.1}s` }}
                 >
                   <div className="w-10 h-10 rounded-xl overflow-hidden bg-muted flex-shrink-0">
                     {event.image || event.portraitImage ? (
