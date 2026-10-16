@@ -7,9 +7,7 @@ import Footer from "@/components/Footer";
 import EventsGrid, { type GridEvent } from "@/components/EventsGrid";
 import { useLanguage } from "@/hooks/use-language";
 import { flag, type MapData } from "@/lib/chapters";
-import type { DominicanCncfPeople } from "@/lib/cncf-people";
 import type { LfEvents } from "@/lib/cncf-resources";
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Globe2, Search, X } from "lucide-react";
 
@@ -19,9 +17,8 @@ const ChaptersMap = dynamic(() => import("@/components/ChaptersMap"), {
   loading: () => <div className="h-full w-full animate-pulse bg-muted" />,
 });
 
-const card = "p-6 rounded-3xl bg-card/60 border border-foreground/10";
 
-export default function MapView({ data, people, lfEvents }: { data: MapData; people: DominicanCncfPeople; lfEvents: LfEvents }) {
+export default function MapView({ data, lfEvents }: { data: MapData; lfEvents: LfEvents }) {
   const { t, language } = useLanguage();
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState<string | null>("do"); // open on the Dominican Republic
@@ -58,6 +55,7 @@ export default function MapView({ data, people, lfEvents }: { data: MapData; peo
           place: c.location,
           countryCode: c.countryCode,
           organizer: c.name,
+          region: c.region,
         }))
       ),
       ...data.kcds.map((e) => ({ title: e.name, start: e.start, url: e.url, image: null, kind: "kcd" as const, place: e.city, countryCode: e.countryCode })),
@@ -114,9 +112,6 @@ export default function MapView({ data, people, lfEvents }: { data: MapData; peo
     { value: upcomingCount, label: t.mapUpcoming.toLowerCase() },
   ];
 
-  const dr = selected === "do" && (people.kubestronauts.length > 0 || people.ambassadors.length > 0);
-  // Ambassadors first; someone who is both appears once.
-  const drPeople = [...people.ambassadors, ...people.kubestronauts.filter((k) => !people.ambassadors.some((a) => a.name === k.name))];
 
   return (
     <main className="min-h-screen">
@@ -233,50 +228,16 @@ export default function MapView({ data, people, lfEvents }: { data: MapData; peo
                 ))}
               </ul>
             </div>
-          </div>
-          <div className="flex flex-wrap gap-x-4 gap-y-1 mt-3 text-xs text-muted-foreground">
-                <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-[hsl(199_89%_45%)]" />{t.mapLegendChapter}</span>
-                <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-full bg-[hsl(160_84%_39%)]" />{t.mapLegendActive}</span>
-                <span className="flex items-center gap-1.5"><span className="w-3.5 h-3.5 rounded-full border-2 border-[hsl(38_92%_50%)]" />{t.mapKcd}</span>
-                <span className="flex items-center gap-1.5"><span className="w-3.5 h-3.5 rounded-full border-2 border-[hsl(262_83%_58%)]" />KubeCon</span>
-                <span className="flex items-center gap-1.5"><span className="w-3.5 h-3.5 rounded-full border-2 border-[hsl(330_81%_60%)]" />AAIF</span>
-              </div>
 
-          {/* Our people, when the Dominican Republic is selected */}
-          {dr && (
-            <div className={`${card} mt-6`} data-testid="dr-people">
-              <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-                <h2 className="flex items-center gap-2 font-heading font-bold text-lg">
-                  {flag("do")} {t.mapOurPeople}
-                </h2>
-                <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
-                  <Link href="/team#ambassadors" className="text-primary hover:underline">
-                    {people.ambassadors.length} {t.mapAmbassadors}
-                  </Link>
-                  <Link href="/team#kubestronauts" className="text-primary hover:underline">
-                    {people.kubestronauts.length} {t.mapKubestronauts}
-                  </Link>
-                </div>
-              </div>
-              <ul className="flex flex-wrap gap-3">
-                {drPeople.map((p) => (
-                  <li key={p.name}>
-                    <Link
-                      href={people.ambassadors.some((a) => a.name === p.name) ? "/team#ambassadors" : "/team#kubestronauts"}
-                      className="flex items-center gap-2 pr-3 rounded-full border border-foreground/10 hover:border-primary/50 hover:text-primary transition-colors"
-                    >
-                      <span className="relative w-9 h-9 rounded-full overflow-hidden bg-muted shrink-0">
-                        {p.image && <Image src={p.image} alt="" fill sizes="36px" className="object-cover" />}
-                      </span>
-                      <span className="text-sm font-medium">{p.name}</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+            {/* Legend, inside the map so it is read together with the markers */}
+            <div className="absolute left-3 bottom-3 z-[1000] flex flex-wrap gap-x-3 gap-y-1 max-w-[calc(100%-1.5rem)] sm:max-w-md px-3 py-2 rounded-xl bg-background/90 backdrop-blur border border-foreground/10 text-[11px] text-muted-foreground">
+              <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-[hsl(199_89%_45%)]" />{t.mapLegendChapter}</span>
+              <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-full bg-[hsl(160_84%_39%)]" />{t.mapLegendActive}</span>
+              <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-full border-2 border-[hsl(38_92%_50%)]" />{t.mapKcd}</span>
+              <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-full border-2 border-[hsl(262_83%_58%)]" />KubeCon</span>
+              <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-full border-2 border-[hsl(330_81%_60%)]" />AAIF</span>
             </div>
-          )}
-
-
+          </div>
         </div>
       </section>
       <Footer />

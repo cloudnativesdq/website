@@ -16,6 +16,8 @@ export interface CardCategory {
 
 export interface CardItem {
   category: string;
+  /** Extra tab ids the item also belongs to (e.g. a region), on top of its category. */
+  tags?: string[];
   title: string;
   url: string;
   image?: string | null;
@@ -51,10 +53,10 @@ export default function CardGrid({
   const byId = useMemo(() => new Map(categories.map((c) => [c.id, c])), [categories]);
   const counts = useMemo(() => {
     const c: Record<string, number> = { all: items.length };
-    for (const i of items) c[i.category] = (c[i.category] ?? 0) + 1;
+    for (const i of items) for (const id of [i.category, ...(i.tags ?? [])]) c[id] = (c[id] ?? 0) + 1;
     return c;
   }, [items]);
-  const filtered = active === "all" ? items : items.filter((i) => i.category === active);
+  const filtered = active === "all" ? items : items.filter((i) => i.category === active || i.tags?.includes(active));
   const hint = byId.get(active)?.hint;
 
   const locale = language === "es" ? "es-DO" : "en-US";

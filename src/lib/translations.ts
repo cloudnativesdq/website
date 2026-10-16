@@ -150,6 +150,8 @@ export const translations = {
       title: "Próximos eventos en el mundo",
       all: "Todos",
       chapter: "Meetups de capítulos",
+      latam: "Latinoamérica",
+      latamHint: "Eventos en Latinoamérica y el Caribe, cerca de nuestra comunidad.",
       showMore: "Ver más",
     },
     wcnf: {
@@ -410,6 +412,8 @@ export const translations = {
       title: "Upcoming events worldwide",
       all: "All",
       chapter: "Chapter meetups",
+      latam: "Latin America",
+      latamHint: "Events in Latin America and the Caribbean, close to our community.",
       showMore: "Show more",
     },
     wcnf: {

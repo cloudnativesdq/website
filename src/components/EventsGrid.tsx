@@ -8,6 +8,11 @@ import { flag } from "@/lib/chapters";
 
 export type EventKind = "chapter" | "kcd" | "cnd" | "kubecon" | "aaif";
 
+// Latin America and the Caribbean (ISO 3166-1 alpha-2, lowercase).
+const LATAM = new Set(
+  "ar bo br cl co cr cu do ec gt hn ht mx ni pa pe pr py sv uy ve bz gy sr jm tt bs bb".split(" ")
+);
+
 export interface GridEvent {
   title: string;
   start: string;
@@ -17,6 +22,7 @@ export interface GridEvent {
   place: string;
   countryCode: string | null;
   organizer?: string;
+  region?: string;
 }
 
 export default function EventsGrid({ events }: { events: GridEvent[] }) {
@@ -24,6 +30,7 @@ export default function EventsGrid({ events }: { events: GridEvent[] }) {
 
   const hint = (text: string) => <p className="text-xs text-muted-foreground mb-3">{text}</p>;
   const categories: CardCategory[] = [
+    { id: "latam", label: t.eventsGrid.latam, logo: "cncg.svg", hint: hint(t.eventsGrid.latamHint) },
     { id: "chapter", label: t.eventsGrid.chapter, badge: "Meetup", logo: "cncg.svg" },
     { id: "kcd", label: "KCD", logo: "kubernetes.png", hint: <EventTypeHint type="kcd" /> },
     { id: "cnd", label: "Cloud Native Days", logo: "cloudnativedays.png", hint: <EventTypeHint type="cnd" /> },
@@ -35,6 +42,7 @@ export default function EventsGrid({ events }: { events: GridEvent[] }) {
     .sort((a, b) => a.start.localeCompare(b.start))
     .map((e) => ({
       category: e.kind,
+      tags: (e.countryCode && LATAM.has(e.countryCode)) || e.region === "Latin America" ? ["latam"] : [],
       title: e.title,
       url: e.url,
       image: e.image,
