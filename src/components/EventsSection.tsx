@@ -25,20 +25,16 @@ const EventsSection = ({ events, title }: EventsSectionProps) => {
   // Empty state for upcoming events
   if (isUpcoming && (!events || events.length === 0)) {
     return (
-      <section className="py-24 relative overflow-hidden">
-        <div className="container px-6 relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-heading font-bold mb-4">
-              <span className="text-gradient">{title}</span>
-            </h2>
-            <p className="text-muted-foreground max-w-lg mx-auto text-base md:text-lg">
-              {t.noUpcomingEvents}
-            </p>
+      <section className="py-8">
+        <div>
+          <div className="mb-6">
+            <h2 className="text-2xl md:text-3xl font-heading font-bold mb-2">{title}</h2>
+            <p className="text-muted-foreground max-w-2xl">{t.noUpcomingEvents}</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <div className="group p-8 rounded-[2rem] bg-foreground/5 border border-foreground/10 glass hover:border-primary/50 transition-all duration-500">
-              <div className="w-12 h-12 bg-primary/20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl">
+            <div className="group p-6 md:p-8 rounded-3xl bg-card/60 border border-foreground/10 hover:border-primary/50 transition-colors">
+              <div className="w-12 h-12 bg-primary/15 rounded-2xl flex items-center justify-center mb-6">
                 <Mic2 className="w-6 h-6 text-primary" />
               </div>
               <h3 className="text-xl font-heading font-bold mb-3">{t.callForSpeakers}</h3>
@@ -56,9 +52,9 @@ const EventsSection = ({ events, title }: EventsSectionProps) => {
               </a>
             </div>
 
-            <div className="group p-8 rounded-[2rem] bg-foreground/5 border border-foreground/10 glass hover:border-primary/50 transition-all duration-500">
-              <div className="w-12 h-12 bg-blue-500/20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <Building2 className="w-6 h-6 text-blue-400" />
+            <div className="group p-6 md:p-8 rounded-3xl bg-card/60 border border-foreground/10 hover:border-primary/50 transition-colors">
+              <div className="w-12 h-12 bg-primary/15 rounded-2xl flex items-center justify-center mb-6">
+                <Building2 className="w-6 h-6 text-primary" />
               </div>
               <h3 className="text-xl font-heading font-bold mb-3">{t.becomeHost}</h3>
               <p className="text-muted-foreground text-sm mb-6 leading-relaxed">
@@ -66,7 +62,7 @@ const EventsSection = ({ events, title }: EventsSectionProps) => {
               </p>
               <Link 
                 href="/contact" 
-                className="inline-flex items-center gap-2 text-blue-400 font-bold text-sm group/link"
+                className="inline-flex items-center gap-2 text-primary font-bold text-sm group/link"
               >
                 {language === "es" ? "Contactar" : "Get in touch"}
                 <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
@@ -81,20 +77,18 @@ const EventsSection = ({ events, title }: EventsSectionProps) => {
   if (!events || events.length === 0) return null;
 
   return (
-    <section className="py-24 relative overflow-hidden">
-      <div className="container px-6 relative z-10">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-heading font-bold mb-4">
-            <span className="text-gradient">{title}</span>
-          </h2>
-          <p className="text-muted-foreground max-w-lg mx-auto text-base md:text-lg">
+    <section className="py-8">
+      <div>
+        <div className="mb-6">
+          <h2 className="text-2xl md:text-3xl font-heading font-bold mb-2">{title}</h2>
+          <p className="text-muted-foreground max-w-2xl">
             {isUpcoming 
               ? (language === "es" ? "¡No te pierdas nuestros siguientes encuentros! Conéctate con otros profesionales y aprende." : "Don't miss our next meetings! Connect with other professionals and learn.")
               : (language === "es" ? "Revive los momentos de nuestros encuentros anteriores y mantente al día." : "Relive the moments of our previous meetings and stay up to date.")}
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 lg:max-w-5xl lg:mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
           {events.map((event, i) => (
             <EventCard
               key={event.title + i}
