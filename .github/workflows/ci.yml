@@ -17,7 +17,7 @@ jobs:
     name: Lint, typecheck, build and e2e
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           submodules: true # _ds/style-guide holds the design tokens and fonts
 
