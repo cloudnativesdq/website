@@ -66,7 +66,7 @@ export default function CardGrid({
   const tabs = [{ id: "all", label: t.eventsGrid.all, logo: "" }, ...categories].filter((c) => counts[c.id]);
 
   return (
-    <section className="mt-10" aria-labelledby={`${id}-title`}>
+    <section className="mt-10 first:mt-0" aria-labelledby={`${id}-title`}>
       <h2 id={`${id}-title`} className="text-2xl md:text-3xl font-heading font-bold mb-4">
         {title}
       </h2>

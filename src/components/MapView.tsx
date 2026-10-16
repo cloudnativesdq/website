@@ -136,7 +136,11 @@ export default function MapView({ data, people, lfEvents }: { data: MapData; peo
             </Link>
           </header>
 
+          {/* World events first, then the map. */}
+          <EventsGrid events={gridEvents} />
+
           {/* Full-width map; the countries list floats over it behind a toggle, closed by default. */}
+          <h2 id="map-title" className="text-2xl md:text-3xl font-heading font-bold mt-12 mb-4">{t.mapSectionTitle}</h2>
           <div className="relative h-[calc(100svh-12.5rem)] md:h-[calc(100svh-10rem)] min-h-[380px] max-h-[780px] rounded-3xl overflow-hidden border border-foreground/10">
             <div className="absolute inset-0" data-testid="chapters-map">
                 <ChaptersMap
@@ -278,7 +282,6 @@ export default function MapView({ data, people, lfEvents }: { data: MapData; peo
           </dl>
           <p className="text-sm text-muted-foreground max-w-3xl mt-4">{t.mapSubtitle}</p>
 
-          <EventsGrid events={gridEvents} />
         </div>
       </section>
       <Footer />
