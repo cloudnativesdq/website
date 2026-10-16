@@ -1,0 +1,39 @@
+# YouTube blocks requests from Vercel, so the freeCodeCamp video list on /resources is collected
+# here once a day and committed as src/data/freecodecamp-videos.json; the push redeploys the site.
+name: Update freeCodeCamp videos
+
+on:
+  schedule:
+    - cron: "0 11 * * *" # 07:00 in Santo Domingo
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-freecodecamp-videos
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+
+      - run: node scripts/update-freecodecamp-videos.mjs
+
+      - name: Commit if the list changed
+        run: |
+          if git diff --quiet -- src/data/freecodecamp-videos.json; then
+            echo "No changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/freecodecamp-videos.json
+          git commit -m "chore: update freeCodeCamp videos"
+          git push
