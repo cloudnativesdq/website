@@ -8,6 +8,7 @@ import { Mail, Send, CheckCircle2, AlertCircle, Github, Instagram, Linkedin, You
 import { cn } from "@/lib/utils";
 import { sendEmail } from "@/app/actions/send-email";
 import { links } from "@/lib/links";
+import WhatsAppIcon from "@/components/WhatsAppIcon";
 
 export default function ContactView() {
   const { t, language } = useLanguage();
@@ -51,7 +52,7 @@ export default function ContactView() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
               <div className="space-y-8 animate-fade-up" style={{ animationDelay: "0.2s" }}>
-                <div className="p-8 rounded-[2rem] bg-white/5 border border-white/10 glass shadow-2xl">
+                <div className="p-8 rounded-[2rem] bg-foreground/5 border border-foreground/10 glass shadow-2xl">
                   <h2 className="text-2xl font-heading font-bold mb-6 flex items-center gap-3">
                     <Mail className="w-6 h-6 text-primary" />
                     Email
@@ -67,13 +68,14 @@ export default function ContactView() {
                   </p>
                 </div>
 
-                <div className="p-8 rounded-[2rem] bg-white/5 border border-white/10 glass shadow-2xl">
+                <div className="p-8 rounded-[2rem] bg-foreground/5 border border-foreground/10 glass shadow-2xl">
                   <h2 className="text-2xl font-heading font-bold mb-6">Social Media</h2>
                   <div className="flex flex-wrap gap-4">
                     {[
                       { icon: Instagram, href: links.instagram, label: "Instagram" },
                       { icon: Linkedin, href: links.linkedin, label: "LinkedIn" },
                       { icon: Youtube, href: links.youtube, label: "YouTube" },
+                      { icon: WhatsAppIcon, href: links.whatsapp, label: "WhatsApp" },
                       { icon: Github, href: links.github, label: "GitHub" }
                     ].map((social) => (
                       <a
@@ -81,7 +83,7 @@ export default function ContactView() {
                         href={social.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-12 h-12 rounded-2xl glass-darker flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all border border-white/5 group"
+                        className="w-12 h-12 rounded-2xl glass-darker flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all border border-foreground/5 group"
                         title={social.label}
                       >
                         <social.icon className="w-5 h-5 group-hover:scale-110 transition-transform" />
@@ -93,7 +95,7 @@ export default function ContactView() {
 
               <div className="animate-fade-up" style={{ animationDelay: "0.3s" }}>
                 {formState === "success" ? (
-                  <div className="p-8 md:p-12 rounded-[2rem] bg-white/5 border border-primary/20 glass-darker text-center space-y-6">
+                  <div className="p-8 md:p-12 rounded-[2rem] bg-foreground/5 border border-primary/20 glass-darker text-center space-y-6">
                     <div className="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center mx-auto">
                       <CheckCircle2 className="w-10 h-10 text-primary" />
                     </div>
@@ -106,7 +108,7 @@ export default function ContactView() {
                     </button>
                   </div>
                 ) : (
-                  <form onSubmit={handleSubmit} className="p-8 md:p-10 rounded-[2rem] bg-white/5 border border-white/10 glass shadow-2xl space-y-6">
+                  <form onSubmit={handleSubmit} className="p-8 md:p-10 rounded-[2rem] bg-foreground/5 border border-foreground/10 glass shadow-2xl space-y-6">
                     <div className="space-y-2">
                       <label className="text-sm font-bold uppercase tracking-wider text-muted-foreground ml-1">
                         {t.nameLabel}
@@ -115,7 +117,7 @@ export default function ContactView() {
                         required
                         name="name"
                         type="text" 
-                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                        className="w-full bg-foreground/5 border border-foreground/10 rounded-2xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
                         placeholder="John Doe"
                       />
                     </div>
@@ -128,7 +130,7 @@ export default function ContactView() {
                         required
                         name="email"
                         type="email" 
-                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                        className="w-full bg-foreground/5 border border-foreground/10 rounded-2xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
                         placeholder="john@example.com"
                       />
                     </div>
@@ -141,7 +143,7 @@ export default function ContactView() {
                         required
                         name="message"
                         rows={5}
-                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all resize-none"
+                        className="w-full bg-foreground/5 border border-foreground/10 rounded-2xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all resize-none"
                         placeholder="..."
                       />
                     </div>
@@ -172,7 +174,7 @@ export default function ContactView() {
         </div>
       </section>
 
-      <footer className="py-12 border-t border-white/5 text-center">
+      <footer className="py-12 border-t border-foreground/5 text-center">
         <div className="container px-6">
           <p className="text-muted-foreground text-xs md:text-sm font-medium">
             {t.footerText}

@@ -31,7 +31,7 @@ export default function TeamPage({ data }: TeamPageProps) {
 
       <section className="py-20 relative">
         <div className="container px-6">
-          <div className="max-w-3xl mx-auto text-center p-8 md:p-12 rounded-[2rem] bg-white/5 border border-white/10">
+          <div className="max-w-3xl mx-auto text-center p-8 md:p-12 rounded-[2rem] bg-foreground/5 border border-foreground/10">
             <h2 className="text-2xl md:text-3xl font-heading font-bold mb-4">
               {language === "es" ? "¿Quieres ser parte del equipo?" : "Want to be part of the team?"}
             </h2>
@@ -52,7 +52,7 @@ export default function TeamPage({ data }: TeamPageProps) {
                 href={links.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/5 text-foreground font-heading font-bold rounded-2xl border border-white/10 hover:bg-white/10 transition-all duration-300"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-foreground/5 text-foreground font-heading font-bold rounded-2xl border border-foreground/10 hover:bg-foreground/10 transition-all duration-300"
               >
                 <Linkedin className="w-5 h-5" />
                 LinkedIn
@@ -65,7 +65,7 @@ export default function TeamPage({ data }: TeamPageProps) {
       <section className="py-16 pb-24">
         <div className="container px-6">
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center p-8 rounded-[2rem] bg-white/5 border border-white/10">
+            <div className="text-center p-8 rounded-[2rem] bg-foreground/5 border border-foreground/10">
               <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-primary/20 flex items-center justify-center">
                 <span className="text-3xl font-heading font-black text-primary">+{data.membersCount}</span>
               </div>
@@ -76,7 +76,7 @@ export default function TeamPage({ data }: TeamPageProps) {
                   : "In our Meetup community"}
               </p>
             </div>
-            <div className="text-center p-8 rounded-[2rem] bg-white/5 border border-white/10">
+            <div className="text-center p-8 rounded-[2rem] bg-foreground/5 border border-foreground/10">
               <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-blue-500/20 flex items-center justify-center">
                 <span className="text-3xl font-heading font-black text-blue-400">+{data.pastCount}</span>
               </div>
@@ -87,7 +87,7 @@ export default function TeamPage({ data }: TeamPageProps) {
                   : "Meetups, workshops and more"}
               </p>
             </div>
-            <div className="text-center p-8 rounded-[2rem] bg-white/5 border border-white/10">
+            <div className="text-center p-8 rounded-[2rem] bg-foreground/5 border border-foreground/10">
               <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-cyan-500/20 flex items-center justify-center">
                 <span className="text-3xl font-heading font-black text-cyan-400">CNCF</span>
               </div>

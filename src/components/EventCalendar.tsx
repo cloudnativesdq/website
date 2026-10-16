@@ -112,7 +112,7 @@ export default function EventCalendar({ events }: EventCalendarProps) {
           <div className="flex items-center justify-between mb-8">
             <button
               onClick={prevMonth}
-              className="group flex items-center justify-center w-12 h-12 rounded-2xl glass hover:bg-white/10 transition-all duration-300 border border-white/10 hover:border-primary/50"
+              className="group flex items-center justify-center w-12 h-12 rounded-2xl glass hover:bg-foreground/10 transition-all duration-300 border border-foreground/10 hover:border-primary/50"
             >
               <ChevronLeft className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
             </button>
@@ -125,7 +125,7 @@ export default function EventCalendar({ events }: EventCalendarProps) {
 
             <button
               onClick={nextMonth}
-              className="group flex items-center justify-center w-12 h-12 rounded-2xl glass hover:bg-white/10 transition-all duration-300 border border-white/10 hover:border-primary/50"
+              className="group flex items-center justify-center w-12 h-12 rounded-2xl glass hover:bg-foreground/10 transition-all duration-300 border border-foreground/10 hover:border-primary/50"
             >
               <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
             </button>
@@ -168,7 +168,7 @@ export default function EventCalendar({ events }: EventCalendarProps) {
                     "relative aspect-square flex flex-col items-center justify-center rounded-xl transition-all duration-300 cursor-pointer",
                     hasEvents 
                       ? "hover:bg-primary/10 hover:scale-105" 
-                      : "hover:bg-white/5",
+                      : "hover:bg-foreground/5",
                     isToday && "ring-2 ring-primary ring-offset-2 ring-offset-background"
                   )}
                   onClick={() => dayEvents[0] && setSelectedEvent(dayEvents[0])}
@@ -198,7 +198,7 @@ export default function EventCalendar({ events }: EventCalendarProps) {
 
           {monthEvents.length === 0 && (
             <div className="text-center py-12">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/5 mb-4">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-foreground/5 mb-4">
                 <Calendar className="w-8 h-8 text-muted-foreground/30" />
               </div>
               <p className="text-muted-foreground/60 text-sm">{t.noEventsThisMonth}</p>
@@ -214,7 +214,7 @@ export default function EventCalendar({ events }: EventCalendarProps) {
                   key={event.url + i}
                   onClick={() => setSelectedEvent(event)}
                   className={cn(
-                    "group flex items-center gap-3 px-4 py-3 rounded-2xl glass hover:bg-white/10 transition-all duration-500 border border-white/10 hover:border-primary/50",
+                    "group flex items-center gap-3 px-4 py-3 rounded-2xl glass hover:bg-foreground/10 transition-all duration-500 border border-foreground/10 hover:border-primary/50",
                     "animate-fade-up"
                   )}
                   style={{ animationDelay: `${i * 0.1}s` }}
@@ -258,7 +258,7 @@ export default function EventCalendar({ events }: EventCalendarProps) {
       >
         <div 
           className={cn(
-            "relative w-full max-w-lg bg-card rounded-[2rem] border border-white/10 overflow-hidden shadow-2xl transform transition-all duration-500",
+            "relative w-full max-w-lg bg-card rounded-[2rem] border border-foreground/10 overflow-hidden shadow-2xl transform transition-all duration-500",
             selectedEvent ? "scale-100 translate-y-0" : "scale-95 translate-y-4"
           )}
           onClick={e => e.stopPropagation()}

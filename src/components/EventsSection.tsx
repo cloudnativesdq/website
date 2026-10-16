@@ -97,7 +97,7 @@ const EventsSection = ({ events, title }: EventsSectionProps) => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <div className="group p-8 rounded-[2rem] bg-white/5 border border-white/10 glass hover:border-primary/50 transition-all duration-500">
+            <div className="group p-8 rounded-[2rem] bg-foreground/5 border border-foreground/10 glass hover:border-primary/50 transition-all duration-500">
               <div className="w-12 h-12 bg-primary/20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <Mic2 className="w-6 h-6 text-primary" />
               </div>
@@ -116,7 +116,7 @@ const EventsSection = ({ events, title }: EventsSectionProps) => {
               </a>
             </div>
 
-            <div className="group p-8 rounded-[2rem] bg-white/5 border border-white/10 glass hover:border-primary/50 transition-all duration-500">
+            <div className="group p-8 rounded-[2rem] bg-foreground/5 border border-foreground/10 glass hover:border-primary/50 transition-all duration-500">
               <div className="w-12 h-12 bg-blue-500/20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <Building2 className="w-6 h-6 text-blue-400" />
               </div>
@@ -200,7 +200,7 @@ function EventCard({
       href={event.url}
       target="_blank"
       rel="noopener noreferrer"
-      className={`group flex flex-col sm:flex-row gap-6 p-1 rounded-3xl bg-white/5 border border-white/10 hover:border-primary/50 hover:bg-white/[0.08] transition-all duration-500 overflow-hidden hover-lift shadow-2xl shadow-black/20 ${isSingle ? "lg:col-span-2 lg:max-w-2xl lg:mx-auto" : ""}`}
+      className={`group flex flex-col sm:flex-row gap-6 p-1 rounded-3xl bg-foreground/5 border border-foreground/10 hover:border-primary/50 hover:bg-foreground/[0.08] transition-all duration-500 overflow-hidden hover-lift shadow-2xl shadow-black/20 ${isSingle ? "lg:col-span-2 lg:max-w-2xl lg:mx-auto" : ""}`}
     >
       <div className="relative w-full sm:w-48 h-48 sm:h-auto flex-shrink-0 overflow-hidden rounded-2xl bg-muted">
         <Image

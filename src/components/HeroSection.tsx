@@ -4,10 +4,12 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import heroBanner from "@/assets/hero-banner.jpg";
-import { MapPin, Users, ArrowRight, CalendarCheck, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
-import { links } from "@/lib/links";
-import { cn } from "@/lib/utils";
+import { links, latamCommunities } from "@/lib/links";
+
+// From the CNCF Kubestronaut directory (country filter "do"), checked 2026-10-16. Update by hand.
+const KUBESTRONAUTS_DR = 7;
 
 interface HeroSectionProps {
   membersCount: number;
@@ -50,13 +52,13 @@ const HeroSection = ({ membersCount, pastCount, upcomingCount }: HeroSectionProp
   const { t, mounted } = useLanguage();
 
   return (
-    <section className="relative h-screen min-h-[660px] flex items-center justify-center overflow-hidden border-b border-white/5 bg-background select-none">
+    <section className="relative h-screen min-h-[660px] flex items-center justify-center overflow-hidden border-b border-foreground/5 bg-background select-none">
       {/* Background Layer */}
       <div className="absolute inset-0 z-0">
         <Image
           src={heroBanner}
           alt="Cloud Native Santo Domingo"
-          className="object-cover scale-110 blur-[2px] opacity-40 brightness-50"
+          className="object-cover scale-110 blur-[2px] opacity-15 dark:opacity-40 brightness-50"
           fill
           priority
         />
@@ -67,80 +69,93 @@ const HeroSection = ({ membersCount, pastCount, upcomingCount }: HeroSectionProp
       </div>
 
       <div className="relative z-10 container px-6 flex flex-col items-center text-center">
-        {/* Community Badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-darker text-[10px] md:text-xs font-heading font-bold tracking-[0.2em] uppercase text-primary mb-6 md:mb-8 animate-fade-up border border-primary/20 shadow-xl shadow-primary/5">
-          <Sparkles className="w-3 h-3 animate-pulse" />
-          Latin America · CNCF Community Group
-        </div>
-
         {/* Main Heading */}
-        <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-[8rem] font-heading font-black mb-6 md:mb-8 animate-fade-up leading-[0.9] tracking-tighter" style={{ animationDelay: "0.1s" }}>
-          <span className="block opacity-90">{t.heroTitle1}</span>
-          <span className="text-gradient block pb-2">{t.heroTitle2}</span>
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-bold mb-5 md:mb-6 animate-fade-up leading-[1.05] tracking-tight" style={{ animationDelay: "0.1s" }}>
+          <span className="block">{t.heroTitle1}</span>
+          <span className="text-gradient block pb-1">{t.heroTitle2}</span>
         </h1>
 
         {/* Subtitle */}
-        <p className="text-muted-foreground/80 max-w-2xl mx-auto text-sm md:text-xl mb-8 md:mb-12 animate-fade-up leading-relaxed font-medium" style={{ animationDelay: "0.2s" }}>
+        <p className="text-muted-foreground max-w-xl mx-auto text-base md:text-lg mb-8 md:mb-10 animate-fade-up leading-relaxed" style={{ animationDelay: "0.2s" }}>
           {t.heroSubtitle}
         </p>
 
-        {/* Metrics Grid */}
-        <div className="flex flex-wrap items-center justify-center gap-2 md:gap-6 mb-8 md:mb-12 animate-fade-up w-full max-w-sm sm:max-w-none mx-auto" style={{ animationDelay: "0.3s" }}>
-          <div className="group flex-1 min-w-[130px] flex flex-col items-center gap-0.5 md:gap-1 px-3 sm:px-5 md:px-8 py-3 md:py-4 rounded-2xl md:rounded-[2.5rem] glass hover:bg-white/5 transition-all duration-500 border border-white/10 hover:border-primary/30 shadow-2xl">
-            <div className="flex items-center gap-1.5 md:gap-3">
-              <Users className="w-3.5 h-3.5 md:w-5 md:h-5 text-primary" />
-              <div className="text-xl md:text-3xl font-heading font-bold text-foreground">
-                {mounted ? <CountUp end={membersCount} prefix="+" /> : "0"}
-              </div>
-            </div>
-            <span className="text-[9px] md:text-[10px] font-heading font-bold uppercase tracking-widest text-muted-foreground/60 group-hover:text-primary/80 transition-colors whitespace-nowrap">{t.members}</span>
-          </div>
-
-          <div className="group flex-1 min-w-[130px] flex flex-col items-center gap-0.5 md:gap-1 px-3 sm:px-5 md:px-8 py-3 md:py-4 rounded-2xl md:rounded-[2.5rem] glass hover:bg-white/5 transition-all duration-500 border border-white/10 hover:border-primary/30 shadow-2xl">
-            <div className="flex items-center gap-1.5 md:gap-3">
-              <CalendarCheck className="w-3.5 h-3.5 md:w-5 md:h-5 text-primary" />
-              <div className="text-xl md:text-3xl font-heading font-bold text-foreground">
-                {mounted ? <CountUp end={pastCount} prefix="+" /> : "0"}
-              </div>
-            </div>
-            <span className="text-[9px] md:text-[10px] font-heading font-bold uppercase tracking-widest text-muted-foreground/60 group-hover:text-primary/80 transition-colors whitespace-nowrap">{t.eventsLabel}</span>
-          </div>
-
-          <div className="group hidden sm:flex flex-1 min-w-[140px] flex-col items-center gap-0.5 md:gap-1 px-3 sm:px-5 md:px-8 py-3 md:py-4 rounded-2xl md:rounded-[2.5rem] glass hover:bg-white/5 transition-all duration-500 border border-white/10 hover:border-primary/30 shadow-2xl">
-            <div className="flex items-center gap-1.5 md:gap-3">
-              <MapPin className="w-3.5 h-3.5 md:w-5 md:h-5 text-primary" />
-              <div className="text-sm md:text-xl font-heading font-extrabold text-foreground">Santo Domingo</div>
-            </div>
-            <span className="text-[9px] md:text-[10px] font-heading font-bold uppercase tracking-widest text-muted-foreground/60 group-hover:text-primary/80 transition-colors whitespace-nowrap">República Dominicana</span>
-          </div>
-        </div>
-
         {/* Call to Actions */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 w-full max-w-[280px] sm:max-w-none mx-auto animate-fade-up" style={{ animationDelay: "0.4s" }}>
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 w-full max-w-[280px] sm:max-w-none mx-auto mb-12 md:mb-14 animate-fade-up" style={{ animationDelay: "0.3s" }}>
           <a
             href={links.cncfCommunity}
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative inline-flex items-center justify-center gap-3 px-6 md:px-10 py-3.5 md:py-5 bg-gradient-to-r from-primary to-cyan-500 text-primary-foreground font-heading font-black rounded-2xl md:rounded-3xl glow-md hover:glow-lg transition-all duration-500 hover:-translate-y-2 active:scale-95 shadow-2xl shadow-primary/40 uppercase tracking-wider text-xs md:text-sm w-full sm:w-auto"
+            className="group inline-flex items-center justify-center gap-2 h-12 px-7 rounded-full bg-primary text-primary-foreground font-heading font-semibold text-sm md:text-base hover:bg-primary/90 active:scale-[0.98] transition-all"
           >
             {t.joinCommunity}
-            <ArrowRight className="w-4 h-4 md:w-5 md:h-5 transition-transform group-hover:translate-x-2 shrink-0" />
+            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1 shrink-0" />
           </a>
-          
           <a
             href="/events"
-            className="relative inline-flex items-center justify-center px-6 md:px-10 py-3.5 md:py-5 bg-white/5 hover:bg-white/10 text-white font-heading font-black rounded-2xl md:rounded-3xl transition-all duration-300 border border-white/10 hover:border-white/30 backdrop-blur-xl hover:-translate-y-1 active:scale-95 uppercase tracking-wider text-xs md:text-sm w-full sm:w-auto"
+            className="relative inline-flex items-center justify-center gap-2 h-12 px-7 rounded-full border border-foreground/15 text-foreground font-heading font-semibold text-sm md:text-base hover:border-primary/60 hover:text-primary active:scale-[0.98] transition-all"
           >
+            {t.exploreEvents}
             {upcomingCount > 0 && (
-              <span className="absolute -top-2 -right-2 flex h-5 w-5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                <span className="relative flex items-center justify-center rounded-full h-5 w-5 bg-primary text-[10px] font-bold text-primary-foreground shadow-lg">
-                  {upcomingCount}
-                </span>
+              <span className="inline-flex items-center justify-center rounded-full h-5 min-w-5 px-1.5 bg-primary text-[11px] font-bold text-primary-foreground">
+                {upcomingCount}
               </span>
             )}
-            {t.exploreEvents}
           </a>
+        </div>
+
+        {/* Metrics */}
+        <dl className="grid grid-cols-3 w-full max-w-2xl divide-x divide-foreground/10 animate-fade-up" style={{ animationDelay: "0.4s" }}>
+          {[
+            { value: membersCount, label: t.members },
+            { value: pastCount, label: t.eventsLabel },
+            { value: KUBESTRONAUTS_DR, label: t.kubestronautsLabel, href: links.kubestronautsDR },
+          ].map((stat) => {
+            const body = (
+              <>
+                <dt className="mt-1 text-[11px] md:text-xs font-medium uppercase tracking-wider text-muted-foreground">{stat.label}</dt>
+                <dd className="text-2xl md:text-4xl font-heading font-bold text-foreground">
+                  {mounted ? <CountUp end={stat.value} /> : "0"}
+                </dd>
+              </>
+            );
+            return (
+              <div key={stat.label} className="flex flex-col-reverse items-center px-2">
+                {stat.href ? (
+                  <a href={stat.href} target="_blank" rel="noopener noreferrer" className="flex flex-col-reverse items-center hover:text-primary [&_dt]:hover:text-primary transition-colors">
+                    {body}
+                  </a>
+                ) : body}
+              </div>
+            );
+          })}
+        </dl>
+
+        {/* Latin America */}
+        <div className="mt-12 md:mt-14 animate-fade-up" style={{ animationDelay: "0.5s" }}>
+          <p className="text-xs md:text-sm text-muted-foreground mb-3">{t.latamTitle}</p>
+          <div className="flex flex-wrap justify-center gap-2 max-w-3xl">
+            {latamCommunities.map((c) => (
+              <a
+                key={c.href}
+                href={c.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3 py-1.5 rounded-full border border-foreground/10 text-xs md:text-sm text-foreground/80 hover:border-primary/50 hover:text-primary transition-colors"
+              >
+                {c.name}
+              </a>
+            ))}
+            <a
+              href={links.kcds}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 px-3 py-1.5 text-xs md:text-sm font-medium text-primary hover:underline"
+            >
+              {t.allKcds}
+              <ArrowRight className="w-3.5 h-3.5" />
+            </a>
+          </div>
         </div>
       </div>
 

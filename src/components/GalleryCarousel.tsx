@@ -126,14 +126,14 @@ const GalleryCarousel = ({ images }: GalleryCarouselProps) => {
           <div className="hidden md:flex gap-3">
             <button
               onClick={scrollPrev}
-              className="w-12 h-12 rounded-2xl glass-darker flex items-center justify-center text-foreground hover:bg-primary hover:text-primary-foreground transition-all duration-300 border border-white/10 active:scale-95 z-10"
+              className="w-12 h-12 rounded-2xl glass-darker flex items-center justify-center text-foreground hover:bg-primary hover:text-primary-foreground transition-all duration-300 border border-foreground/10 active:scale-95 z-10"
               aria-label={language === "es" ? "Anterior" : "Previous"}
             >
               <ChevronLeft className="w-6 h-6" />
             </button>
             <button
               onClick={scrollNext}
-              className="w-12 h-12 rounded-2xl glass-darker flex items-center justify-center text-foreground hover:bg-primary hover:text-primary-foreground transition-all duration-300 border border-white/10 active:scale-95 z-10"
+              className="w-12 h-12 rounded-2xl glass-darker flex items-center justify-center text-foreground hover:bg-primary hover:text-primary-foreground transition-all duration-300 border border-foreground/10 active:scale-95 z-10"
               aria-label={language === "es" ? "Siguiente" : "Next"}
             >
               <ChevronRight className="w-6 h-6" />
@@ -149,7 +149,7 @@ const GalleryCarousel = ({ images }: GalleryCarouselProps) => {
                   key={index}
                   className="flex-[0_0_85%] sm:flex-[0_0_60%] lg:flex-[0_0_40%] min-w-0"
                 >
-                  <div className="carousel-item-inner aspect-[16/10] rounded-2xl md:rounded-3xl overflow-hidden border border-white/10 relative group/item shadow-2xl bg-muted transition-transform duration-100 ease-linear">
+                  <div className="carousel-item-inner aspect-[16/10] rounded-2xl md:rounded-3xl overflow-hidden border border-foreground/10 relative group/item shadow-2xl bg-muted transition-transform duration-100 ease-linear">
                     <Image
                       src={src}
                       alt={`Cloud Native Santo Domingo evento ${index + 1}`}
@@ -166,7 +166,7 @@ const GalleryCarousel = ({ images }: GalleryCarouselProps) => {
         </div>
 
         <div className="mt-10 flex flex-col items-center gap-6">
-          <div className="w-full max-w-xs h-1 bg-white/10 rounded-full overflow-hidden relative">
+          <div className="w-full max-w-xs h-1 bg-foreground/10 rounded-full overflow-hidden relative">
             <div 
               className="absolute top-0 left-0 h-full bg-primary transition-all duration-300 ease-out rounded-full"
               style={{ width: `${scrollProgress}%` }}

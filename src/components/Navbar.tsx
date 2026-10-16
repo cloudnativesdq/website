@@ -5,10 +5,25 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useLanguage } from "@/hooks/use-language";
 import { cn } from "@/lib/utils";
-import { Menu, X, Globe } from "lucide-react";
+import { Menu, X, Globe, Sun, Moon } from "lucide-react";
+import { useTheme } from "next-themes";
 
 const Navbar = () => {
   const { language, setLanguage } = useLanguage();
+  const { resolvedTheme, setTheme } = useTheme();
+  const themeLabel = language === "es" ? "Cambiar tema" : "Toggle theme";
+  // Icons switch via the `dark` class, so server and client render the same markup.
+  const themeToggle = (className: string) => (
+    <button
+      onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+      className={className}
+      aria-label={themeLabel}
+      title={themeLabel}
+    >
+      <Sun className="w-4 h-4 text-primary hidden dark:block" />
+      <Moon className="w-4 h-4 text-primary dark:hidden" />
+    </button>
+  );
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -25,6 +40,8 @@ const Navbar = () => {
     { href: "/events", label: language === "es" ? "Eventos" : "Events" },
     { href: "/team", label: language === "es" ? "Equipo" : "Team" },
     { href: "/gallery", label: language === "es" ? "Galería" : "Gallery" },
+    { href: "/map", label: language === "es" ? "Mapa" : "Map" },
+    { href: "/resources", label: language === "es" ? "Recursos" : "Resources" },
     { href: "/contact", label: language === "es" ? "Contacto" : "Contact" },
   ];
 
@@ -32,7 +49,7 @@ const Navbar = () => {
     <nav
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-500 px-6 py-4",
-        isScrolled ? "bg-background/80 backdrop-blur-xl border-b border-white/5 py-3 shadow-2xl" : "bg-transparent"
+        isScrolled ? "bg-background/80 backdrop-blur-xl border-b border-foreground/5 py-3 shadow-2xl" : "bg-transparent"
       )}
     >
       <div className="container flex items-center justify-between">
@@ -55,24 +72,26 @@ const Navbar = () => {
           
           <button
             onClick={() => setLanguage(language === "es" ? "en" : "es")}
-            className="flex items-center gap-2 px-4 py-2 rounded-2xl glass border border-white/10 text-[10px] font-black uppercase tracking-[0.15em] text-foreground hover:bg-white/10 hover:border-primary/40 hover:-translate-y-0.5 active:scale-95 transition-all duration-300 shadow-xl"
+            className="flex items-center gap-2 px-4 py-2 rounded-2xl glass border border-foreground/10 text-[10px] font-black uppercase tracking-[0.15em] text-foreground hover:bg-foreground/10 hover:border-primary/40 hover:-translate-y-0.5 active:scale-95 transition-all duration-300 shadow-xl"
           >
             <Globe className="w-3.5 h-3.5 text-primary" />
             {language === "es" ? "EN" : "ES"}
           </button>
+          {themeToggle("p-2.5 rounded-2xl glass border border-foreground/10 hover:bg-foreground/10 hover:border-primary/40 hover:-translate-y-0.5 active:scale-95 transition-all duration-300 shadow-xl")}
         </div>
 
         {/* Mobile Toggle */}
         <div className="flex md:hidden items-center gap-3">
           <button
             onClick={() => setLanguage(language === "es" ? "en" : "es")}
-            className="px-3 py-1.5 rounded-xl glass border border-white/10 text-[10px] font-black tracking-widest active:scale-90 transition-transform"
+            className="px-3 py-1.5 rounded-xl glass border border-foreground/10 text-[10px] font-black tracking-widest active:scale-90 transition-transform"
           >
             {language.toUpperCase()}
           </button>
+          {themeToggle("p-2 rounded-xl glass border border-foreground/10 active:scale-90 transition-transform")}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="p-2.5 rounded-xl bg-white/5 text-foreground active:scale-90 transition-all duration-200 border border-white/5"
+            className="p-2.5 rounded-xl bg-foreground/5 text-foreground active:scale-90 transition-all duration-200 border border-foreground/5"
             aria-label="Toggle Menu"
           >
             {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
@@ -83,7 +102,7 @@ const Navbar = () => {
       {/* Mobile Menu */}
       <div 
         className={cn(
-          "absolute top-full left-0 right-0 bg-background/98 backdrop-blur-2xl border-b border-white/10 overflow-hidden transition-all duration-500 ease-in-out px-6 shadow-2xl",
+          "absolute top-full left-0 right-0 bg-background/98 backdrop-blur-2xl border-b border-foreground/10 overflow-hidden transition-all duration-500 ease-in-out px-6 shadow-2xl",
           isMobileMenuOpen ? "max-h-[400px] py-8 opacity-100" : "max-h-0 py-0 opacity-0 pointer-events-none"
         )}
       >

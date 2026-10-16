@@ -6,6 +6,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { LanguageProvider } from "@/hooks/use-language";
+import { ThemeProvider } from "next-themes";
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -81,20 +82,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" data-scroll-behavior="smooth">
+    <html lang="es" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
         <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
       </head>
       <body>
-        <LanguageProvider>
-          <TooltipProvider>
-            {children}
-            <Analytics />
-            <SpeedInsights />
-            <Toaster />
-            <Sonner />
-          </TooltipProvider>
-        </LanguageProvider>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          <LanguageProvider>
+            <TooltipProvider>
+              {children}
+              <Analytics />
+              <SpeedInsights />
+              <Toaster />
+              <Sonner />
+            </TooltipProvider>
+          </LanguageProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

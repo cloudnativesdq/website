@@ -52,7 +52,7 @@ export default function EventsPage({ data }: EventsPageProps) {
           </div>
 
           <div className="flex justify-center mb-12">
-            <div className="inline-flex items-center gap-1 p-1.5 rounded-2xl bg-white/5 border border-white/10">
+            <div className="inline-flex items-center gap-1 p-1.5 rounded-2xl bg-foreground/5 border border-foreground/10">
               {tabs.map((tab) => (
                 <button
                   key={tab.id}
@@ -61,7 +61,7 @@ export default function EventsPage({ data }: EventsPageProps) {
                     "flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all duration-300",
                     activeTab === tab.id
                       ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30"
-                      : "text-muted-foreground hover:text-foreground hover:bg-white/5"
+                      : "text-muted-foreground hover:text-foreground hover:bg-foreground/5"
                   )}
                 >
                   <tab.icon className="w-4 h-4" />
@@ -70,7 +70,7 @@ export default function EventsPage({ data }: EventsPageProps) {
                     "ml-1 px-2 py-0.5 rounded-full text-xs",
                     activeTab === tab.id 
                       ? "bg-white/20 text-white" 
-                      : "bg-white/10 text-muted-foreground"
+                      : "bg-foreground/10 text-muted-foreground"
                   )}>
                     {tab.count}
                   </span>

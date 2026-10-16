@@ -8,6 +8,7 @@ import OrganizersSection from "@/components/OrganizersSection";
 import { Instagram, Linkedin, Mail, Github, Youtube, Presentation, Mic2 } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 import { links } from "@/lib/links";
+import WhatsAppIcon from "@/components/WhatsAppIcon";
 
 interface HomeViewProps {
   data: any;
@@ -103,7 +104,7 @@ export default function HomeView({ data }: HomeViewProps) {
       <HeroSection membersCount={data.membersCount} pastCount={data.pastCount} upcomingCount={data.upcoming.length} />
       
       <OrganizersSection organizers={data.organizers} />
-      <footer className="relative py-20 mt-24 border-t border-white/5 overflow-hidden">
+      <footer className="relative py-20 mt-24 border-t border-foreground/5 overflow-hidden">
         <div className="absolute inset-0 bg-surface/20 backdrop-blur-3xl -z-10" />
         <div className="container px-6">
           <div className="flex flex-col items-center">
@@ -112,6 +113,7 @@ export default function HomeView({ data }: HomeViewProps) {
                 { icon: Instagram, href: links.instagram, label: "Instagram" },
                 { icon: Linkedin, href: links.linkedin, label: "LinkedIn" },
                 { icon: Youtube, href: links.youtube, label: "YouTube" },
+                { icon: WhatsAppIcon, href: links.whatsapp, label: "WhatsApp" },
                 { icon: Github, href: links.github, label: "GitHub" },
                 { icon: Mail, href: links.emailMailto, label: "Email" }
               ].map((social) => (
@@ -120,7 +122,7 @@ export default function HomeView({ data }: HomeViewProps) {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-12 h-12 rounded-2xl glass-darker flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all duration-300 border border-white/5 group"
+                  className="w-12 h-12 rounded-2xl glass-darker flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all duration-300 border border-foreground/5 group"
                   aria-label={social.label}
                 >
                   <social.icon className="w-5 h-5 group-hover:scale-110 transition-transform" />
@@ -138,7 +140,7 @@ export default function HomeView({ data }: HomeViewProps) {
                 >
                   Cloud Native Computing Foundation
                 </a>
-                <span className="hidden md:block text-white/10">|</span>
+                <span className="hidden md:block text-foreground/10">|</span>
                 <a
                   href={links.slides}
                   target="_blank"
@@ -148,7 +150,7 @@ export default function HomeView({ data }: HomeViewProps) {
                   <Presentation className="w-4 h-4" />
                   {language === "es" ? "Presentaciones" : "Slide Decks"}
                 </a>
-                <span className="hidden md:block text-white/10">|</span>
+                <span className="hidden md:block text-foreground/10">|</span>
                 <a
                   href={links.cfp}
                   target="_blank"

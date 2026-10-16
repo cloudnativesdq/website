@@ -55,9 +55,9 @@ function OrganizerCard({ organizer }: { organizer: Organizer }) {
       href={organizer.profileUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="group flex flex-col items-center text-center p-6 rounded-[2rem] bg-white/5 border border-white/10 hover:border-primary/50 hover:bg-white/[0.08] transition-all duration-500 hover-lift shadow-xl shadow-black/20 w-[calc(50%-1rem)] sm:w-[calc(33.333%-1.5rem)] lg:w-[calc(20%-1.5rem)] min-w-[160px]"
+      className="group flex flex-col items-center text-center p-6 rounded-[2rem] bg-foreground/5 border border-foreground/10 hover:border-primary/50 hover:bg-foreground/[0.08] transition-all duration-500 hover-lift shadow-xl shadow-black/20 w-[calc(50%-1rem)] sm:w-[calc(33.333%-1.5rem)] lg:w-[calc(20%-1.5rem)] min-w-[160px]"
     >
-      <div className="relative w-20 h-20 md:w-28 md:h-28 rounded-[1.5rem] md:rounded-[2rem] overflow-hidden mb-6 border-2 border-white/10 group-hover:border-primary/50 transition-all duration-500 rotate-3 group-hover:rotate-0 bg-muted">
+      <div className="relative w-20 h-20 md:w-28 md:h-28 rounded-[1.5rem] md:rounded-[2rem] overflow-hidden mb-6 border-2 border-foreground/10 group-hover:border-primary/50 transition-all duration-500 rotate-3 group-hover:rotate-0 bg-muted">
         <Image
           src={imgSrc}
           alt={organizer.name}

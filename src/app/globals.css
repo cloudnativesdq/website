@@ -10,6 +10,50 @@
   }
   
   :root {
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    --primary: 199 89% 40%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 92%;
+    --secondary-foreground: 222 47% 15%;
+
+    --muted: 210 40% 94%;
+    --muted-foreground: 215 20% 38%;
+
+    --accent: 199 89% 40%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 84% 50%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214 32% 88%;
+    --input: 214 32% 88%;
+    --ring: 199 89% 40%;
+
+    --radius: 1rem;
+
+    --sidebar-background: 210 40% 98%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-primary: 199 89% 40%;
+    --sidebar-primary-foreground: 210 40% 98%;
+    --sidebar-accent: 210 40% 92%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 214 32% 88%;
+    --sidebar-ring: 199 89% 40%;
+
+    --glow: 199 89% 40%;
+    --surface: 210 40% 96%;
+  }
+
+  .dark {
     --background: 222 47% 6%;
     --foreground: 210 40% 98%;
 
@@ -90,10 +134,10 @@
 
 @layer utilities {
   .glass {
-    @apply bg-card/40 backdrop-blur-md border border-white/5;
+    @apply bg-card/40 backdrop-blur-md border border-foreground/5;
   }
   .glass-darker {
-    @apply bg-black/40 backdrop-blur-xl border border-white/5;
+    @apply bg-background/60 backdrop-blur-xl border border-foreground/5;
   }
   .glow-sm {
     box-shadow: 0 0 20px -5px hsl(var(--glow) / 0.3);
@@ -119,6 +163,10 @@
   
   .tap-bounce {
     @apply active:scale-90 transition-transform duration-200;
+  }
+
+  .map-dark .leaflet-tile-pane {
+    filter: invert(1) hue-rotate(180deg) brightness(0.85) contrast(0.9);
   }
 
   .nav-link-ltr {
