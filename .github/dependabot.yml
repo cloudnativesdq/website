@@ -1,0 +1,35 @@
+# Dependency update PRs. Minor and patch updates are grouped into one weekly PR and merged
+# automatically once CI passes (see workflows/dependabot.yml); major updates get their own PR,
+# are labeled breaking-change and request a review instead.
+version: 2
+updates:
+  - package-ecosystem: npm # covers pnpm-lock.yaml
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:00"
+      timezone: America/Santo_Domingo
+    # Matches pnpm's minimumReleaseAge: skip versions published in the last 3 days.
+    cooldown:
+      default-days: 3
+    open-pull-requests-limit: 10
+    groups:
+      minor-and-patch:
+        update-types: [minor, patch]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:00"
+      timezone: America/Santo_Domingo
+    groups:
+      actions:
+        update-types: [minor, patch]
+
+  - package-ecosystem: gitsubmodule # _ds/style-guide
+    directory: /
+    schedule:
+      interval: weekly

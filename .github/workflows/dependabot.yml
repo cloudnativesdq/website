@@ -1,0 +1,63 @@
+# Handles Dependabot PRs without needing branch protection or the repo's auto-merge setting:
+# - triage: labels minor/patch PRs "automerge"; labels major PRs "breaking-change" and
+#   requests a review from the maintainer, which sends a GitHub notification and email.
+# - merge: once the CI workflow passes on an "automerge" PR, squash-merges it.
+# - CI failure on any Dependabot PR mentions the maintainer.
+name: Dependabot
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  MAINTAINER: TineoC
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  GH_REPO: ${{ github.repository }}
+
+jobs:
+  triage:
+    if: github.event_name == 'pull_request' && github.event.pull_request.user.login == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - id: meta
+        uses: dependabot/fetch-metadata@v2
+
+      - name: Mark for auto-merge
+        if: steps.meta.outputs.update-type != 'version-update:semver-major'
+        run: |
+          gh label create automerge --color 0e8a16 --description "Merged automatically when CI passes" 2>/dev/null || true
+          gh pr edit "${{ github.event.pull_request.number }}" --add-label automerge
+
+      - name: Flag breaking change
+        if: steps.meta.outputs.update-type == 'version-update:semver-major'
+        run: |
+          gh label create breaking-change --color d93f0b --description "Major version update, needs review" 2>/dev/null || true
+          gh pr edit "${{ github.event.pull_request.number }}" --add-label breaking-change --add-reviewer "$MAINTAINER"
+          gh pr comment "${{ github.event.pull_request.number }}" --body \
+            "@$MAINTAINER major update of \`${{ steps.meta.outputs.dependency-names }}\` (${{ steps.meta.outputs.previous-version }} → ${{ steps.meta.outputs.new-version }}). It may contain breaking changes, so it is not merged automatically."
+
+  merge:
+    if: >
+      github.event_name == 'workflow_run' &&
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.actor.login == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Merge or report
+        run: |
+          pr=$(gh pr list --state open --head "${{ github.event.workflow_run.head_branch }}" --json number --jq '.[0].number')
+          [ -n "$pr" ] || exit 0
+          if [ "${{ github.event.workflow_run.conclusion }}" = "success" ]; then
+            if gh pr view "$pr" --json labels --jq '.labels[].name' | grep -qx automerge; then
+              gh pr merge "$pr" --squash --delete-branch
+            fi
+          elif [ "${{ github.event.workflow_run.conclusion }}" = "failure" ]; then
+            gh pr comment "$pr" --body "@$MAINTAINER CI failed on this dependency update, so it was not merged: ${{ github.event.workflow_run.html_url }}"
+          fi
