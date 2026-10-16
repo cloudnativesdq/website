@@ -157,7 +157,7 @@ export default function ResourcesView({ coupon, courses, videos, blogs, orientat
             </div>
           </div>
 
-          <CardGrid id="resources-grid" title={t.resourcesGrid.title} categories={categories} items={items} />
+          <CardGrid id="resources-grid" title={t.resourcesGrid.title} categories={categories} items={items} defaultTab="videos" />
 
           <div className="mt-10 flex flex-col md:flex-row md:items-center justify-between gap-4 rounded-3xl border border-foreground/10 bg-card/60 p-6">
             <div className="flex items-center gap-3">

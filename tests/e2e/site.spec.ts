@@ -78,8 +78,10 @@ test("card grids filter by tab", async ({ page }) => {
   const grid = page.locator('[aria-labelledby="resources-grid-title"]');
   const tabs = grid.getByRole("tab");
   expect(await tabs.count()).toBeGreaterThan(1);
-  await tabs.nth(1).click();
-  await expect(tabs.nth(1)).toHaveAttribute("aria-selected", "true");
+  // freeCodeCamp videos open by default.
+  await expect(grid.getByRole("tab", { selected: true })).toContainText(/Videos/i);
+  await tabs.first().click();
+  await expect(tabs.first()).toHaveAttribute("aria-selected", "true");
   await expect(grid.locator("ul > li").first()).toBeVisible();
 });
 

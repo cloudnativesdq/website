@@ -41,6 +41,7 @@ export default function CardGrid({
   categories,
   items,
   toolbar,
+  defaultTab = "all",
 }: {
   id: string;
   title: string;
@@ -48,9 +49,11 @@ export default function CardGrid({
   items: CardItem[];
   /** Extra controls shown next to the title (e.g. a country filter). */
   toolbar?: React.ReactNode;
+  /** Tab selected on load; falls back to "all" when it has no items. */
+  defaultTab?: string;
 }) {
   const { t, language } = useLanguage();
-  const [active, setActive] = useState("all");
+  const [selected, setActive] = useState(defaultTab);
   const [shown, setShown] = useState(PAGE);
 
   const byId = useMemo(() => new Map(categories.map((c) => [c.id, c])), [categories]);
@@ -59,6 +62,7 @@ export default function CardGrid({
     for (const i of items) for (const id of [i.category, ...(i.tags ?? [])]) c[id] = (c[id] ?? 0) + 1;
     return c;
   }, [items]);
+  const active = counts[selected] ? selected : "all";
   const filtered = active === "all" ? items : items.filter((i) => i.category === active || i.tags?.includes(active));
   const hint = byId.get(active)?.hint;
 
