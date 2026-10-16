@@ -40,11 +40,14 @@ export default function CardGrid({
   title,
   categories,
   items,
+  toolbar,
 }: {
   id: string;
   title: string;
   categories: CardCategory[];
   items: CardItem[];
+  /** Extra controls shown next to the title (e.g. a country filter). */
+  toolbar?: React.ReactNode;
 }) {
   const { t, language } = useLanguage();
   const [active, setActive] = useState("all");
@@ -67,9 +70,12 @@ export default function CardGrid({
 
   return (
     <section className="mt-10 first:mt-0" aria-labelledby={`${id}-title`}>
-      <h2 id={`${id}-title`} className="text-2xl md:text-3xl font-heading font-bold mb-4">
-        {title}
-      </h2>
+      <div className="flex flex-wrap items-end justify-between gap-3 mb-4">
+        <h2 id={`${id}-title`} className="text-2xl md:text-3xl font-heading font-bold">
+          {title}
+        </h2>
+        {toolbar}
+      </div>
 
       {/* Category tabs; scroll sideways on small screens */}
       <div className="-mx-4 px-4 sm:mx-0 sm:px-0 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">

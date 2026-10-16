@@ -62,7 +62,9 @@ export async function getCommunityData(): Promise<CommunityData> {
   let ocgData: CommunityData;
 
   try {
-    ocgData = withExtraOrganizers(await provider.fetchData());
+    // One retry: a single failed OCG request would otherwise publish the fallback data (no events)
+    // and keep it cached until the next revalidation.
+    ocgData = withExtraOrganizers(await provider.fetchData().catch(() => provider.fetchData()));
   } catch (error) {
     console.error(`[${provider.name}] failed, using fallback:`, error);
     ocgData = withExtraOrganizers(await fallback.fetchData());

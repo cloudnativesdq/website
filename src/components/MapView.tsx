@@ -43,8 +43,11 @@ export default function MapView({ data, lfEvents }: { data: MapData; lfEvents: L
   }, [data.chapters, lfEvents]);
 
   // Every upcoming event on the page, as cards grouped by organizer.
-  const gridEvents = useMemo<GridEvent[]>(
-    () => [
+  const gridEvents = useMemo<GridEvent[]>(() => {
+    // KubeCon/AAIF only give a city; borrow the country of a chapter in that city.
+    const cityCountry = (city: string) =>
+      (city && data.chapters.find((c) => c.countryCode && c.location.toLowerCase().startsWith(city.toLowerCase()))?.countryCode) || null;
+    return [
       ...data.chapters.flatMap((c) =>
         c.events.map((e) => ({
           title: e.name,
@@ -68,11 +71,12 @@ export default function MapView({ data, lfEvents }: { data: MapData; lfEvents: L
         place: "",
         countryCode: e.countryCode,
       })),
-      ...lfEvents.kubecons.map((e) => ({ title: e.title, start: e.start, url: e.url, image: e.image ?? null, kind: "kubecon" as const, place: e.city, countryCode: null })),
-      ...lfEvents.aaif.map((e) => ({ title: e.title, start: e.start, url: e.url, image: e.image ?? null, kind: "aaif" as const, place: e.city, countryCode: null })),
-    ],
-    [data, lfEvents]
-  );
+      ...lfEvents.kubecons.map((e) => ({ title: e.title, start: e.start, url: e.url, image: e.image ?? null, kind: "kubecon" as const, place: e.city, countryCode: cityCountry(e.city) })),
+      ...lfEvents.aaif.map((e) => ({ title: e.title, start: e.start, url: e.url, image: e.image ?? null, kind: "aaif" as const, place: e.city, countryCode: cityCountry(e.city) })),
+    ];
+  }, [data, lfEvents]);
+
+  const countryNames = useMemo(() => new Map(data.countries.map((c) => [c.code, c.name])), [data.countries]);
 
   const countryByCode = useMemo(() => new Map(data.countries.map((c) => [c.code, c])), [data.countries]);
 
@@ -136,11 +140,11 @@ export default function MapView({ data, lfEvents }: { data: MapData; lfEvents: L
           </header>
 
           {/* World events first, then the map. */}
-          <EventsGrid events={gridEvents} />
+          <EventsGrid events={gridEvents} countryNames={countryNames} />
 
           {/* Full-width map; the countries list floats over it behind a toggle, closed by default. */}
           <h2 id="map-title" className="text-2xl md:text-3xl font-heading font-bold mt-12 mb-4">{t.mapSectionTitle}</h2>
-          <div className="relative h-[calc(100svh-12.5rem)] md:h-[calc(100svh-10rem)] min-h-[380px] max-h-[780px] rounded-3xl overflow-hidden border border-foreground/10">
+          <div className="relative isolate h-[calc(100svh-12.5rem)] md:h-[calc(100svh-10rem)] min-h-[380px] max-h-[780px] rounded-3xl overflow-hidden border border-foreground/10">
             <div className="absolute inset-0" data-testid="chapters-map">
                 <ChaptersMap
                   chapters={data.chapters}

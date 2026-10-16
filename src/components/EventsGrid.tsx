@@ -1,6 +1,7 @@
 "use client";
 
-import { MapPin } from "lucide-react";
+import { useMemo, useState } from "react";
+import { Globe2, MapPin } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 import CardGrid, { type CardCategory } from "@/components/CardGrid";
 import EventTypeHint from "@/components/EventTypeHint";
@@ -25,8 +26,18 @@ export interface GridEvent {
   region?: string;
 }
 
-export default function EventsGrid({ events }: { events: GridEvent[] }) {
+export default function EventsGrid({ events, countryNames }: { events: GridEvent[]; countryNames: Map<string, string> }) {
   const { t } = useLanguage();
+  const [country, setCountry] = useState("");
+
+  // Countries that have at least one upcoming event, for the filter.
+  const countries = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const e of events) if (e.countryCode) counts.set(e.countryCode, (counts.get(e.countryCode) ?? 0) + 1);
+    return Array.from(counts, ([code, count]) => ({ code, count, name: countryNames.get(code) ?? code.toUpperCase() })).sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
+  }, [events, countryNames]);
 
   const hint = (text: string) => <p className="text-xs text-muted-foreground mb-3">{text}</p>;
   const categories: CardCategory[] = [
@@ -38,7 +49,8 @@ export default function EventsGrid({ events }: { events: GridEvent[] }) {
     { id: "aaif", label: "AAIF", logo: "aaif.png", hint: hint(t.aaifHint) },
   ];
 
-  const items = [...events]
+  const items = events
+    .filter((e) => !country || e.countryCode === country)
     .sort((a, b) => a.start.localeCompare(b.start))
     .map((e) => ({
       category: e.kind,
@@ -60,5 +72,24 @@ export default function EventsGrid({ events }: { events: GridEvent[] }) {
       ),
     }));
 
-  return <CardGrid id="events-grid" title={t.eventsGrid.title} categories={categories} items={items} />;
+  const countryFilter = (
+    <label className="relative inline-flex items-center">
+      <span className="sr-only">{t.eventsGrid.country}</span>
+      <Globe2 className="absolute left-3 w-4 h-4 text-muted-foreground pointer-events-none" aria-hidden="true" />
+      <select
+        value={country}
+        onChange={(ev) => setCountry(ev.target.value)}
+        className="h-10 pl-9 pr-8 rounded-full border border-foreground/15 bg-background text-sm font-medium focus:outline-none focus:border-primary/60"
+      >
+        <option value="">{t.eventsGrid.allCountries}</option>
+        {countries.map((c) => (
+          <option key={c.code} value={c.code}>
+            {flag(c.code)} {c.name} ({c.count})
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+
+  return <CardGrid key={country} id="events-grid" title={t.eventsGrid.title} categories={categories} items={items} toolbar={countryFilter} />;
 }

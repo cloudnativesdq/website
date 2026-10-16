@@ -93,7 +93,8 @@ function FocusBounds({ points, panelOpen }: { points: [number, number][] | null;
   useEffect(() => {
     // On wide screens an open countries panel covers the right 340px of the map; keep the focus clear of it.
     const panel: [number, number] = panelOpen && window.innerWidth >= 1024 ? [360, 0] : [0, 0];
-    if (points?.length) map.flyToBounds(latLngBounds(points).pad(0.4), { maxZoom: 7, duration: 0.8, paddingBottomRight: panel });
+    if (points?.length === 1) map.flyTo(points[0], 9, { duration: 0.8 }); // one chapter: zoom to its city
+    else if (points?.length) map.flyToBounds(latLngBounds(points).pad(0.2), { maxZoom: 8, duration: 0.8, paddingBottomRight: panel });
     else map.flyTo([20, 0], 2, { duration: 0.8 });
     // eslint-disable-next-line react-hooks/exhaustive-deps -- refocus on selection only, not when the panel toggles
   }, [map, points]);
@@ -112,7 +113,7 @@ export default function ChaptersMap({ chapters, kcds, conferences, countries, fo
     // OSM has no dark tiles; dark mode inverts them in globals.css. The wrapper carries the class
     // because MapContainer only reads className on mount.
     <div className={`h-full w-full ${resolvedTheme === "dark" ? "map-dark" : ""}`}>
-    <MapContainer center={[18.7, -70.2]} zoom={7} minZoom={2} worldCopyJump scrollWheelZoom className="h-full w-full z-0">
+    <MapContainer center={[18.48, -69.93]} zoom={9} minZoom={2} worldCopyJump scrollWheelZoom className="h-full w-full z-0">
       <TileLayer
         url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
