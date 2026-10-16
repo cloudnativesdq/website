@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { Github, Linkedin, Star } from "lucide-react";
+import { Star } from "lucide-react";
+import { Github, Linkedin } from "@/components/BrandIcons";
 import { useLanguage } from "@/hooks/use-language";
 import Link from "next/link";
 import BrandLogo from "@/components/BrandLogo";

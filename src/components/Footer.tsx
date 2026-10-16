@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Instagram, Linkedin, Mail, Github, Youtube, Presentation, Mic2, Braces, ArrowUpRight } from "lucide-react";
+import { Mail, Presentation, Mic2, Braces, ArrowUpRight } from "lucide-react";
+import { Instagram, Linkedin, Github, Youtube } from "@/components/BrandIcons";
 import { useLanguage } from "@/hooks/use-language";
 import { links } from "@/lib/links";
 import WhatsAppIcon from "@/components/WhatsAppIcon";

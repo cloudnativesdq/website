@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowUpRight, CalendarDays, Linkedin, MapPin } from "lucide-react";
+import { ArrowUpRight, CalendarDays, MapPin } from "lucide-react";
+import { Linkedin } from "@/components/BrandIcons";
 import { useLanguage } from "@/hooks/use-language";
 import { wcnfOrganizers, type WcnfEvent } from "@/lib/wcnf";
 

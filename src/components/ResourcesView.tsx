@@ -9,7 +9,8 @@ import CardGrid, { type CardCategory, type CardItem } from "@/components/CardGri
 import { useLanguage } from "@/hooks/use-language";
 import { links, latamCommunities } from "@/lib/links";
 import type { Coupon, CncfCourse, Article, Orientation, Video } from "@/lib/cncf-resources";
-import { ArrowRight, ArrowUpRight, Github, Tag } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Tag } from "lucide-react";
+import { Github } from "@/components/BrandIcons";
 
 interface ResourcesViewProps {
   coupon: Coupon | null;

@@ -20,6 +20,7 @@ const CountUp = ({ end, duration = 2000, prefix = "" }: { end: number; duration?
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- matchMedia is browser-only
       setCount(end);
       return;
     }

@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { createElement, useState } from "react";
 import { Calendar, MapPin } from "lucide-react";
 import Image from "next/image";
 import { links } from "@/lib/links";
@@ -40,7 +40,6 @@ export default function EventCard({
   compact = false,
 }: EventCardProps) {
   const [imgSrc, setImgSrc] = useState(event.portraitImage || event.image || links.eventFallbackImage);
-  const EventIcon = getIcon(event.type);
   const showSoldOut = event.soldOut && !isPast;
   const showSpots = !isPast && !showSoldOut && event.spotsRemaining !== undefined && event.spotsRemaining < 10;
 
@@ -89,7 +88,7 @@ export default function EventCard({
       <div className="flex flex-col justify-center p-4 sm:p-2 min-w-0 flex-1">
         <div className={`${compact ? "flex" : "hidden sm:flex"} items-center gap-2 mb-2 sm:mb-3 flex-wrap`}>
           <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-primary/10 text-[10px] uppercase tracking-wider text-primary font-bold border border-primary/20">
-            <EventIcon className="w-3 h-3" />
+            {createElement(getIcon(event.type), { className: "w-3 h-3" })}
             {event.type}
           </span>
           {showSoldOut && (

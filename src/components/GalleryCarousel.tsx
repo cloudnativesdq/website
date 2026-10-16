@@ -99,12 +99,14 @@ const GalleryCarousel = ({ images }: GalleryCarouselProps) => {
     if (images && images.length > 0) {
       // Pick 15 random images to keep it snappy
       const shuffled = [...images].sort(() => Math.random() - 0.5).slice(0, 15);
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- shuffle on the client to avoid a hydration mismatch
       setShuffledImages(shuffled);
     }
   }, [images]);
 
   useEffect(() => {
     if (!emblaApi) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- initial sync with the carousel, then its events
     onSelect();
     onScroll(emblaApi);
     emblaApi.on("select", onSelect);

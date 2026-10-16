@@ -10,7 +10,8 @@ import type { DominicanCncfPeople } from "@/lib/cncf-people";
 import { useLanguage } from "@/hooks/use-language";
 import type { CommunityData } from "@/lib/types";
 import { links } from "@/lib/links";
-import { Linkedin, Mail, Github, Users, CalendarCheck } from "lucide-react";
+import { Mail, Users, CalendarCheck } from "lucide-react";
+import { Linkedin, Github } from "@/components/BrandIcons";
 import BrandLogo from "@/components/BrandLogo";
 import Link from "next/link";
 

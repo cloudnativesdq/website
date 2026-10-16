@@ -21,6 +21,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     // Detect browser language
     const browserLang = navigator.language.split("-")[0];
     const initialLang = (localStorage.getItem("lang") as Language) || (browserLang === "en" ? "en" : "es");
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- browser-only, read after hydration
     setLanguage(initialLang);
     setMounted(true);
   }, []);
