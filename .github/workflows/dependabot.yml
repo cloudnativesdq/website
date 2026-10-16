@@ -58,7 +58,9 @@ jobs:
           [ -n "$pr" ] || exit 0
           if [ "${{ github.event.workflow_run.conclusion }}" = "success" ]; then
             if gh pr view "$pr" --json labels --jq '.labels[].name' | grep -qx automerge; then
-              gh pr merge "$pr" --squash --delete-branch
+              # GITHUB_TOKEN can't merge changes to .github/workflows (GitHub Actions bumps).
+              gh pr merge "$pr" --squash --delete-branch || gh pr comment "$pr" --body \
+                "@$MAINTAINER CI passed but this PR could not be merged automatically (updates to workflow files need a maintainer). Merge it manually."
             fi
           elif [ "${{ github.event.workflow_run.conclusion }}" = "failure" ]; then
             gh pr comment "$pr" --body "@$MAINTAINER CI failed on this dependency update, so it was not merged: ${{ github.event.workflow_run.html_url }}"
