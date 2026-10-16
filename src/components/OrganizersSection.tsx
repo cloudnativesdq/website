@@ -36,7 +36,7 @@ const OrganizersSection = ({ organizers, showHeader = true }: OrganizersSectionP
           </p>
         </div>
         
-        <div className={`flex flex-wrap gap-4 md:gap-6 ${showHeader ? "justify-center" : "justify-start"}`}>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-5 max-w-6xl mx-auto">
           {organizers.map((org, i) => (
             <OrganizerCard key={org.name + i} organizer={org} />
           ))}
@@ -57,7 +57,7 @@ function OrganizerCard({ organizer }: { organizer: Organizer }) {
       href={organizer.profileUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="group flex flex-col items-center text-center p-6 rounded-3xl bg-card/60 border border-foreground/10 hover:border-primary/50 transition-all duration-500 hover:-translate-y-0.5 w-[calc(50%-1rem)] sm:w-[calc(33.333%-1.5rem)] lg:w-[calc(20%-1.5rem)] min-w-[160px]"
+      className="group flex flex-col items-center text-center p-6 rounded-3xl bg-card/60 border border-foreground/10 hover:border-primary/50 transition-all duration-500 hover:-translate-y-0.5"
     >
       <div className="relative w-20 h-20 md:w-28 md:h-28 rounded-[1.5rem] md:rounded-[2rem] overflow-hidden mb-6 border-2 border-foreground/10 group-hover:border-primary/50 transition-all duration-500 rotate-3 group-hover:rotate-0 bg-muted">
         <Image

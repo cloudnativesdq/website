@@ -28,14 +28,14 @@ export default function TeamPage({ data, people }: TeamPageProps) {
       
       <section className="pt-28 md:pt-32 pb-12">
         <div className="container px-4 sm:px-6">
-          <PageHeader title={t.teamTitle} subtitle={t.teamSubtitle} />
+          <PageHeader title={t.teamTitle} subtitle={t.teamSubtitle} center />
           <OrganizersSection organizers={data.organizers} showHeader={false} />
         </div>
       </section>
 
       <section className="pb-4">
         <div className="container px-4 sm:px-6">
-          <div className="max-w-4xl rounded-3xl bg-card/60 border border-foreground/10 p-6 md:p-10">
+          <div className="max-w-4xl mx-auto rounded-3xl bg-card/60 border border-foreground/10 p-6 md:p-10">
             <dl className="grid grid-cols-2 md:grid-cols-4 gap-y-8 md:divide-x divide-foreground/10">
               {[
                 { icon: <Users className="w-5 h-5 text-primary" />, value: data.membersCount, label: language === "es" ? "Miembros" : "Members" },
