@@ -78,7 +78,7 @@ export default function CardGrid({
       </div>
 
       {/* Category tabs; scroll sideways on small screens */}
-      <div className="-mx-4 px-4 sm:mx-0 sm:px-0 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div className="-mx-4 px-4 sm:mx-0 sm:px-0 overflow-x-auto scrollbar-none [&::-webkit-scrollbar]:hidden">
         <div role="tablist" className="flex gap-2 pb-2 w-max md:w-auto md:flex-wrap">
           {tabs.map((c) => (
             <button
@@ -115,7 +115,7 @@ export default function CardGrid({
                   {...(item.external === false ? {} : { target: "_blank", rel: "noopener noreferrer" })}
                   className="group flex sm:flex-col gap-3 sm:gap-0 h-full p-2.5 sm:p-0 rounded-2xl sm:rounded-3xl overflow-hidden bg-card/60 border border-foreground/10 hover:border-primary/50 transition-colors"
                 >
-                  <span className="relative block w-24 sm:w-auto shrink-0 aspect-square sm:aspect-[16/9] rounded-xl sm:rounded-none bg-muted overflow-hidden">
+                  <span className="relative block w-24 sm:w-auto shrink-0 aspect-square sm:aspect-video rounded-xl sm:rounded-none bg-muted overflow-hidden">
                     {item.image ? (
                       <Image
                         src={item.image}
@@ -123,11 +123,11 @@ export default function CardGrid({
                         fill
                         sizes="(max-width: 640px) 96px, (max-width: 1280px) 33vw, 25vw"
                         className={`transition-transform duration-500 group-hover:scale-105 ${
-                          item.imageFit === "contain" ? "object-contain p-2 sm:p-6 bg-gradient-to-br from-primary/10 via-background to-primary/5" : "object-cover"
+                          item.imageFit === "contain" ? "object-contain p-2 sm:p-6 bg-linear-to-br from-primary/10 via-background to-primary/5" : "object-cover"
                         }`}
                       />
                     ) : (
-                      <span className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/15 via-background to-primary/5">
+                      <span className="absolute inset-0 flex items-center justify-center bg-linear-to-br from-primary/15 via-background to-primary/5">
                         {cat && <BrandLogo src={cat.logo} size={64} className="w-10 h-10 sm:w-14 sm:h-14 opacity-90" />}
                       </span>
                     )}

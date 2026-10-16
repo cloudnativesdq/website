@@ -88,7 +88,7 @@ export default function ContactView() {
 
               <div className="animate-fade-up animate-delay-300">
                 {formState === "success" ? (
-                  <div className="p-8 md:p-12 rounded-[2rem] bg-foreground/5 border border-primary/20 glass-darker text-center space-y-6">
+                  <div className="p-8 md:p-12 rounded-4xl bg-foreground/5 border border-primary/20 glass-darker text-center space-y-6">
                     <div className="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center mx-auto">
                       <CheckCircle2 className="w-10 h-10 text-primary" />
                     </div>
@@ -103,7 +103,7 @@ export default function ContactView() {
                 ) : (
                   <form onSubmit={handleSubmit} className="p-8 md:p-10 rounded-3xl bg-card/60 border border-foreground/10 space-y-6">
                     <div className="space-y-2">
-                      <label className="text-sm font-bold uppercase tracking-wider text-muted-foreground ml-1">
+                      <label className="block text-sm font-bold uppercase tracking-wider text-muted-foreground ml-1">
                         {t.nameLabel}
                       </label>
                       <input 
@@ -116,7 +116,7 @@ export default function ContactView() {
                     </div>
                     
                     <div className="space-y-2">
-                      <label className="text-sm font-bold uppercase tracking-wider text-muted-foreground ml-1">
+                      <label className="block text-sm font-bold uppercase tracking-wider text-muted-foreground ml-1">
                         {t.emailLabel}
                       </label>
                       <input 
@@ -129,7 +129,7 @@ export default function ContactView() {
                     </div>
 
                     <div className="space-y-2">
-                      <label className="text-sm font-bold uppercase tracking-wider text-muted-foreground ml-1">
+                      <label className="block text-sm font-bold uppercase tracking-wider text-muted-foreground ml-1">
                         {t.messageLabel}
                       </label>
                       <textarea 

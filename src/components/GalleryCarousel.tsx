@@ -156,7 +156,7 @@ const GalleryCarousel = ({ images }: GalleryCarouselProps) => {
                   key={index}
                   className="flex-[0_0_85%] sm:flex-[0_0_60%] lg:flex-[0_0_40%] min-w-0"
                 >
-                  <div className="carousel-item-inner aspect-[16/10] rounded-2xl md:rounded-3xl overflow-hidden border border-foreground/10 relative group/item shadow-2xl bg-muted transition-transform duration-100 ease-linear">
+                  <div className="carousel-item-inner aspect-16/10 rounded-2xl md:rounded-3xl overflow-hidden border border-foreground/10 relative group/item shadow-2xl bg-muted transition-transform duration-100 ease-linear">
                     <Image
                       src={src}
                       alt={`Cloud Native Santo Domingo evento ${index + 1}`}
@@ -164,7 +164,7 @@ const GalleryCarousel = ({ images }: GalleryCarouselProps) => {
                       fill
                       sizes="(max-width: 640px) 85vw, (max-width: 1024px) 60vw, 40vw"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover/item:opacity-100 transition-opacity duration-500" />
+                    <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover/item:opacity-100 transition-opacity duration-500" />
                   </div>
                 </div>
               ))}

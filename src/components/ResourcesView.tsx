@@ -120,7 +120,7 @@ export default function ResourcesView({ coupon, courses, videos, blogs, orientat
           </header>
 
           {/* Discount */}
-          <div className="rounded-3xl border border-primary/30 bg-gradient-to-br from-primary/10 via-card/60 to-card/60 p-6 md:p-8">
+          <div className="rounded-3xl border border-primary/30 bg-linear-to-br from-primary/10 via-card/60 to-card/60 p-6 md:p-8">
             <div className="flex flex-col md:flex-row md:items-center gap-5">
               <span className="flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/15 text-primary shrink-0">
                 <Tag className="w-6 h-6" />

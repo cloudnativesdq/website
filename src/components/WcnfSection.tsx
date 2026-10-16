@@ -16,7 +16,7 @@ export default function WcnfSection({ events }: { events: WcnfEvent[] }) {
   return (
     <section id="wcnf" className="py-16 scroll-mt-24">
       <div className="container px-6">
-        <div className="rounded-[2rem] border border-foreground/10 bg-card/60 p-6 md:p-10">
+        <div className="rounded-4xl border border-foreground/10 bg-card/60 p-6 md:p-10">
           <div className="grid gap-8 lg:grid-cols-[1fr_1.4fr]">
             <div>
               <p className="text-xs font-bold uppercase tracking-wider text-primary mb-2">WCNF</p>

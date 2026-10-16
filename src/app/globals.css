@@ -2,15 +2,16 @@
    These five files are the source of truth for every value below. They give us the
    raw palette (--navy-*, --cyan-*, --heritage-*), the spacing/radius/type scales,
    the effect tokens, and the [data-theme="light"] variant. */
-@import "../../_ds/style-guide/tokens/fonts.css";
-@import "../../_ds/style-guide/tokens/colors.css";
-@import "../../_ds/style-guide/tokens/typography.css";
-@import "../../_ds/style-guide/tokens/spacing.css";
-@import "../../_ds/style-guide/tokens/effects.css";
+@import "tailwindcss";
+@config "../../tailwind.config.ts";
+/* Tailwind 4 uses real cascade layers: the tokens go in "base" so the shadcn triplets below,
+   declared later in the same layer, override same-named tokens (e.g. --glow). */
+@import "../../_ds/style-guide/tokens/fonts.css" layer(base);
+@import "../../_ds/style-guide/tokens/colors.css" layer(base);
+@import "../../_ds/style-guide/tokens/typography.css" layer(base);
+@import "../../_ds/style-guide/tokens/spacing.css" layer(base);
+@import "../../_ds/style-guide/tokens/effects.css" layer(base);
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 @layer base {
   html {
@@ -125,6 +126,12 @@
     transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
     transition-timing-function: var(--ease-out-quart);
     transition-duration: var(--duration-base);
+  }
+
+  /* Tailwind 4 resets buttons to cursor: default; keep v3's pointer. */
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
   }
 
   body {

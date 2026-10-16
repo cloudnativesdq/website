@@ -174,7 +174,7 @@ export default function MapView({ data, lfEvents }: { data: MapData; lfEvents: L
               onClick={() => setPanelOpen((o) => !o)}
               aria-expanded={panelOpen}
               aria-controls="countries-panel"
-              className="absolute top-3 right-3 z-[1001] inline-flex items-center gap-2 h-10 px-4 rounded-full bg-background/95 backdrop-blur border border-foreground/10 shadow text-sm font-semibold"
+              className="absolute top-3 right-3 z-1001 inline-flex items-center gap-2 h-10 px-4 rounded-full bg-background/95 backdrop-blur border border-foreground/10 shadow text-sm font-semibold"
             >
               {panelOpen ? <X className="w-4 h-4" /> : <Globe2 className="w-4 h-4 text-primary" />}
               {t.mapCountriesTitle}
@@ -183,7 +183,7 @@ export default function MapView({ data, lfEvents }: { data: MapData; lfEvents: L
             {/* Countries */}
             <div
               id="countries-panel"
-              className={`${panelOpen ? "flex" : "hidden"} flex-col absolute z-[1000] top-16 left-3 right-3 bottom-3 lg:left-auto lg:w-[340px] p-4 rounded-2xl bg-background/95 backdrop-blur border border-foreground/10 shadow-xl`}
+              className={`${panelOpen ? "flex" : "hidden"} flex-col absolute z-1000 top-16 left-3 right-3 bottom-3 lg:left-auto lg:w-[340px] p-4 rounded-2xl bg-background/95 backdrop-blur border border-foreground/10 shadow-xl`}
             >
               <div className="flex items-center justify-between mb-3">
                 <h2 className="flex items-center gap-2 font-heading font-bold text-lg">
@@ -234,7 +234,7 @@ export default function MapView({ data, lfEvents }: { data: MapData; lfEvents: L
             </div>
 
             {/* Legend, inside the map so it is read together with the markers */}
-            <div className="absolute left-3 bottom-3 z-[1000] flex flex-wrap gap-x-3 gap-y-1 max-w-[calc(100%-1.5rem)] sm:max-w-md px-3 py-2 rounded-xl bg-background/90 backdrop-blur border border-foreground/10 text-[11px] text-muted-foreground">
+            <div className="absolute left-3 bottom-3 z-1000 flex flex-wrap gap-x-3 gap-y-1 max-w-[calc(100%-1.5rem)] sm:max-w-md px-3 py-2 rounded-xl bg-background/90 backdrop-blur border border-foreground/10 text-[11px] text-muted-foreground">
               <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-[hsl(199_89%_45%)]" />{t.mapLegendChapter}</span>
               <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-full bg-[hsl(160_84%_39%)]" />{t.mapLegendActive}</span>
               <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-full border-2 border-[hsl(38_92%_50%)]" />{t.mapKcd}</span>

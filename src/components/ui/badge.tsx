@@ -16,7 +16,7 @@ const badgeVariants = cva(
         secondary: "glass text-foreground",
         destructive: "border-destructive/30 bg-destructive/15 text-destructive",
         warning: "border-warning/30 bg-warning/15 text-warning",
-        accentSoft: "border-primary/35 bg-primary/[0.12] text-primary",
+        accentSoft: "border-primary/35 bg-primary/12 text-primary",
         outline: "text-foreground",
       },
     },

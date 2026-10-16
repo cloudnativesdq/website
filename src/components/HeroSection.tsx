@@ -66,7 +66,7 @@ const HeroSection = ({ membersCount, pastCount, upcomingCount, kubestronautsCoun
           fill
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/60 to-background" />
+        <div className="absolute inset-0 bg-linear-to-b from-background/20 via-background/60 to-background" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,hsla(199,89%,48%,0.15),transparent_50%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,hsla(222,47%,10%,0.4),transparent_50%)]" />
         <div className="hidden md:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,hsla(199,89%,48%,0.05)_0%,transparent_70%)] animate-pulse" />

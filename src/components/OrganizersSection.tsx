@@ -59,7 +59,7 @@ function OrganizerCard({ organizer }: { organizer: Organizer }) {
       rel="noopener noreferrer"
       className="group flex flex-col items-center text-center p-6 rounded-3xl bg-card/60 border border-foreground/10 hover:border-primary/50 transition-all duration-500 hover:-translate-y-0.5"
     >
-      <div className="relative w-20 h-20 md:w-28 md:h-28 rounded-[1.5rem] md:rounded-[2rem] overflow-hidden mb-6 border-2 border-foreground/10 group-hover:border-primary/50 transition-all duration-500 rotate-3 group-hover:rotate-0 bg-muted">
+      <div className="relative w-20 h-20 md:w-28 md:h-28 rounded-3xl md:rounded-4xl overflow-hidden mb-6 border-2 border-foreground/10 group-hover:border-primary/50 transition-all duration-500 rotate-3 group-hover:rotate-0 bg-muted">
         <Image
           src={imgSrc}
           alt={organizer.name}
@@ -74,7 +74,7 @@ function OrganizerCard({ organizer }: { organizer: Organizer }) {
         <h3 className="font-heading font-bold text-sm md:text-base text-foreground group-hover:text-primary transition-colors leading-tight">
           {organizer.name}
         </h3>
-        <div className="h-px w-8 bg-primary/30 mx-auto my-2 group-hover:w-12 transition-all duration-500" />
+        <div className="h-px w-8 bg-primary/30 mx-auto my-1 group-hover:w-12 transition-all duration-500" />
         <p className="text-[10px] md:text-xs text-primary font-bold uppercase tracking-wider">{organizer.role}</p>
         <p className="text-[10px] text-muted-foreground font-medium line-clamp-1">{organizer.company}</p>
       </div>

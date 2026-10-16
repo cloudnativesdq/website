@@ -222,7 +222,7 @@ export default function EventCalendar({ events }: EventCalendarProps) {
                     staggerDelay(i)
                   )}
                 >
-                  <div className="w-10 h-10 rounded-xl overflow-hidden bg-muted flex-shrink-0">
+                  <div className="w-10 h-10 rounded-xl overflow-hidden bg-muted shrink-0">
                     {event.image || event.portraitImage ? (
                       <Image
                         src={event.portraitImage || event.image}
@@ -261,7 +261,7 @@ export default function EventCalendar({ events }: EventCalendarProps) {
       >
         <div 
           className={cn(
-            "relative w-full max-w-lg bg-card rounded-[2rem] border border-foreground/10 overflow-hidden shadow-2xl transform transition-all duration-500",
+            "relative w-full max-w-lg bg-card rounded-4xl border border-foreground/10 overflow-hidden shadow-2xl transform transition-all duration-500",
             selectedEvent ? "scale-100 translate-y-0" : "scale-95 translate-y-4"
           )}
           onClick={e => e.stopPropagation()}
@@ -289,7 +289,7 @@ export default function EventCalendar({ events }: EventCalendarProps) {
                     <Calendar className="w-16 h-16 text-muted-foreground/20" />
                   </div>
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t from-card via-card/50 to-transparent" />
                 
                 <div className="absolute bottom-4 left-6 right-6 flex items-center gap-2 flex-wrap">
                   <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/20 text-primary text-xs font-bold uppercase tracking-wider border border-primary/30">
@@ -337,7 +337,7 @@ export default function EventCalendar({ events }: EventCalendarProps) {
                   href={selectedEvent.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-center justify-center gap-2 w-full py-4 rounded-2xl bg-gradient-to-r from-primary to-cyan-500 text-primary-foreground font-heading font-bold transition-all duration-300 hover:shadow-lg hover:shadow-primary/30 hover:-translate-y-1"
+                  className="group flex items-center justify-center gap-2 w-full py-4 rounded-2xl bg-linear-to-r from-primary to-cyan-500 text-primary-foreground font-heading font-bold transition-all duration-300 hover:shadow-lg hover:shadow-primary/30 hover:-translate-y-1"
                 >
                   {t.viewEvent}
                   <ExternalLink className="w-4 h-4 transition-transform group-hover:translate-x-1" />

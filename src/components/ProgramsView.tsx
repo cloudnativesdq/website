@@ -218,7 +218,7 @@ export default function ProgramsView() {
             </article>
 
             {/* Golden Kubestronaut */}
-            <article id="golden" className={`${card} p-5 sm:p-8 md:p-10 scroll-mt-24 border-warning/40 bg-gradient-to-br from-warning/10 via-card/60 to-card/60`}>
+            <article id="golden" className={`${card} p-5 sm:p-8 md:p-10 scroll-mt-24 border-warning/40 bg-linear-to-br from-warning/10 via-card/60 to-card/60`}>
               <SectionHeader logo="golden-kubestronaut.svg" title={p.golden.title} intro={p.golden.intro} />
               <div className="grid gap-8 lg:grid-cols-[1fr_1.4fr]">
                 <div>
