@@ -26,6 +26,8 @@ export interface CardItem {
   footer?: React.ReactNode;
   /** Shown as a calendar chip over the image. */
   date?: string;
+  /** Used only for ordering (newest first); not displayed. */
+  sortDate?: string;
   external?: boolean;
 }
 

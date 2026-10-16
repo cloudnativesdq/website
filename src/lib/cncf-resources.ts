@@ -1,3 +1,5 @@
+import { unstable_cache } from "next/cache";
+
 // Live data for /resources. Each fetch is cached by Next and refreshed every REVALIDATE seconds;
 // on failure a section falls back to its static link instead of breaking the page.
 const REVALIDATE = 21600; // 6 hours
@@ -23,6 +25,7 @@ export interface CncfEvent {
 export interface CncfCourse {
   title: string;
   url: string;
+  date: string;
 }
 
 const decode = (s: string) =>
@@ -49,12 +52,12 @@ export async function getCoupon(): Promise<Coupon | null> {
   }
 }
 
-type WpCourse = { title: { rendered: string }; link: string; meta: { lf_course_free: boolean } };
+type WpCourse = { title: { rendered: string }; link: string; date: string; meta: { lf_course_free: boolean } };
 
 export async function getFreeCourses(): Promise<CncfCourse[]> {
   try {
-    const raw = await getJson<WpCourse[]>(`${CNCF_API}/lf_course?per_page=100&_fields=title,link,meta`);
-    return raw.filter((c) => c.meta.lf_course_free).map((c) => ({ title: decode(c.title.rendered), url: c.link }));
+    const raw = await getJson<WpCourse[]>(`${CNCF_API}/lf_course?per_page=100&_fields=title,link,date,meta`);
+    return raw.filter((c) => c.meta.lf_course_free).map((c) => ({ title: decode(c.title.rendered), url: c.link, date: c.date }));
   } catch {
     return [];
   }
@@ -95,7 +98,10 @@ export interface Video {
 
 const FCC_CHANNEL = "UC8butISFwT-Wl7EV0hUK0BQ";
 const FCC_DEVOPS_PLAYLIST = "PLWKjhJtqVAbkzvvpY12KkfiIGso9A_Ixs";
-const CLOUD_NATIVE_TOPICS = /kubernetes|k8s|docker|container|devops|cloud|aws|azure|gcp|terraform|helm|linux|platform engineering|observability|microservices/i;
+// Topics we list: Kubernetes, Docker/containers and the CNCF certifications.
+const FCC_TOPICS = /kubernetes|k8s|docker|container|\b(KCNA|KCSA|CKA|CKAD|CKS|CGOA|PCA|ICA|CCA|KCA)\b|kubestronaut|cloud native|CNCF|helm|istio|argo ?cd|prometheus|kubebuilder|operator/i;
+const FCC_SEARCHES = ["kubernetes", "docker", "KCNA", "KCSA", "CKA", "CKAD", "CKS", "cloud native", "helm", "containers"];
+const BROWSER_UA = { "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0 Safari/537.36", "Accept-Language": "en-US,en" };
 
 async function getYouTubeFeed(query: string): Promise<Video[]> {
   const xml = await fetch(`https://www.youtube.com/feeds/videos.xml?${query}`, { next: { revalidate: REVALIDATE } })
@@ -113,17 +119,71 @@ async function getYouTubeFeed(query: string): Promise<Video[]> {
     });
 }
 
-// freeCodeCamp videos on cloud native topics: its DevOps playlist plus recent channel uploads
-// that match CLOUD_NATIVE_TOPICS, newest first. YouTube's feeds return the latest 15 items each.
-export async function getFreeCodeCampVideos(limit = 6): Promise<Video[]> {
-  const [playlist, channel] = await Promise.all([
-    getYouTubeFeed(`playlist_id=${FCC_DEVOPS_PLAYLIST}`),
-    getYouTubeFeed(`channel_id=${FCC_CHANNEL}`),
-  ]);
-  const videos = [...playlist, ...channel.filter((v) => CLOUD_NATIVE_TOPICS.test(v.title))];
-  return Array.from(new Map(videos.map((v) => [v.id, v])).values())
-    .sort((a, b) => b.date.localeCompare(a.date))
-    .slice(0, limit);
+// Videos from one search on the freeCodeCamp channel (title + id), read from the page's ytInitialData.
+async function searchChannel(query: string): Promise<{ id: string; title: string }[]> {
+  const html = await fetch(`https://www.youtube.com/@freecodecamp/search?query=${encodeURIComponent(query)}`, { headers: BROWSER_UA, cache: "no-store" })
+    .then((r) => (r.ok ? r.text() : ""))
+    .catch(() => "");
+  const json = html.match(/var ytInitialData = (\{[\s\S]*?\});<\/script>/)?.[1];
+  if (!json) return [];
+  const out: { id: string; title: string }[] = [];
+  const walk = (o: unknown): void => {
+    if (Array.isArray(o)) return o.forEach(walk);
+    if (!o || typeof o !== "object") return;
+    const v = (o as { videoRenderer?: { videoId: string; title?: { runs?: { text: string }[] } } }).videoRenderer;
+    if (v?.videoId) out.push({ id: v.videoId, title: (v.title?.runs ?? []).map((r) => r.text).join("") });
+    Object.values(o).forEach(walk);
+  };
+  walk(JSON.parse(json));
+  return out;
+}
+
+async function publishDate(id: string): Promise<string | null> {
+  const html = await fetch(`https://www.youtube.com/watch?v=${id}`, { headers: BROWSER_UA, cache: "no-store" })
+    .then((r) => (r.ok ? r.text() : ""))
+    .catch(() => "");
+  return html.match(/itemprop="datePublished" content="([^"]+)"/)?.[1] ?? html.match(/"publishDate":"([^"]+)"/)?.[1] ?? null;
+}
+
+// Every freeCodeCamp video on Kubernetes, Docker or CNCF certifications, newest first. The
+// channel search pages and watch pages are large (1-2 MB), so they are fetched uncached and only
+// the resulting list is cached. Throws when nothing is found so an empty result is never cached.
+const fetchFreeCodeCampVideos = unstable_cache(
+  async (): Promise<Video[]> => {
+    const found = new Map<string, string>();
+    for (const q of FCC_SEARCHES) {
+      for (const v of await searchChannel(q)) if (FCC_TOPICS.test(v.title) && !found.has(v.id)) found.set(v.id, v.title);
+    }
+    if (!found.size) throw new Error("freeCodeCamp search returned no videos");
+    const entries = Array.from(found.entries());
+    const videos: Video[] = [];
+    for (let i = 0; i < entries.length; i += 6) {
+      const batch = await Promise.all(
+        entries.slice(i, i + 6).map(async ([id, title]) => {
+          const date = await publishDate(id);
+          return date ? { id, title: decode(title), url: `https://www.youtube.com/watch?v=${id}`, thumbnail: `https://i.ytimg.com/vi/${id}/hqdefault.jpg`, date } : null;
+        })
+      );
+      videos.push(...batch.filter((v): v is Video => v !== null));
+    }
+    return videos.sort((a, b) => b.date.localeCompare(a.date));
+  },
+  ["fcc-cloud-native-videos"],
+  { revalidate: REVALIDATE }
+);
+
+export async function getFreeCodeCampVideos(): Promise<Video[]> {
+  try {
+    return await fetchFreeCodeCampVideos();
+  } catch {
+    // Fallback: the channel and DevOps playlist feeds (latest 15 items each).
+    const [playlist, channel] = await Promise.all([
+      getYouTubeFeed(`playlist_id=${FCC_DEVOPS_PLAYLIST}`),
+      getYouTubeFeed(`channel_id=${FCC_CHANNEL}`),
+    ]);
+    const videos = [...playlist, ...channel].filter((v) => FCC_TOPICS.test(v.title));
+    return Array.from(new Map(videos.map((v) => [v.id, v])).values()).sort((a, b) => b.date.localeCompare(a.date));
+  }
 }
 
 // kubernetes.io (user blog) and kubernetes.dev (contributor blog).

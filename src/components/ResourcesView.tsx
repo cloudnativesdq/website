@@ -44,13 +44,15 @@ export default function ResourcesView({ coupon, courses, videos, blogs, orientat
       image: v.thumbnail,
       subtitle: "freeCodeCamp · YouTube",
       footer: fmtDate.format(new Date(v.date)),
+      sortDate: v.date,
     })),
     ...courses.map((c) => ({
       category: "courses",
       title: c.title,
       url: c.url,
       subtitle: t.resourcesGrid.freeCourse,
-      footer: "cncf.io",
+      footer: `cncf.io · ${fmtDate.format(new Date(c.date))}`,
+      sortDate: c.date,
     })),
     { category: "certs", title: t.certsAll, url: links.cncfCertifications, ...logoImage("cncf.svg"), footer: "cncf.io" },
     { category: "certs", title: t.kubestronautProgram, url: links.kubestronautProgram, ...logoImage("kubestronaut.svg"), footer: "cncf.io" },
@@ -63,6 +65,7 @@ export default function ResourcesView({ coupon, courses, videos, blogs, orientat
           title: o.title,
           url: o.url,
           date: o.start,
+          sortDate: o.start,
           subtitle: t.ncoTitle,
           footer: "kubernetes.dev",
         }))
@@ -84,6 +87,7 @@ export default function ResourcesView({ coupon, courses, videos, blogs, orientat
         ...logoImage(a.logo),
         subtitle: a.source,
         footer: fmtDate.format(new Date(a.date)),
+        sortDate: a.date,
       })),
     { category: "communities", title: t.joinSlack, url: links.cncfSlack, ...logoImage("slack.png"), footer: "slack.cncf.io" },
     { category: "communities", title: t.communityGroups, url: links.cncfCommunityGroups, ...logoImage("cncg.svg"), footer: "community.cncf.io" },
@@ -91,6 +95,9 @@ export default function ResourcesView({ coupon, courses, videos, blogs, orientat
     { category: "communities", title: "Cloud Native Days", url: links.cloudNativeDays, ...logoImage("cloudnativedays.png"), footer: "cloudnativedays.org" },
     ...latamCommunities.map((c) => ({ category: "communities", title: c.name, url: c.href, ...logoImage("cncg.svg"), footer: "community.cncf.io" })),
   ];
+
+  // Newest first across every category; undated links (platforms, guides, communities) go last.
+  items.sort((a, b) => (b.sortDate ?? "").localeCompare(a.sortDate ?? ""));
 
   const moreSources = [
     { href: links.cncfCourses, label: t.allCourses },
