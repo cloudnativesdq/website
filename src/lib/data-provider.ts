@@ -45,7 +45,7 @@ const extraOrganizers: Organizer[] = [
     role: "Regional Software Sales Consultant",
     company: "GBM",
     image: "/images/organizers/molly.jpg",
-    profileUrl: "https://ocgroups.dev/cncf/group/cqecyjw",
+    profileUrl: "https://www.linkedin.com/in/molly-devers-mateo-539b4615a/",
   },
 ];
 

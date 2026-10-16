@@ -5,7 +5,7 @@ const REVALIDATE = 21600; // 6 hours
 
 export const wcnfOrganizers = [
   { name: "Ayesha Yege", lumaId: "usr-xTp2Vh7yTBHXpFg", image: "/images/organizers/ayesha.jpg", linkedin: "https://www.linkedin.com/in/ayesha-yege/" },
-  { name: "Molly Devers Mateo", lumaId: "usr-xV2GU63pySUHCDw", image: "/images/organizers/molly.jpg", linkedin: "" },
+  { name: "Molly Devers Mateo", lumaId: "usr-xV2GU63pySUHCDw", image: "/images/organizers/molly.jpg", linkedin: "https://www.linkedin.com/in/molly-devers-mateo-539b4615a/" },
   { name: "Stacy Balbi", lumaId: "usr-YZCdJgeb6A2GTpz", image: "/images/organizers/stacy.jpg", linkedin: "https://www.linkedin.com/in/stacybalbi" },
 ];
 
