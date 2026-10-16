@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   build:
-    name: Lint, typecheck and build
+    name: Lint, typecheck, build and e2e
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -32,3 +32,12 @@ jobs:
       - run: pnpm lint
       - run: pnpm exec tsc --noEmit -p .
       - run: pnpm build
+      # Smoke tests against the production build: every page, the toggles, the map and the API.
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm test:e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-traces
+          path: test-results/
+          retention-days: 7

@@ -55,6 +55,14 @@ const fetchDominicanPeople = unstable_cache(
     const dominicans = people.filter(
       (p) => /dominican republic/i.test(p.location ?? "") || DOMINICANS_ABROAD.includes(p.name)
     );
+    // The registry has some mistyped GitHub handles; drop links whose profile 404s.
+    await Promise.all(
+      dominicans.map(async (p) => {
+        if (!p.github) return;
+        const r = await fetch(p.github, { method: "HEAD", cache: "no-store" }).catch(() => null);
+        if (r?.status === 404) p.github = "";
+      })
+    );
     const inCategory = (c: string) => dominicans.filter((p) => p.category?.includes(c)).map(toPerson).sort(byGoldenThenName);
     return { kubestronauts: inCategory("Kubestronaut"), ambassadors: inCategory("Ambassadors") };
   },

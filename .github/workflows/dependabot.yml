@@ -1,7 +1,7 @@
 # Handles Dependabot PRs without needing branch protection or the repo's auto-merge setting:
-# - triage: labels minor/patch PRs "automerge"; labels major PRs "breaking-change" and
-#   requests a review from the maintainer, which sends a GitHub notification and email.
-# - merge: once the CI workflow passes on an "automerge" PR, squash-merges it.
+# - triage: labels every PR "automerge"; major PRs also get "breaking-change", a review request
+#   and a mention of the maintainer, which sends a GitHub notification and email.
+# - merge: once the CI workflow (lint, typecheck, build and e2e tests) passes, squash-merges it.
 # - CI failure on any Dependabot PR mentions the maintainer.
 name: Dependabot
 
@@ -30,7 +30,6 @@ jobs:
         uses: dependabot/fetch-metadata@v2
 
       - name: Mark for auto-merge
-        if: steps.meta.outputs.update-type != 'version-update:semver-major'
         run: |
           gh label create automerge --color 0e8a16 --description "Merged automatically when CI passes" 2>/dev/null || true
           gh pr edit "${{ github.event.pull_request.number }}" --add-label automerge
@@ -38,10 +37,13 @@ jobs:
       - name: Flag breaking change
         if: steps.meta.outputs.update-type == 'version-update:semver-major'
         run: |
+          pr="${{ github.event.pull_request.number }}"
+          # Notify once per PR, not on every rebase.
+          gh pr view "$pr" --json labels --jq '.labels[].name' | grep -qx breaking-change && exit 0
           gh label create breaking-change --color d93f0b --description "Major version update, needs review" 2>/dev/null || true
-          gh pr edit "${{ github.event.pull_request.number }}" --add-label breaking-change --add-reviewer "$MAINTAINER"
-          gh pr comment "${{ github.event.pull_request.number }}" --body \
-            "@$MAINTAINER major update of \`${{ steps.meta.outputs.dependency-names }}\` (${{ steps.meta.outputs.previous-version }} → ${{ steps.meta.outputs.new-version }}). It may contain breaking changes, so it is not merged automatically."
+          gh pr edit "$pr" --add-label breaking-change --add-reviewer "$MAINTAINER"
+          gh pr comment "$pr" --body \
+            "@$MAINTAINER major update of \`${{ steps.meta.outputs.dependency-names }}\` (${{ steps.meta.outputs.previous-version }} → ${{ steps.meta.outputs.new-version }}). It may contain breaking changes. It is merged automatically only if CI (lint, typecheck, build and e2e tests) passes; check the release notes."
 
   merge:
     if: >

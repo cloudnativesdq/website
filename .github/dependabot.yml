@@ -1,6 +1,6 @@
-# Dependency update PRs. Minor and patch updates are grouped into one weekly PR and merged
-# automatically once CI passes (see workflows/dependabot.yml); major updates get their own PR,
-# are labeled breaking-change and request a review instead.
+# Dependency update PRs. Minor and patch updates are grouped into one weekly PR; major updates get
+# their own PR, labeled breaking-change with a notification to the maintainer. Every PR is merged
+# automatically once CI (lint, typecheck, build and e2e tests) passes; see workflows/dependabot.yml.
 version: 2
 updates:
   - package-ecosystem: npm # covers pnpm-lock.yaml

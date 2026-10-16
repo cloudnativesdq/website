@@ -132,7 +132,7 @@ export const translations = {
           "Proyectos junto al equipo de la CNCF.",
           "Beneficios exclusivos, swag y sorteos.",
         ],
-        how: "La convocatoria abre una vez al año. La de 2026 cerró el 12 de julio; los resultados salen en agosto y el período empieza en septiembre.",
+        how: "La convocatoria abre una vez al año. Revisa la página del programa para las fechas de la próxima ronda.",
         tip: "Organizar o dar charlas en Cloud Native Santo Domingo cuenta como liderazgo comunitario y como charlas.",
       },
       links: {
@@ -402,7 +402,7 @@ export const translations = {
           "Initiatives with CNCF staff.",
           "Exclusive benefits, swag and giveaways.",
         ],
-        how: "Applications open once a year. The 2026 round closed on July 12; results come out in August and the term starts in September.",
+        how: "Applications open once a year. Check the program page for the next round's dates.",
         tip: "Organizing or speaking at Cloud Native Santo Domingo counts toward community leadership and speaking.",
       },
       links: {
