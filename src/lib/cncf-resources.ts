@@ -5,6 +5,7 @@ import freeCodeCampVideos from "@/data/freecodecamp-videos.json";
 const REVALIDATE = 21600; // 6 hours
 const UA = { "User-Agent": "cloudnativesdq-website/1.0" };
 const CNCF_API = "https://www.cncf.io/wp-json/wp/v2";
+const LF_CERT_CATALOG = "https://training.linuxfoundation.org/certification-catalog/";
 const COUPON_README = "https://raw.githubusercontent.com/techiescamp/linux-foundation-coupon/main/README.md";
 
 export interface Coupon {
@@ -46,18 +47,32 @@ export async function getCoupon(): Promise<Coupon | null> {
     const title = md.match(/^## (.+)$/m)?.[1];
     const coupon = md.match(/\*\*Coupon:\*\*\s*Use code \*\*([A-Z0-9]+)\*\* at \[[^\]]+\]\(([^)]+)\)/);
     if (!title || !coupon) return null;
-    return { title: title.replace(/\[|\]/g, "").trim(), code: coupon[1], url: coupon[2] };
+    // The README's kube.promo links go through an affiliate tracker (tidd.ly) that ad blockers
+    // block; send people to the official LF catalog, where the code is applied at checkout.
+    return { title: title.replace(/\[|\]/g, "").trim(), code: coupon[1], url: LF_CERT_CATALOG };
   } catch {
     return null;
   }
 }
 
-type WpCourse = { title: { rendered: string }; link: string; date: string; meta: { lf_course_free: boolean } };
+type WpCourse = { title: { rendered: string }; link: string; date: string; meta: { lf_course_free: boolean; lf_course_course_url?: string } };
 
 export async function getFreeCourses(): Promise<CncfCourse[]> {
   try {
     const raw = await getJson<WpCourse[]>(`${CNCF_API}/lf_course?per_page=100&_fields=title,link,date,meta`);
-    return raw.filter((c) => c.meta.lf_course_free).map((c) => ({ title: decode(c.title.rendered), url: c.link, date: c.date }));
+    // cncf.io/courses/* pages now redirect to the cncf.io home page; link the course on LF Training,
+    // and drop courses LF has retired (404 or redirect to its "course inactive" page).
+    const courses = raw
+      .filter((c) => c.meta.lf_course_free)
+      .map((c) => ({ title: decode(c.title.rendered), url: c.meta.lf_course_course_url || c.link, date: c.date }));
+    const live = await Promise.all(
+      courses.map((c) =>
+        fetch(c.url, { method: "HEAD", redirect: "follow", next: { revalidate: REVALIDATE }, headers: UA })
+          .then((r) => r.ok && !r.url.includes("course-inactive"))
+          .catch(() => true) // keep the course if LF can't be reached
+      )
+    );
+    return courses.filter((_, i) => live[i]);
   } catch {
     return [];
   }
