@@ -23,6 +23,7 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version-file: .nvmrc
+          package-manager-cache: false # the script has no dependencies; pnpm isn't installed here
 
       - run: node scripts/update-freecodecamp-videos.mjs
 
