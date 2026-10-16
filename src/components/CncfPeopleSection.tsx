@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { Github, Linkedin, Star } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
-import { links } from "@/lib/links";
+import Link from "next/link";
 import BrandLogo from "@/components/BrandLogo";
 import type { CncfPerson, DominicanCncfPeople } from "@/lib/cncf-people";
 
@@ -39,7 +39,7 @@ function PersonCard({ person }: { person: CncfPerson }) {
   );
 }
 
-function PeopleGroup({ id, title, subtitle, href, logo, people }: { id: string; title: string; subtitle: string; href: string; logo: string; people: CncfPerson[] }) {
+function PeopleGroup({ id, title, subtitle, programAnchor, logo, people }: { id: string; title: string; subtitle: string; programAnchor: string; logo: string; people: CncfPerson[] }) {
   const { t } = useLanguage();
   if (!people.length) return null;
 
@@ -52,9 +52,9 @@ function PeopleGroup({ id, title, subtitle, href, logo, people }: { id: string; 
         </h2>
         <p className="text-muted-foreground max-w-2xl mx-auto">
           {subtitle}{" "}
-          <a href={href} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-            {t.learnMore}
-          </a>
+          <Link href={programAnchor} className="text-primary hover:underline">
+            {t.programs.nav} →
+          </Link>
         </p>
       </div>
       <ul className="flex flex-wrap justify-center gap-4 max-w-5xl mx-auto">
@@ -72,8 +72,8 @@ export default function CncfPeopleSection({ people }: { people: DominicanCncfPeo
   return (
     <section className="py-16">
       <div className="container px-6">
-        <PeopleGroup id="ambassadors" title={t.ambassadorsTitle} subtitle={t.ambassadorsSubtitle} href={links.cncfAmbassadors} logo="cncf.svg" people={people.ambassadors} />
-        <PeopleGroup id="kubestronauts" title={t.kubestronautsTitle} subtitle={t.kubestronautsSubtitle} href={links.kubestronautProgram} logo="kubestronaut.svg" people={people.kubestronauts} />
+        <PeopleGroup id="ambassadors" title={t.ambassadorsTitle} subtitle={t.ambassadorsSubtitle} programAnchor="/programs#ambassador" logo="cncf.svg" people={people.ambassadors} />
+        <PeopleGroup id="kubestronauts" title={t.kubestronautsTitle} subtitle={t.kubestronautsSubtitle} programAnchor="/programs#kubestronaut" logo="kubestronaut.svg" people={people.kubestronauts} />
       </div>
     </section>
   );

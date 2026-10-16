@@ -37,6 +37,8 @@ interface ChaptersMapProps {
   conferences: Conference[];
   countries: Map<string, Country>;
   focus: [number, number][] | null;
+  /** The countries panel covers the right of the map on wide screens when open. */
+  panelOpen: boolean;
   labels: MapLabels;
   formatDate: (iso: string) => string;
 }
@@ -86,13 +88,14 @@ function ChapterEvents({ chapter, labels, formatDate }: { chapter: Chapter; labe
 }
 
 // null means the whole world.
-function FocusBounds({ points }: { points: [number, number][] | null }) {
+function FocusBounds({ points, panelOpen }: { points: [number, number][] | null; panelOpen: boolean }) {
   const map = useMap();
   useEffect(() => {
-    // On wide screens the countries panel covers the right 340px of the map; keep the focus clear of it.
-    const panel: [number, number] = window.innerWidth >= 1024 ? [360, 0] : [0, 0];
+    // On wide screens an open countries panel covers the right 340px of the map; keep the focus clear of it.
+    const panel: [number, number] = panelOpen && window.innerWidth >= 1024 ? [360, 0] : [0, 0];
     if (points?.length) map.flyToBounds(latLngBounds(points).pad(0.4), { maxZoom: 7, duration: 0.8, paddingBottomRight: panel });
     else map.flyTo([20, 0], 2, { duration: 0.8 });
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- refocus on selection only, not when the panel toggles
   }, [map, points]);
   return null;
 }
@@ -102,7 +105,7 @@ const ACTIVE = "hsl(160 84% 39%)";
 const KCD = "hsl(38 92% 50%)";
 const CONFERENCE_COLOR = { kubecon: "hsl(262 83% 58%)", aaif: "hsl(330 81% 60%)" };
 
-export default function ChaptersMap({ chapters, kcds, conferences, countries, focus, labels, formatDate }: ChaptersMapProps) {
+export default function ChaptersMap({ chapters, kcds, conferences, countries, focus, panelOpen, labels, formatDate }: ChaptersMapProps) {
   const { resolvedTheme } = useTheme();
 
   return (
@@ -114,7 +117,7 @@ export default function ChaptersMap({ chapters, kcds, conferences, countries, fo
         url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
-      <FocusBounds points={focus} />
+      <FocusBounds points={focus} panelOpen={panelOpen} />
 
       {chapters.map((c) =>
         c.lat === null || c.lng === null ? null : (

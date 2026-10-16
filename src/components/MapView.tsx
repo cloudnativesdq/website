@@ -26,7 +26,7 @@ export default function MapView({ data, people, lfEvents }: { data: MapData; peo
   const { t, language } = useLanguage();
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState<string | null>("do"); // open on the Dominican Republic
-  const [panelOpen, setPanelOpen] = useState(false); // countries panel on small screens
+  const [panelOpen, setPanelOpen] = useState(false); // countries panel, closed by default
 
   const fmt = useMemo(
     () => new Intl.DateTimeFormat(language === "es" ? "es-DO" : "en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" }),
@@ -136,7 +136,7 @@ export default function MapView({ data, people, lfEvents }: { data: MapData; peo
             </Link>
           </header>
 
-          {/* Full-width map with the countries list floating over it (a toggle on small screens). */}
+          {/* Full-width map; the countries list floats over it behind a toggle, closed by default. */}
           <div className="relative h-[calc(100svh-12.5rem)] md:h-[calc(100svh-10rem)] min-h-[380px] max-h-[780px] rounded-3xl overflow-hidden border border-foreground/10">
             <div className="absolute inset-0" data-testid="chapters-map">
                 <ChaptersMap
@@ -144,6 +144,7 @@ export default function MapView({ data, people, lfEvents }: { data: MapData; peo
                   kcds={data.kcds}
                   conferences={conferences}
                   countries={countryByCode}
+                  panelOpen={panelOpen}
                   focus={focus}
                   formatDate={formatDate}
                   labels={{
@@ -166,7 +167,7 @@ export default function MapView({ data, people, lfEvents }: { data: MapData; peo
               onClick={() => setPanelOpen((o) => !o)}
               aria-expanded={panelOpen}
               aria-controls="countries-panel"
-              className="lg:hidden absolute top-3 right-3 z-[1001] inline-flex items-center gap-2 h-10 px-4 rounded-full bg-background/95 backdrop-blur border border-foreground/10 shadow text-sm font-semibold"
+              className="absolute top-3 right-3 z-[1001] inline-flex items-center gap-2 h-10 px-4 rounded-full bg-background/95 backdrop-blur border border-foreground/10 shadow text-sm font-semibold"
             >
               {panelOpen ? <X className="w-4 h-4" /> : <Globe2 className="w-4 h-4 text-primary" />}
               {t.mapCountriesTitle}
@@ -175,7 +176,7 @@ export default function MapView({ data, people, lfEvents }: { data: MapData; peo
             {/* Countries */}
             <div
               id="countries-panel"
-              className={`${panelOpen ? "flex" : "hidden"} lg:flex flex-col absolute z-[1000] top-16 left-3 right-3 bottom-3 lg:top-3 lg:left-auto lg:w-[340px] p-4 rounded-2xl bg-background/95 backdrop-blur border border-foreground/10 shadow-xl`}
+              className={`${panelOpen ? "flex" : "hidden"} flex-col absolute z-[1000] top-16 left-3 right-3 bottom-3 lg:left-auto lg:w-[340px] p-4 rounded-2xl bg-background/95 backdrop-blur border border-foreground/10 shadow-xl`}
             >
               <div className="flex items-center justify-between mb-3">
                 <h2 className="flex items-center gap-2 font-heading font-bold text-lg">

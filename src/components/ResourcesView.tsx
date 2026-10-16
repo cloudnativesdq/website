@@ -54,6 +54,7 @@ export default function ResourcesView({ coupon, courses, videos, blogs, orientat
       footer: `cncf.io · ${fmtDate.format(new Date(c.date))}`,
       sortDate: c.date,
     })),
+    { category: "certs", title: t.programs.title, url: "/programs", external: false, ...logoImage("kubestronaut.svg"), subtitle: "Kubestronaut · Golden Kubestronaut · CNCF Ambassador", footer: "cloudnativesdq.org" },
     { category: "certs", title: t.certsAll, url: links.cncfCertifications, ...logoImage("cncf.svg"), footer: "cncf.io" },
     { category: "certs", title: t.kubestronautProgram, url: links.kubestronautProgram, ...logoImage("kubestronaut.svg"), footer: "cncf.io" },
     { category: "platforms", title: "KodeKloud", url: links.kodekloud, ...logoImage("kodekloud.png"), footer: "kodekloud.com" },

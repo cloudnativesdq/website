@@ -78,6 +78,7 @@ const Navbar = () => {
       items: [
         { href: "/team", label: t.nav.team },
         { href: "/team#kubestronauts", label: t.nav.people },
+        { href: "/programs", label: t.programs.nav },
         { href: "/#wcnf", label: "Women in Cloud Native" },
         { href: "/map", label: t.nav.map },
         { href: "/start-a-chapter", label: t.nav.startChapter },
