@@ -23,6 +23,7 @@ function PersonCard({ person }: { person: CncfPerson }) {
           Golden Kubestronaut
         </span>
       )}
+      {person.role && <p className="mt-1 text-xs text-primary font-bold uppercase tracking-wider">{person.role}</p>}
       {person.company && <p className="mt-1 text-xs text-muted-foreground">{person.company}</p>}
       <div className="mt-3 flex gap-2">
         {person.linkedin && (
