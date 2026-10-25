@@ -55,6 +55,6 @@ jobs:
           echo "$product"
           echo
           echo "Fix it in one of two ways:"
-          echo "  1. Add or update an OpenSpec change (see CONTRIBUTING.md, 'Planning changes with OpenSpec')."
+          echo "  1. Add or update an OpenSpec change (see CONTRIBUTING.md, 'Planning Changes with OpenSpec')."
           echo "  2. If no requirement changes (typo, copy tweak, dependency-driven fix), ask a maintainer for the no-spec label."
           exit 1
