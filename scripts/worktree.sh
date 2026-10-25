@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Create a sibling worktree ../<repo-dir>-<branch> and set it up.
 # New branches start from origin/main; an existing branch is checked out as is.
-# Remove it later with: git worktree remove <dir>
+# Remove it later with: git worktree remove --force <dir> (--force because of the submodule)
 set -euo pipefail
 
 if [ $# -ne 1 ]; then
@@ -14,7 +14,7 @@ git check-ref-format --branch "$branch" >/dev/null
 root=$(git rev-parse --show-toplevel)
 dir="$(dirname "$root")/$(basename "$root")-${branch//\//-}"
 if [ -e "$dir" ]; then
-  echo "$dir already exists. Remove it first (git worktree remove \"$dir\") or pick another branch." >&2
+  echo "$dir already exists. Remove it first (git worktree remove --force \"$dir\") or pick another branch." >&2
   exit 1
 fi
 
