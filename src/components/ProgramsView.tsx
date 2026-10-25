@@ -132,174 +132,176 @@ export default function ProgramsView() {
   ];
 
   return (
-    <main className="min-h-screen">
+    <>
       <Navbar />
+      <main id="main" tabIndex={-1} className="min-h-screen focus:outline-none">
 
-      <section className="pt-28 md:pt-32 pb-16">
-        <div className="container px-4 sm:px-6 max-w-6xl">
-          <PageHeader title={p.title} subtitle={p.subtitle} center />
+        <section className="pt-28 md:pt-32 pb-16">
+          <div className="container px-4 sm:px-6 max-w-6xl">
+            <PageHeader title={p.title} subtitle={p.subtitle} center />
 
-          {/* Pick a program */}
-          <nav aria-label={p.title} className="grid gap-3 sm:grid-cols-3 mb-12 md:mb-16">
-            {overview.map((o) => (
-              <a
-                key={o.id}
-                href={`#${o.id}`}
-                className={`${card} group flex sm:flex-col items-center sm:text-center gap-4 sm:gap-3 p-4 sm:p-6 hover:border-primary/50 transition-colors`}
-              >
-                <BrandLogo src={o.logo} size={80} className="w-14 h-14 sm:w-20 sm:h-20" />
-                <span className="flex-1 min-w-0">
-                  <span className="block font-heading font-bold text-lg">{o.title}</span>
-                  <span className="block text-sm text-muted-foreground mt-0.5">{o.key}</span>
-                </span>
-                <ArrowDown className="w-4 h-4 shrink-0 text-primary group-hover:translate-y-0.5 transition-transform" aria-hidden="true" />
-              </a>
-            ))}
-          </nav>
+            {/* Pick a program */}
+            <nav aria-label={p.title} className="grid gap-3 sm:grid-cols-3 mb-12 md:mb-16">
+              {overview.map((o) => (
+                <a
+                  key={o.id}
+                  href={`#${o.id}`}
+                  className={`${card} group flex sm:flex-col items-center sm:text-center gap-4 sm:gap-3 p-4 sm:p-6 hover:border-primary/50 transition-colors`}
+                >
+                  <BrandLogo src={o.logo} size={80} className="w-14 h-14 sm:w-20 sm:h-20" />
+                  <span className="flex-1 min-w-0">
+                    <span className="block font-heading font-bold text-lg">{o.title}</span>
+                    <span className="block text-sm text-muted-foreground mt-0.5">{o.key}</span>
+                  </span>
+                  <ArrowDown className="w-4 h-4 shrink-0 text-primary group-hover:translate-y-0.5 transition-transform" aria-hidden="true" />
+                </a>
+              ))}
+            </nav>
 
-          <div className="space-y-8 md:space-y-10">
-            {/* Kubestronaut */}
-            <article id="kubestronaut" className={`${card} p-5 sm:p-8 md:p-10 scroll-mt-24`}>
-              <SectionHeader logo="kubestronaut.svg" title={p.kubestronaut.title} intro={p.kubestronaut.intro} />
+            <div className="space-y-8 md:space-y-10">
+              {/* Kubestronaut */}
+              <article id="kubestronaut" className={`${card} p-5 sm:p-8 md:p-10 scroll-mt-24`}>
+                <SectionHeader logo="kubestronaut.svg" title={p.kubestronaut.title} intro={p.kubestronaut.intro} />
 
-              <ColumnTitle>{p.path}</ColumnTitle>
-              <ol className="grid grid-cols-5 gap-2 sm:gap-4 mb-8">
-                {kubestronautCerts.map((c) => (
-                  <li key={c.label}>
-                    <a
-                      href={c.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group flex flex-col items-center gap-2 p-2 sm:p-3 rounded-2xl hover:bg-foreground/5 transition-colors"
-                    >
-                      <BrandLogo src={c.logo} size={96} className="w-12 h-12 sm:w-20 sm:h-20" alt={c.label} />
-                      <span className="text-xs sm:text-sm font-semibold group-hover:text-primary">{c.label}</span>
-                    </a>
-                  </li>
-                ))}
-              </ol>
-
-              <div className="grid gap-8 lg:grid-cols-[1fr_1.4fr]">
-                <div className="space-y-6">
-                  <div>
-                    <ColumnTitle>{p.requirements}</ColumnTitle>
-                    <Requirements items={p.kubestronaut.requirements} />
-                  </div>
-                  <div>
-                    <ColumnTitle>{p.howTo}</ColumnTitle>
-                    <p className="text-sm leading-relaxed mb-3">{p.kubestronaut.how}</p>
-                    <Callout>
-                      {p.kubestronaut.tip}{" "}
-                      <Link href="/resources" className="text-primary font-medium hover:underline">
-                        {p.cta} →
-                      </Link>
-                    </Callout>
-                  </div>
-                </div>
-                <div>
-                  <ColumnTitle>{p.benefits}</ColumnTitle>
-                  <Benefits items={p.kubestronaut.benefits} icons={kubestronautIcons} />
-                </div>
-              </div>
-
-              <div className="mt-8 pt-6 border-t border-foreground/10 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <OfficialLinks
-                  items={[
-                    { href: links.kubestronautProgram, label: p.links.kubestronaut },
-                    { href: links.kubestronautFaq, label: p.links.kubestronautFaq },
-                    { href: links.kubestronautStandards, label: p.links.kubestronautStandards },
-                  ]}
-                />
-                <Link href="/team#kubestronauts" className="inline-flex items-center gap-1 text-sm font-semibold hover:text-primary">
-                  {p.meetOurs}: {t.kubestronautsTitle}
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-            </article>
-
-            {/* Golden Kubestronaut */}
-            <article id="golden" className={`${card} p-5 sm:p-8 md:p-10 scroll-mt-24 border-warning/40 bg-linear-to-br from-warning/10 via-card/60 to-card/60`}>
-              <SectionHeader logo="golden-kubestronaut.svg" title={p.golden.title} intro={p.golden.intro} />
-              <div className="grid gap-8 lg:grid-cols-[1fr_1.4fr]">
-                <div>
-                  <ColumnTitle>{p.requirements}</ColumnTitle>
-                  <Requirements items={p.golden.requirements} />
-                  <div className="flex items-center gap-3 mt-4">
-                    <BrandLogo src="linuxfoundation.png" size={32} className="w-8 h-8" alt="Linux Foundation" />
-                    <a href={links.certLfcs} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline">
-                      LFCS
-                      <ArrowUpRight className="w-3.5 h-3.5" />
-                    </a>
-                  </div>
-                </div>
-                <div>
-                  <ColumnTitle>{p.benefits}</ColumnTitle>
-                  <Benefits items={p.golden.benefits} icons={goldenIcons} />
-                </div>
-              </div>
-            </article>
-
-            {/* CNCF Ambassador */}
-            <article id="ambassador" className={`${card} p-5 sm:p-8 md:p-10 scroll-mt-24`}>
-              <SectionHeader logo="ambassador.svg" title={p.ambassador.title} intro={p.ambassador.intro} />
-
-              <div className="grid gap-8 lg:grid-cols-[1fr_1.4fr]">
-                <div className="space-y-6">
-                  <div>
-                    <ColumnTitle>{p.requirements}</ColumnTitle>
-                    <Requirements items={p.ambassador.requirements} />
-                    <ol className="mt-3 space-y-2.5">
-                      {p.ambassador.criteria.map((c, i) => (
-                        <li key={c} className="flex gap-3 text-sm leading-relaxed">
-                          <span className="flex items-center justify-center w-6 h-6 shrink-0 rounded-full bg-primary/10 text-primary text-xs font-bold">{i + 1}</span>
-                          {c}
-                        </li>
-                      ))}
-                    </ol>
-                    <div className="flex flex-wrap gap-x-4 gap-y-1 mt-3 text-xs">
-                      <a href={links.devstats} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-primary hover:underline">
-                        DevStats <ArrowUpRight className="w-3 h-3" />
+                <ColumnTitle>{p.path}</ColumnTitle>
+                <ol className="grid grid-cols-5 gap-2 sm:gap-4 mb-8">
+                  {kubestronautCerts.map((c) => (
+                    <li key={c.label}>
+                      <a
+                        href={c.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group flex flex-col items-center gap-2 p-2 sm:p-3 rounded-2xl hover:bg-foreground/5 transition-colors"
+                      >
+                        <BrandLogo src={c.logo} size={96} className="w-12 h-12 sm:w-20 sm:h-20" alt={c.label} />
+                        <span className="text-xs sm:text-sm font-semibold group-hover:text-primary">{c.label}</span>
                       </a>
-                      <a href={links.cncfMentoring} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-primary hover:underline">
-                        CNCF mentoring <ArrowUpRight className="w-3 h-3" />
+                    </li>
+                  ))}
+                </ol>
+
+                <div className="grid gap-8 lg:grid-cols-[1fr_1.4fr]">
+                  <div className="space-y-6">
+                    <div>
+                      <ColumnTitle>{p.requirements}</ColumnTitle>
+                      <Requirements items={p.kubestronaut.requirements} />
+                    </div>
+                    <div>
+                      <ColumnTitle>{p.howTo}</ColumnTitle>
+                      <p className="text-sm leading-relaxed mb-3">{p.kubestronaut.how}</p>
+                      <Callout>
+                        {p.kubestronaut.tip}{" "}
+                        <Link href="/resources" className="text-primary font-medium hover:underline">
+                          {p.cta} →
+                        </Link>
+                      </Callout>
+                    </div>
+                  </div>
+                  <div>
+                    <ColumnTitle>{p.benefits}</ColumnTitle>
+                    <Benefits items={p.kubestronaut.benefits} icons={kubestronautIcons} />
+                  </div>
+                </div>
+
+                <div className="mt-8 pt-6 border-t border-foreground/10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <OfficialLinks
+                    items={[
+                      { href: links.kubestronautProgram, label: p.links.kubestronaut },
+                      { href: links.kubestronautFaq, label: p.links.kubestronautFaq },
+                      { href: links.kubestronautStandards, label: p.links.kubestronautStandards },
+                    ]}
+                  />
+                  <Link href="/team#kubestronauts" className="inline-flex items-center gap-1 text-sm font-semibold hover:text-primary">
+                    {p.meetOurs}: {t.kubestronautsTitle}
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </div>
+              </article>
+
+              {/* Golden Kubestronaut */}
+              <article id="golden" className={`${card} p-5 sm:p-8 md:p-10 scroll-mt-24 border-warning/40 bg-linear-to-br from-warning/10 via-card/60 to-card/60`}>
+                <SectionHeader logo="golden-kubestronaut.svg" title={p.golden.title} intro={p.golden.intro} />
+                <div className="grid gap-8 lg:grid-cols-[1fr_1.4fr]">
+                  <div>
+                    <ColumnTitle>{p.requirements}</ColumnTitle>
+                    <Requirements items={p.golden.requirements} />
+                    <div className="flex items-center gap-3 mt-4">
+                      <BrandLogo src="linuxfoundation.png" size={32} className="w-8 h-8" alt="Linux Foundation" />
+                      <a href={links.certLfcs} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline">
+                        LFCS
+                        <ArrowUpRight className="w-3.5 h-3.5" />
                       </a>
                     </div>
                   </div>
                   <div>
-                    <ColumnTitle>{p.howTo}</ColumnTitle>
-                    <p className="text-sm leading-relaxed mb-3">{p.ambassador.how}</p>
-                    <Callout>
-                      {p.ambassador.tip}{" "}
-                      <Link href="/contact" className="text-primary font-medium hover:underline">
-                        {t.nav.contact} →
-                      </Link>
-                    </Callout>
+                    <ColumnTitle>{p.benefits}</ColumnTitle>
+                    <Benefits items={p.golden.benefits} icons={goldenIcons} />
                   </div>
                 </div>
-                <div>
-                  <ColumnTitle>{p.benefits}</ColumnTitle>
-                  <Benefits items={p.ambassador.benefits} icons={ambassadorIcons} />
-                </div>
-              </div>
+              </article>
 
-              <div className="mt-8 pt-6 border-t border-foreground/10 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <OfficialLinks
-                  items={[
-                    { href: links.ambassadorApply, label: p.links.ambassadorApply },
-                    { href: links.ambassadorFaq, label: p.links.ambassadorFaq },
-                    { href: links.ambassadorStandards, label: p.links.ambassadorStandards },
-                  ]}
-                />
-                <Link href="/team#ambassadors" className="inline-flex items-center gap-1 text-sm font-semibold hover:text-primary">
-                  {p.meetOurs}: {t.ambassadorsTitle}
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-            </article>
+              {/* CNCF Ambassador */}
+              <article id="ambassador" className={`${card} p-5 sm:p-8 md:p-10 scroll-mt-24`}>
+                <SectionHeader logo="ambassador.svg" title={p.ambassador.title} intro={p.ambassador.intro} />
+
+                <div className="grid gap-8 lg:grid-cols-[1fr_1.4fr]">
+                  <div className="space-y-6">
+                    <div>
+                      <ColumnTitle>{p.requirements}</ColumnTitle>
+                      <Requirements items={p.ambassador.requirements} />
+                      <ol className="mt-3 space-y-2.5">
+                        {p.ambassador.criteria.map((c, i) => (
+                          <li key={c} className="flex gap-3 text-sm leading-relaxed">
+                            <span className="flex items-center justify-center w-6 h-6 shrink-0 rounded-full bg-primary/10 text-primary text-xs font-bold">{i + 1}</span>
+                            {c}
+                          </li>
+                        ))}
+                      </ol>
+                      <div className="flex flex-wrap gap-x-4 gap-y-1 mt-3 text-xs">
+                        <a href={links.devstats} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-primary hover:underline">
+                          DevStats <ArrowUpRight className="w-3 h-3" />
+                        </a>
+                        <a href={links.cncfMentoring} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-primary hover:underline">
+                          CNCF mentoring <ArrowUpRight className="w-3 h-3" />
+                        </a>
+                      </div>
+                    </div>
+                    <div>
+                      <ColumnTitle>{p.howTo}</ColumnTitle>
+                      <p className="text-sm leading-relaxed mb-3">{p.ambassador.how}</p>
+                      <Callout>
+                        {p.ambassador.tip}{" "}
+                        <Link href="/contact" className="text-primary font-medium hover:underline">
+                          {t.nav.contact} →
+                        </Link>
+                      </Callout>
+                    </div>
+                  </div>
+                  <div>
+                    <ColumnTitle>{p.benefits}</ColumnTitle>
+                    <Benefits items={p.ambassador.benefits} icons={ambassadorIcons} />
+                  </div>
+                </div>
+
+                <div className="mt-8 pt-6 border-t border-foreground/10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <OfficialLinks
+                    items={[
+                      { href: links.ambassadorApply, label: p.links.ambassadorApply },
+                      { href: links.ambassadorFaq, label: p.links.ambassadorFaq },
+                      { href: links.ambassadorStandards, label: p.links.ambassadorStandards },
+                    ]}
+                  />
+                  <Link href="/team#ambassadors" className="inline-flex items-center gap-1 text-sm font-semibold hover:text-primary">
+                    {p.meetOurs}: {t.ambassadorsTitle}
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </div>
+              </article>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </main>
       <Footer />
-    </main>
+    </>
   );
 }

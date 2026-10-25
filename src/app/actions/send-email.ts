@@ -42,7 +42,7 @@ export async function sendEmail(formData: FormData): Promise<SendEmailResult> {
 
   try {
     const { error } = await new Resend(apiKey).emails.send({
-      from: "Cloud Native SDQ <notificaciones@cloudnativesdq.org>",
+      from: "Cloud Native Santo Domingo <notificaciones@cloudnativesdq.org>",
       to: ["organizers@cloudnativesdq.org"],
       subject: `Nuevo mensaje de contacto de ${name}`,
       replyTo: email,

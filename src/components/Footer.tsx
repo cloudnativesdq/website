@@ -7,6 +7,7 @@ import { useLanguage } from "@/hooks/use-language";
 import { links } from "@/lib/links";
 import WhatsAppIcon from "@/components/WhatsAppIcon";
 import BrandLogo from "@/components/BrandLogo";
+import BrandLockup from "@/components/BrandLockup";
 
 const linkClass = "inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors";
 
@@ -48,8 +49,8 @@ export default function Footer() {
       <div className="container px-6 py-14">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr]">
           <div>
-            <Link href="/" className="font-heading font-bold text-xl">
-              <span className="text-primary">Cloud Native</span> SDQ
+            <Link href="/" className="inline-flex text-xl">
+              <BrandLockup />
             </Link>
             <p className="mt-3 text-sm text-muted-foreground max-w-xs">{t.heroSubtitle}</p>
             <div className="flex flex-wrap gap-2 mt-5">
@@ -102,7 +103,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 pt-6 border-t border-foreground/5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted-foreground">
-          <span>© {new Date().getFullYear()} Cloud Native SDQ</span>
+          <span>© {new Date().getFullYear()} Cloud Native Santo Domingo</span>
           <span>{t.footer.madeIn}</span>
         </div>
       </div>

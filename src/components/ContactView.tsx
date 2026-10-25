@@ -38,8 +38,9 @@ export default function ContactView() {
   };
 
   return (
-    <main className="min-h-screen bg-background">
+    <>
       <Navbar />
+      <main id="main" tabIndex={-1} className="min-h-screen bg-background focus:outline-none">
       
       <section className="pt-28 md:pt-32 pb-16">
         <div className="container px-4 sm:px-6">
@@ -182,7 +183,8 @@ export default function ContactView() {
         </div>
       </section>
 
+      </main>
       <Footer />
-    </main>
+    </>
   );
 }
