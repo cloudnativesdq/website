@@ -1,5 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { translations } from "../../src/lib/translations";
 
 // Every page renders its main content, has no console errors and no horizontal scroll.
@@ -100,7 +100,11 @@ test.describe("contact form", () => {
   test.use({ locale: "es-ES" });
   const { es, en } = translations;
   // The web server also reads .env files, so a local key there counts too.
-  const hasResendKey = !!process.env.RESEND_API_KEY || [".env", ".env.local", ".env.production", ".env.production.local"].some((f) => existsSync(f));
+  const hasResendKey =
+    !!process.env.RESEND_API_KEY ||
+    [".env", ".env.local", ".env.production", ".env.production.local"].some(
+      (f) => existsSync(f) && /^\s*RESEND_API_KEY\s*=\s*\S/m.test(readFileSync(f, "utf8")),
+    );
 
   async function fillVisible(page: Page, message = "Hola, quiero dar una charla.") {
     await page.getByLabel(es.nameLabel).fill("Ana");
