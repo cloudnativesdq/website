@@ -101,13 +101,18 @@ for (const [x, y] of [[maskable.x0, maskable.y0], [maskable.x1, maskable.y0], [m
   assert.ok(distance <= 0.4 * 512, `icon-maskable-512.png: corner (${x},${y}) is ${distance.toFixed(1)}px from center, outside the 80% circle`);
 }
 
-const apple = await sharp(path('src/app/apple-icon.png')).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+// Read the raw channels as written: an alpha channel, if present, must be fully opaque.
+const apple = await sharp(path('src/app/apple-icon.png')).raw().toBuffer({ resolveWithObject: true });
 assert.deepEqual([apple.info.width, apple.info.height], [180, 180], 'apple-icon.png: size');
-for (let i = 3; i < apple.data.length; i += 4) assert.equal(apple.data[i], 255, 'apple-icon.png: transparent pixel');
+if (apple.info.channels === 4) {
+  for (let i = 3; i < apple.data.length; i += 4) assert.equal(apple.data[i], 255, 'apple-icon.png: transparent pixel');
+} else {
+  assert.equal(apple.info.channels, 3, 'apple-icon.png: unexpected channel count');
+}
 
-// object-cover crops the centre: 1:1 (compact card), 16:9, and 3:1 (widest phone card, ~600x192).
+// object-cover crops the centre: from a tall desktop card (~1:2) to the widest phone card (~3.5:1).
 const placeholder = await markBox('public/brand/event-placeholder.png');
-for (const ratio of [1, 16 / 9, 3]) {
+for (const ratio of [0.5, 1, 16 / 9, 3, 3.5]) {
   const w = Math.min(placeholder.width, placeholder.height * ratio);
   const h = Math.min(placeholder.height, placeholder.width / ratio);
   const [cx0, cy0] = [(placeholder.width - w) / 2, (placeholder.height - h) / 2];

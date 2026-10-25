@@ -142,7 +142,8 @@ test("first Tab focuses the skip link, which moves focus to main", async ({ page
   await page.keyboard.press("Tab");
   const skip = page.getByRole("link", { name: /Saltar al contenido|Skip to content/ });
   await expect(skip).toBeFocused();
-  await expect(skip).toBeVisible();
+  // sr-only leaves a 1x1 box that still counts as visible, so check the focused size.
+  expect((await skip.boundingBox())?.width ?? 0).toBeGreaterThan(10);
   await page.keyboard.press("Enter");
   await expect(page.locator("main#main")).toBeFocused();
 });
