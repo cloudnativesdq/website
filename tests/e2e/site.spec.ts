@@ -49,7 +49,14 @@ for (const path of PAGES) {
     expect(await meta("property", "og:title"), "og:title").toBe(title);
     expect(await meta("name", "twitter:title"), "twitter:title").toBe(title);
     const description = await meta("name", "description");
-    expect(await meta("property", "og:description"), "og:description").toBeTruthy();
+    const ogDescription = await meta("property", "og:description");
+    expect(ogDescription, "og:description").toBeTruthy();
+    if (path !== "/") {
+      const home = await request.get("/");
+      const homeOg = (await home.text()).match(/property="og:description" content="([^"]*)"/)?.[1];
+      expect(ogDescription, "og:description must not be inherited from home").not.toBe(homeOg);
+    }
+    expect(await meta("property", "og:type")).toBe("website");
     expect(await meta("name", "twitter:description"), "twitter:description").toBe(await meta("property", "og:description"));
     expect(description, "description").toBeTruthy();
     expect(await meta("name", "twitter:card")).toBe("summary_large_image");
@@ -83,7 +90,10 @@ test("home JSON-LD is a graph of Organization, WebSite and Events", async ({ pag
   expect(org.alternateName).toBe("Cloud Native SDQ");
   expect(raw).not.toContain("CNCD");
   expect((site.publisher as { "@id": string })["@id"]).toBe(org["@id"]);
-  for (const event of graph.filter((n) => n["@type"] === "Event")) {
+  const events = graph.filter((n) => n["@type"] === "Event");
+  // The build only has events when the data sources answered and something is upcoming.
+  if (events.length === 0) test.info().annotations.push({ type: "note", description: "no upcoming events: Event node checks did not run" });
+  for (const event of events) {
     expect((event.organizer as { "@id": string })["@id"]).toBe(org["@id"]);
     expect(event.startDate).toBeTruthy();
     expect(event.endDate).not.toBe(event.startDate);

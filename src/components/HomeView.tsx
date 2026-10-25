@@ -79,10 +79,12 @@ export default function HomeView({ data, kubestronautsCount, wcnfEvents }: HomeV
         "inLanguage": "es",
         "publisher": { "@id": orgId }
       },
-      ...data.upcoming.map((event: CommunityEvent) => {
+      // An Event without startDate is invalid for search engines, so skip events with no parseable date.
+      ...data.upcoming.flatMap((event: CommunityEvent) => {
         const isVirtual = /virtual|online/i.test(event.location ?? "");
         const startDate = startDateOf(event);
-        return {
+        if (!startDate) return [];
+        return [{
           "@type": "Event",
           "name": event.title,
           "startDate": startDate,
@@ -109,7 +111,7 @@ export default function HomeView({ data, kubestronautsCount, wcnfEvents }: HomeV
             "url": event.url,
             "availability": event.soldOut ? "https://schema.org/SoldOut" : "https://schema.org/InStock"
           }
-        };
+        }];
       })
     ]
   };
@@ -121,7 +123,8 @@ export default function HomeView({ data, kubestronautsCount, wcnfEvents }: HomeV
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(organizationSchema)
+            // Escape "<" so a scraped event title cannot close the script tag.
+            __html: JSON.stringify(organizationSchema).replace(/</g, "\\u003c")
           }}
         />
         <HeroSection
