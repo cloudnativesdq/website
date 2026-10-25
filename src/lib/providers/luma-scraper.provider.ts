@@ -85,6 +85,8 @@ async function fetchLumaEvent(config: LumaEventConfig): Promise<CommunityEvent |
       url: config.url,
       date: formattedDate,
       location,
+      ...(date && { startDate: date }),
+      ...(endDate && { endDate }),
     };
   } catch (err) {
     console.warn(`[luma-scraper] error fetching ${config.url}:`, err);
