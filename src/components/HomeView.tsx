@@ -96,25 +96,27 @@ export default function HomeView({ data, kubestronautsCount, wcnfEvents }: HomeV
   };
 
   return (
-    <main className="min-h-screen">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(organizationSchema)
-        }}
-      />
+    <>
       <Navbar />
-      <HeroSection
-        membersCount={data.membersCount}
-        pastCount={data.pastCount}
-        upcomingCount={data.upcoming.length}
-        kubestronautsCount={kubestronautsCount}
-      />
-      <UpcomingEventsPreview events={data.upcoming} />
+      <main id="main" tabIndex={-1} className="min-h-screen focus:outline-none">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationSchema)
+          }}
+        />
+        <HeroSection
+          membersCount={data.membersCount}
+          pastCount={data.pastCount}
+          upcomingCount={data.upcoming.length}
+          kubestronautsCount={kubestronautsCount}
+        />
+        <UpcomingEventsPreview events={data.upcoming} />
 
-      <OrganizersSection organizers={data.organizers} />
-      <WcnfSection events={wcnfEvents} />
+        <OrganizersSection organizers={data.organizers} />
+        <WcnfSection events={wcnfEvents} />
+      </main>
       <Footer />
-    </main>
+    </>
   );
 }

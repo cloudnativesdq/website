@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useLanguage } from "@/hooks/use-language";
 import { cn } from "@/lib/utils";
 import { links } from "@/lib/links";
+import BrandLockup from "@/components/BrandLockup";
 import { Menu, X, Globe, Sun, Moon, ChevronDown, ArrowUpRight } from "lucide-react";
 import { useTheme } from "next-themes";
 
@@ -133,10 +134,15 @@ const Navbar = () => {
           : "bg-transparent"
       )}
     >
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:px-4 focus:py-2 focus:rounded-full focus:bg-primary focus:text-primary-foreground focus:text-sm focus:font-bold focus:shadow-2xl"
+      >
+        {t.nav.skipToContent}
+      </a>
       <div className="container px-0 sm:px-4 flex items-center justify-between gap-4">
-        <Link href="/" onClick={close} className="font-heading font-bold text-base md:text-xl tracking-tight flex items-center gap-1.5 whitespace-nowrap group">
-          <span className="text-primary">Cloud Native</span>
-          <span>SDQ</span>
+        <Link href="/" onClick={close} className="text-base md:text-xl group">
+          <BrandLockup />
         </Link>
 
         {/* Desktop Nav */}

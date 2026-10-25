@@ -1,5 +1,5 @@
 
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/next';
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -46,20 +46,6 @@ export const metadata: Metadata = {
     description: 'Comunidad oficial de Cloud Native Computing Foundation (CNCF) en Santo Domingo, República Dominicana.',
     images: ['/og-image.jpg'],
   },
-  icons: {
-    icon: [
-      {
-        url: '/favicon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: [
-      {
-        url: '/favicon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-  },
   alternates: {
     canonical: 'https://cloudnativesdq.org',
   },
@@ -74,6 +60,15 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+};
+
+// Icons come from the file conventions in this folder (favicon.ico, icon.svg, apple-icon.png) and
+// manifest.ts. theme-color follows the OS color scheme, not the in-page theme toggle.
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: dark)', color: '#090d16' },
+    { media: '(prefers-color-scheme: light)', color: '#f7f9fc' },
+  ],
 };
 
 export default function RootLayout({

@@ -118,133 +118,135 @@ export default function MapView({ data, lfEvents }: { data: MapData; lfEvents: L
 
 
   return (
-    <main className="min-h-screen">
+    <>
       <Navbar />
+      <main id="main" tabIndex={-1} className="min-h-screen focus:outline-none">
 
-      <section className="pt-20 md:pt-24 pb-16">
-        <div className="container px-4 sm:px-6">
-          <header className="mb-8">
-            <h1 className="text-3xl md:text-5xl font-heading font-bold tracking-tight mb-3">{t.mapTitle}</h1>
-            {/* Key numbers as one readable line instead of a block of big figures. */}
-            <p className="flex flex-wrap gap-x-4 gap-y-1 text-muted-foreground text-base md:text-lg">
-              {stats.map((s) => (
-                <span key={s.label} className="whitespace-nowrap">
-                  <strong className="font-semibold text-foreground tabular-nums">{s.value.toLocaleString(language === "es" ? "es-DO" : "en-US")}</strong> {s.label}
-                </span>
-              ))}
-            </p>
-            <Link href="/start-a-chapter" className="inline-flex items-center gap-1 mt-3 text-sm font-medium text-primary hover:underline">
-              {t.chapterGuide.cta}
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </header>
-
-          {/* World events first, then the map. */}
-          <EventsGrid events={gridEvents} countryNames={countryNames} />
-
-          {/* Full-width map; the countries list floats over it behind a toggle, closed by default. */}
-          <h2 id="map-title" className="text-2xl md:text-3xl font-heading font-bold mt-12 mb-4">{t.mapSectionTitle}</h2>
-          <div className="relative isolate h-[calc(100svh-12.5rem)] md:h-[calc(100svh-10rem)] min-h-[380px] max-h-[780px] rounded-3xl overflow-hidden border border-foreground/10">
-            <div className="absolute inset-0" data-testid="chapters-map">
-                <ChaptersMap
-                  chapters={data.chapters}
-                  kcds={data.kcds}
-                  conferences={conferences}
-                  countries={countryByCode}
-                  panelOpen={panelOpen}
-                  focus={focus}
-                  formatDate={formatDate}
-                  labels={{
-                    kubestronauts: t.mapKubestronauts,
-                    ambassadors: t.mapAmbassadors,
-                    upcoming: t.mapUpcoming,
-                    noEvents: t.mapNoEvents,
-                    viewChapter: t.mapViewChapter,
-                    kcd: t.mapKcd,
-                    ourPeople: t.mapOurPeople,
-                    kubecon: "KubeCon",
-                    aaif: "AAIF",
-                    loading: t.mapLoadingEvents,
-                    soldOut: t.mapSoldOut,
-                  }}
-                />
-            </div>
-
-            <button
-              onClick={() => setPanelOpen((o) => !o)}
-              aria-expanded={panelOpen}
-              aria-controls="countries-panel"
-              className="absolute top-3 right-3 z-1001 inline-flex items-center gap-2 h-10 px-4 rounded-full bg-background/95 backdrop-blur border border-foreground/10 shadow text-sm font-semibold"
-            >
-              {panelOpen ? <X className="w-4 h-4" /> : <Globe2 className="w-4 h-4 text-primary" />}
-              {t.mapCountriesTitle}
-            </button>
-
-            {/* Countries */}
-            <div
-              id="countries-panel"
-              className={`${panelOpen ? "flex" : "hidden"} flex-col absolute z-1000 top-16 left-3 right-3 bottom-3 lg:left-auto lg:w-[340px] p-4 rounded-2xl bg-background/95 backdrop-blur border border-foreground/10 shadow-xl`}
-            >
-              <div className="flex items-center justify-between mb-3">
-                <h2 className="flex items-center gap-2 font-heading font-bold text-lg">
-                  <Globe2 className="w-5 h-5 text-primary" />
-                  {t.mapCountriesTitle}
-                </h2>
-                {selected && (
-                  <button onClick={() => setSelected(null)} className="text-xs text-primary hover:underline">
-                    {t.mapAllCountries}
-                  </button>
-                )}
-              </div>
-              <label className="relative mb-3">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <input
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  placeholder={t.mapSearchCountry}
-                  aria-label={t.mapSearchCountry}
-                  className="w-full h-10 pl-9 pr-3 rounded-xl bg-background border border-foreground/10 text-sm focus:outline-none focus:border-primary/60"
-                />
-              </label>
-              <div className="flex gap-2 text-[11px] uppercase tracking-wider text-muted-foreground px-2 pb-1">
-                <span className="flex-1" />
-                <span className="w-10 text-right tracking-normal" title={t.mapChapters}>{t.mapChaptersShort}</span>
-                <span className="w-16 text-right tracking-normal" title={t.mapKubestronauts}>Kubestr.</span>
-                <span className="w-10 text-right tracking-normal" title={t.mapAmbassadors}>Amb.</span>
-              </div>
-              <ul className="flex-1 min-h-0 overflow-y-auto -mx-1" data-testid="country-list">
-                {visibleCountries.map((c) => (
-                  <li key={c.code}>
-                    <button
-                      onClick={() => {
-                        setSelected(c.code);
-                        setPanelOpen(false);
-                      }}
-                      disabled={!c.chapters}
-                      className={`w-full flex items-center gap-2 px-2 py-2 rounded-lg text-sm text-left transition-colors disabled:opacity-60 disabled:cursor-default enabled:hover:bg-foreground/5 ${selected === c.code ? "bg-primary/10 text-primary" : ""}`}
-                    >
-                      <span className="flex-1 min-w-0 truncate">{flag(c.code)} {c.name}</span>
-                      <span className="w-10 text-right tabular-nums">{c.chapters || "–"}</span>
-                      <span className="w-16 text-right tabular-nums font-semibold">{c.kubestronauts || "–"}</span>
-                      <span className="w-10 text-right tabular-nums">{c.ambassadors || "–"}</span>
-                    </button>
-                  </li>
+        <section className="pt-20 md:pt-24 pb-16">
+          <div className="container px-4 sm:px-6">
+            <header className="mb-8">
+              <h1 className="text-3xl md:text-5xl font-heading font-bold tracking-tight mb-3">{t.mapTitle}</h1>
+              {/* Key numbers as one readable line instead of a block of big figures. */}
+              <p className="flex flex-wrap gap-x-4 gap-y-1 text-muted-foreground text-base md:text-lg">
+                {stats.map((s) => (
+                  <span key={s.label} className="whitespace-nowrap">
+                    <strong className="font-semibold text-foreground tabular-nums">{s.value.toLocaleString(language === "es" ? "es-DO" : "en-US")}</strong> {s.label}
+                  </span>
                 ))}
-              </ul>
-            </div>
+              </p>
+              <Link href="/start-a-chapter" className="inline-flex items-center gap-1 mt-3 text-sm font-medium text-primary hover:underline">
+                {t.chapterGuide.cta}
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </header>
 
-            {/* Legend, inside the map so it is read together with the markers */}
-            <div className="absolute left-3 bottom-3 z-1000 flex flex-wrap gap-x-3 gap-y-1 max-w-[calc(100%-1.5rem)] sm:max-w-md px-3 py-2 rounded-xl bg-background/90 backdrop-blur border border-foreground/10 text-[11px] text-muted-foreground">
-              <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-[hsl(199_89%_45%)]" />{t.mapLegendChapter}</span>
-              <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-full bg-[hsl(160_84%_39%)]" />{t.mapLegendActive}</span>
-              <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-full border-2 border-[hsl(38_92%_50%)]" />{t.mapKcd}</span>
-              <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-full border-2 border-[hsl(262_83%_58%)]" />KubeCon</span>
-              <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-full border-2 border-[hsl(330_81%_60%)]" />AAIF</span>
+            {/* World events first, then the map. */}
+            <EventsGrid events={gridEvents} countryNames={countryNames} />
+
+            {/* Full-width map; the countries list floats over it behind a toggle, closed by default. */}
+            <h2 id="map-title" className="text-2xl md:text-3xl font-heading font-bold mt-12 mb-4">{t.mapSectionTitle}</h2>
+            <div className="relative isolate h-[calc(100svh-12.5rem)] md:h-[calc(100svh-10rem)] min-h-[380px] max-h-[780px] rounded-3xl overflow-hidden border border-foreground/10">
+              <div className="absolute inset-0" data-testid="chapters-map">
+                  <ChaptersMap
+                    chapters={data.chapters}
+                    kcds={data.kcds}
+                    conferences={conferences}
+                    countries={countryByCode}
+                    panelOpen={panelOpen}
+                    focus={focus}
+                    formatDate={formatDate}
+                    labels={{
+                      kubestronauts: t.mapKubestronauts,
+                      ambassadors: t.mapAmbassadors,
+                      upcoming: t.mapUpcoming,
+                      noEvents: t.mapNoEvents,
+                      viewChapter: t.mapViewChapter,
+                      kcd: t.mapKcd,
+                      ourPeople: t.mapOurPeople,
+                      kubecon: "KubeCon",
+                      aaif: "AAIF",
+                      loading: t.mapLoadingEvents,
+                      soldOut: t.mapSoldOut,
+                    }}
+                  />
+              </div>
+
+              <button
+                onClick={() => setPanelOpen((o) => !o)}
+                aria-expanded={panelOpen}
+                aria-controls="countries-panel"
+                className="absolute top-3 right-3 z-1001 inline-flex items-center gap-2 h-10 px-4 rounded-full bg-background/95 backdrop-blur border border-foreground/10 shadow text-sm font-semibold"
+              >
+                {panelOpen ? <X className="w-4 h-4" /> : <Globe2 className="w-4 h-4 text-primary" />}
+                {t.mapCountriesTitle}
+              </button>
+
+              {/* Countries */}
+              <div
+                id="countries-panel"
+                className={`${panelOpen ? "flex" : "hidden"} flex-col absolute z-1000 top-16 left-3 right-3 bottom-3 lg:left-auto lg:w-[340px] p-4 rounded-2xl bg-background/95 backdrop-blur border border-foreground/10 shadow-xl`}
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <h2 className="flex items-center gap-2 font-heading font-bold text-lg">
+                    <Globe2 className="w-5 h-5 text-primary" />
+                    {t.mapCountriesTitle}
+                  </h2>
+                  {selected && (
+                    <button onClick={() => setSelected(null)} className="text-xs text-primary hover:underline">
+                      {t.mapAllCountries}
+                    </button>
+                  )}
+                </div>
+                <label className="relative mb-3">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <input
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    placeholder={t.mapSearchCountry}
+                    aria-label={t.mapSearchCountry}
+                    className="w-full h-10 pl-9 pr-3 rounded-xl bg-background border border-foreground/10 text-sm focus:outline-none focus:border-primary/60"
+                  />
+                </label>
+                <div className="flex gap-2 text-[11px] uppercase tracking-wider text-muted-foreground px-2 pb-1">
+                  <span className="flex-1" />
+                  <span className="w-10 text-right tracking-normal" title={t.mapChapters}>{t.mapChaptersShort}</span>
+                  <span className="w-16 text-right tracking-normal" title={t.mapKubestronauts}>Kubestr.</span>
+                  <span className="w-10 text-right tracking-normal" title={t.mapAmbassadors}>Amb.</span>
+                </div>
+                <ul className="flex-1 min-h-0 overflow-y-auto -mx-1" data-testid="country-list">
+                  {visibleCountries.map((c) => (
+                    <li key={c.code}>
+                      <button
+                        onClick={() => {
+                          setSelected(c.code);
+                          setPanelOpen(false);
+                        }}
+                        disabled={!c.chapters}
+                        className={`w-full flex items-center gap-2 px-2 py-2 rounded-lg text-sm text-left transition-colors disabled:opacity-60 disabled:cursor-default enabled:hover:bg-foreground/5 ${selected === c.code ? "bg-primary/10 text-primary" : ""}`}
+                      >
+                        <span className="flex-1 min-w-0 truncate">{flag(c.code)} {c.name}</span>
+                        <span className="w-10 text-right tabular-nums">{c.chapters || "–"}</span>
+                        <span className="w-16 text-right tabular-nums font-semibold">{c.kubestronauts || "–"}</span>
+                        <span className="w-10 text-right tabular-nums">{c.ambassadors || "–"}</span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Legend, inside the map so it is read together with the markers */}
+              <div className="absolute left-3 bottom-3 z-1000 flex flex-wrap gap-x-3 gap-y-1 max-w-[calc(100%-1.5rem)] sm:max-w-md px-3 py-2 rounded-xl bg-background/90 backdrop-blur border border-foreground/10 text-[11px] text-muted-foreground">
+                <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-[hsl(199_89%_45%)]" />{t.mapLegendChapter}</span>
+                <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-full bg-[hsl(160_84%_39%)]" />{t.mapLegendActive}</span>
+                <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-full border-2 border-[hsl(38_92%_50%)]" />{t.mapKcd}</span>
+                <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-full border-2 border-[hsl(262_83%_58%)]" />KubeCon</span>
+                <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-full border-2 border-[hsl(330_81%_60%)]" />AAIF</span>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </main>
       <Footer />
-    </main>
+    </>
   );
 }

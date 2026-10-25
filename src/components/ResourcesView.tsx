@@ -109,76 +109,78 @@ export default function ResourcesView({ coupon, courses, videos, blogs, orientat
   ];
 
   return (
-    <main className="min-h-screen">
+    <>
       <Navbar />
+      <main id="main" tabIndex={-1} className="min-h-screen focus:outline-none">
 
-      <section className="pt-28 md:pt-32 pb-16">
-        <div className="container px-4 sm:px-6">
-          <header className="mb-8">
-            <h1 className="text-3xl md:text-5xl font-heading font-bold mb-3">{t.resourcesTitle}</h1>
-            <p className="text-muted-foreground max-w-2xl">{t.resourcesSubtitle}</p>
-          </header>
+        <section className="pt-28 md:pt-32 pb-16">
+          <div className="container px-4 sm:px-6">
+            <header className="mb-8">
+              <h1 className="text-3xl md:text-5xl font-heading font-bold mb-3">{t.resourcesTitle}</h1>
+              <p className="text-muted-foreground max-w-2xl">{t.resourcesSubtitle}</p>
+            </header>
 
-          {/* Discount */}
-          <div className="rounded-3xl border border-primary/30 bg-linear-to-br from-primary/10 via-card/60 to-card/60 p-6 md:p-8">
-            <div className="flex flex-col md:flex-row md:items-center gap-5">
-              <span className="flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/15 text-primary shrink-0">
-                <Tag className="w-6 h-6" />
-              </span>
-              <div className="flex-1 min-w-0">
-                <p className="text-xs font-bold uppercase tracking-wider text-primary">{t.discountsTitle}</p>
-                {coupon ? (
-                  <>
-                    <p className="font-heading font-semibold text-lg mt-1">{coupon.title}</p>
-                    <p className="text-sm text-muted-foreground mt-2">
-                      {t.couponCode}:{" "}
-                      <code className="px-2 py-1 rounded-md bg-primary/10 text-primary font-mono font-semibold select-all break-all">{coupon.code}</code>
-                    </p>
-                  </>
-                ) : (
-                  <p className="text-muted-foreground mt-1">{t.couponFallback}</p>
+            {/* Discount */}
+            <div className="rounded-3xl border border-primary/30 bg-linear-to-br from-primary/10 via-card/60 to-card/60 p-6 md:p-8">
+              <div className="flex flex-col md:flex-row md:items-center gap-5">
+                <span className="flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/15 text-primary shrink-0">
+                  <Tag className="w-6 h-6" />
+                </span>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-bold uppercase tracking-wider text-primary">{t.discountsTitle}</p>
+                  {coupon ? (
+                    <>
+                      <p className="font-heading font-semibold text-lg mt-1">{coupon.title}</p>
+                      <p className="text-sm text-muted-foreground mt-2">
+                        {t.couponCode}:{" "}
+                        <code className="px-2 py-1 rounded-md bg-primary/10 text-primary font-mono font-semibold select-all break-all">{coupon.code}</code>
+                      </p>
+                    </>
+                  ) : (
+                    <p className="text-muted-foreground mt-1">{t.couponFallback}</p>
+                  )}
+                  <a href={links.lfCoupons} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 mt-3 text-xs text-muted-foreground hover:text-primary">
+                    <Github className="w-3.5 h-3.5" />
+                    {t.couponSource}
+                  </a>
+                </div>
+                {coupon && (
+                  <a
+                    href={coupon.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 h-11 px-6 rounded-full bg-primary text-primary-foreground font-heading font-semibold text-sm hover:bg-primary/90 transition-colors shrink-0"
+                  >
+                    {t.getDiscount}
+                    <ArrowUpRight className="w-4 h-4" />
+                  </a>
                 )}
-                <a href={links.lfCoupons} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 mt-3 text-xs text-muted-foreground hover:text-primary">
-                  <Github className="w-3.5 h-3.5" />
-                  {t.couponSource}
-                </a>
               </div>
-              {coupon && (
-                <a
-                  href={coupon.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 h-11 px-6 rounded-full bg-primary text-primary-foreground font-heading font-semibold text-sm hover:bg-primary/90 transition-colors shrink-0"
-                >
-                  {t.getDiscount}
-                  <ArrowUpRight className="w-4 h-4" />
-                </a>
-              )}
+            </div>
+
+            <CardGrid id="resources-grid" title={t.resourcesGrid.title} categories={categories} items={items} defaultTab="videos" />
+
+            <div className="mt-10 flex flex-col md:flex-row md:items-center justify-between gap-4 rounded-3xl border border-foreground/10 bg-card/60 p-6">
+              <div className="flex items-center gap-3">
+                <BrandLogo src="cncg.svg" size={40} className="w-10 h-10" />
+                <Link href="/start-a-chapter" className="inline-flex items-center gap-1 font-heading font-semibold hover:text-primary">
+                  {t.chapterGuide.cta}
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+              <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
+                {moreSources.map((s) => (
+                  <a key={s.href} href={s.href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-muted-foreground hover:text-primary">
+                    {s.label}
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
-
-          <CardGrid id="resources-grid" title={t.resourcesGrid.title} categories={categories} items={items} defaultTab="videos" />
-
-          <div className="mt-10 flex flex-col md:flex-row md:items-center justify-between gap-4 rounded-3xl border border-foreground/10 bg-card/60 p-6">
-            <div className="flex items-center gap-3">
-              <BrandLogo src="cncg.svg" size={40} className="w-10 h-10" />
-              <Link href="/start-a-chapter" className="inline-flex items-center gap-1 font-heading font-semibold hover:text-primary">
-                {t.chapterGuide.cta}
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-            <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
-              {moreSources.map((s) => (
-                <a key={s.href} href={s.href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-muted-foreground hover:text-primary">
-                  {s.label}
-                  <ArrowUpRight className="w-3.5 h-3.5" />
-                </a>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+        </section>
+      </main>
       <Footer />
-    </main>
+    </>
   );
 }

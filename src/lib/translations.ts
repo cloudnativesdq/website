@@ -193,6 +193,18 @@ export const translations = {
       menu: "Menú",
       language: "Cambiar idioma",
       theme: "Cambiar tema",
+      skipToContent: "Saltar al contenido",
+    },
+    notFound: {
+      title: "Página no encontrada",
+      body: "La página que buscas no existe o cambió de dirección.",
+      home: "Volver al inicio",
+    },
+    error: {
+      title: "Algo salió mal",
+      body: "No pudimos cargar esta página. Inténtalo de nuevo en un momento.",
+      retry: "Reintentar",
+      home: "Volver al inicio",
     },
     footer: {
       explore: "Explora",
@@ -467,6 +479,18 @@ export const translations = {
       menu: "Menu",
       language: "Change language",
       theme: "Toggle theme",
+      skipToContent: "Skip to content",
+    },
+    notFound: {
+      title: "Page not found",
+      body: "The page you are looking for does not exist or has moved.",
+      home: "Back to home",
+    },
+    error: {
+      title: "Something went wrong",
+      body: "We could not load this page. Please try again in a moment.",
+      retry: "Try again",
+      home: "Back to home",
     },
     footer: {
       explore: "Explore",
