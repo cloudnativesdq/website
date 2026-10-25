@@ -68,12 +68,12 @@ export const links = {
   emailMailto: "mailto:organizers@cloudnativesdq.org",
   
   // External Assets & Fallbacks
-  eventFallbackImage: "/images/logo.png",
-  organizerFallbackImage: "/images/logo.png",
+  eventFallbackImage: "/brand/event-placeholder.png",
+  organizerFallbackImage: "/brand/icon-512.png",
   
   // Site Info
   siteUrl: "https://cloudnativesdq.org",
-  siteLogo: "https://cloudnativesdq.org/favicon.svg",
+  siteLogo: "https://cloudnativesdq.org/brand/icon-512.png",
 
   // Luma Events (fetched by LumaScraperProvider)
   lumaEvents: [
