@@ -138,7 +138,7 @@ test("unknown URLs get the branded 404 without console errors", async ({ page })
 
 test("first Tab focuses the skip link, which moves focus to main", async ({ page, isMobile }) => {
   test.skip(isMobile, "keyboard navigation");
-  await page.goto("/");
+  await page.goto("/", { waitUntil: "networkidle" });
   await page.keyboard.press("Tab");
   const skip = page.getByRole("link", { name: /Saltar al contenido|Skip to content/ });
   await expect(skip).toBeFocused();
