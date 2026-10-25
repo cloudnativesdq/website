@@ -3,7 +3,7 @@ import { defineConfig, devices } from "@playwright/test";
 // End-to-end smoke tests against the production build (`pnpm build` first). CI runs them on every
 // PR, so a dependency bump only auto-merges when the site still works.
 // E2E_PORT lets two worktrees run the suite at once without testing each other's server.
-const PORT = Number(process.env.E2E_PORT ?? 3100);
+const PORT = Number(process.env.E2E_PORT || 3100);
 
 export default defineConfig({
   testDir: "tests/e2e",

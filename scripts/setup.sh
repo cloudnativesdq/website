@@ -23,7 +23,7 @@ fi
 git submodule update --init --recursive
 pnpm install --frozen-lockfile
 
-if [ ! -f .env.local ]; then
+if [ ! -f .env.local ] && [ -f .env.example ]; then
   cp .env.example .env.local
   echo "Created .env.local from .env.example."
 fi

@@ -119,7 +119,8 @@ pnpm exec openspec validate --all --strict
    ```bash
    cd _ds/style-guide
    git switch -c my-change
-   git commit -am "Describe the change"
+   git add -A
+   git commit -m "Describe the change"
    git push -u origin my-change
    ```
    Get it merged there.
