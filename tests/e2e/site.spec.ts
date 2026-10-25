@@ -1,4 +1,6 @@
 import { test, expect, type Page } from "@playwright/test";
+import { existsSync, readFileSync } from "node:fs";
+import { translations } from "../../src/lib/translations";
 
 // Every page renders its main content, has no console errors and no horizontal scroll.
 // External data (OCG, cncf.io, Luma…) can be unavailable in CI, so content checks only rely on
@@ -92,4 +94,61 @@ test("public API endpoints answer JSON", async ({ request }) => {
     expect(res.headers()["content-type"], path).toContain("application/json");
     expect(res.headers()["access-control-allow-origin"], path).toBe("*");
   }
+});
+
+test.describe("contact form", () => {
+  test.use({ locale: "es-ES" });
+  const { es, en } = translations;
+  // The web server also reads .env files, so a local key there counts too.
+  const hasResendKey =
+    !!process.env.RESEND_API_KEY ||
+    [".env", ".env.local", ".env.production", ".env.production.local"].some(
+      (f) => existsSync(f) && /^\s*RESEND_API_KEY\s*=\s*\S/m.test(readFileSync(f, "utf8")),
+    );
+
+  async function fillVisible(page: Page, message = "Hola, quiero dar una charla.") {
+    await page.getByLabel(es.nameLabel).fill("Ana");
+    await page.getByLabel(es.emailLabel).fill("ana@example.com");
+    await page.getByLabel(es.messageLabel).fill(message);
+  }
+
+  test("labels are associated and keyboard focus skips the honeypot", async ({ page }) => {
+    await page.goto("/contact");
+    await expect(page.getByLabel(es.nameLabel)).toHaveAttribute("name", "name");
+    await expect(page.getByLabel(es.emailLabel)).toHaveAttribute("name", "email");
+    await expect(page.getByLabel(es.messageLabel)).toHaveAttribute("name", "message");
+    await page.getByLabel(es.messageLabel).focus();
+    await page.keyboard.press("Tab");
+    await expect(page.getByRole("button", { name: es.sendButton })).toBeFocused();
+  });
+
+  test("a filled honeypot gets success without sending", async ({ page }) => {
+    test.skip(hasResendKey, "a real key would turn a broken honeypot into a real email");
+    await page.goto("/contact");
+    await fillVisible(page);
+    await page.locator('input[name="hp"]').fill("Bot Inc");
+    await page.waitForTimeout(3100); // past the minimum fill time, so only the honeypot can short-circuit
+    await page.getByRole("button", { name: es.sendButton }).click();
+    // CI has no RESEND_API_KEY, so a real send would show "unavailable": success proves the short-circuit.
+    await expect(page.getByRole("heading", { name: es.successMessage })).toBeVisible();
+  });
+
+  test("server error codes show translated messages, never server text", async ({ page }) => {
+    test.skip(hasResendKey, "needs RESEND_API_KEY unset, or a valid submit sends real email");
+    await page.goto("/contact");
+    await page.waitForTimeout(3100); // past the minimum fill time
+    await fillVisible(page, "corto");
+    await page.locator("form").evaluate((f: HTMLFormElement) => { f.noValidate = true; });
+    await page.getByRole("button", { name: es.sendButton }).click();
+    await expect(page.getByText(es.contactErrors.invalid)).toBeVisible();
+    await page.getByRole("button", { name: /Cambiar idioma|Change language/ }).first().click();
+    await expect(page.getByText(en.contactErrors.invalid)).toBeVisible();
+
+    await page.getByLabel(en.messageLabel).fill("Hello, I would like to give a talk.");
+    await page.getByRole("button", { name: en.sendButton }).click();
+    await expect(page.getByText(en.contactErrors.unavailable)).toBeVisible();
+    await expect(page.locator("main")).not.toContainText("RESEND");
+    await page.getByRole("button", { name: /Cambiar idioma|Change language/ }).first().click();
+    await expect(page.getByText(es.contactErrors.unavailable)).toBeVisible();
+  });
 });

@@ -16,21 +16,24 @@ import WhatsAppIcon from "@/components/WhatsAppIcon";
 export default function ContactView() {
   const { t, language } = useLanguage();
   const [formState, setFormState] = useState<"idle" | "sending" | "success" | "error">("idle");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorCode, setErrorCode] = useState<"invalid" | "unavailable" | null>(null);
+  // Client-side mount time. Not rendered into the HTML: the page is prerendered, so a server value would be build time.
+  const [renderedAt] = useState(() => Date.now());
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setFormState("sending");
-    setErrorMessage("");
-    
-    const formData = new FormData(e.currentTarget);
-    const result = await sendEmail(formData);
+    setErrorCode(null);
 
-    if (result.success) {
+    const formData = new FormData(e.currentTarget);
+    formData.set("t", String(Date.now() - renderedAt));
+    const result = await sendEmail(formData).catch(() => ({ error: "unavailable" as const }));
+
+    if ("success" in result) {
       setFormState("success");
     } else {
       setFormState("error");
-      setErrorMessage(result.error || "Error");
+      setErrorCode(result.error);
     }
   };
 
@@ -103,12 +106,14 @@ export default function ContactView() {
                 ) : (
                   <form onSubmit={handleSubmit} className="p-8 md:p-10 rounded-3xl bg-card/60 border border-foreground/10 space-y-6">
                     <div className="space-y-2">
-                      <label className="block text-sm font-bold uppercase tracking-wider text-muted-foreground ml-1">
+                      <label htmlFor="contact-name" className="block text-sm font-bold uppercase tracking-wider text-muted-foreground ml-1">
                         {t.nameLabel}
                       </label>
                       <input 
                         required
+                        id="contact-name"
                         name="name"
+                        maxLength={100}
                         type="text" 
                         className="w-full bg-foreground/5 border border-foreground/10 rounded-2xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
                         placeholder={t.contactNamePlaceholder}
@@ -116,12 +121,14 @@ export default function ContactView() {
                     </div>
                     
                     <div className="space-y-2">
-                      <label className="block text-sm font-bold uppercase tracking-wider text-muted-foreground ml-1">
+                      <label htmlFor="contact-email" className="block text-sm font-bold uppercase tracking-wider text-muted-foreground ml-1">
                         {t.emailLabel}
                       </label>
                       <input 
                         required
+                        id="contact-email"
                         name="email"
+                        maxLength={254}
                         type="email" 
                         className="w-full bg-foreground/5 border border-foreground/10 rounded-2xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
                         placeholder={t.contactEmailPlaceholder}
@@ -129,16 +136,24 @@ export default function ContactView() {
                     </div>
 
                     <div className="space-y-2">
-                      <label className="block text-sm font-bold uppercase tracking-wider text-muted-foreground ml-1">
+                      <label htmlFor="contact-message" className="block text-sm font-bold uppercase tracking-wider text-muted-foreground ml-1">
                         {t.messageLabel}
                       </label>
                       <textarea 
                         required
+                        id="contact-message"
                         name="message"
+                        minLength={10}
+                        maxLength={5000}
                         rows={5}
                         className="w-full bg-foreground/5 border border-foreground/10 rounded-2xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all resize-none"
                         placeholder="..."
                       />
+                    </div>
+
+                    <div className="absolute -left-[9999px]" aria-hidden="true">
+                      {/* Non-semantic name so browser autofill never fills it for a real visitor. */}
+                      <input name="hp" type="text" tabIndex={-1} autoComplete="off" aria-hidden="true" />
                     </div>
 
                     <button 
@@ -156,7 +171,7 @@ export default function ContactView() {
                     {formState === "error" && (
                       <div className="flex items-center gap-2 text-destructive text-sm font-medium mt-4">
                         <AlertCircle className="w-4 h-4" />
-                        {errorMessage || t.errorMessage}
+                        {(errorCode && t.contactErrors[errorCode]) || t.errorMessage}
                       </div>
                     )}
                   </form>
