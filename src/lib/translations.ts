@@ -261,6 +261,10 @@ export const translations = {
     sending: "Enviando...",
     successMessage: "¡Mensaje enviado con éxito!",
     errorMessage: "Hubo un error al enviar el mensaje. Inténtalo de nuevo.",
+    contactErrors: {
+      invalid: "Revisa los campos: nombre, un correo válido y un mensaje de al menos 10 caracteres.",
+      unavailable: "No pudimos enviar tu mensaje ahora. Escríbenos a organizers@cloudnativesdq.org.",
+    },
     footerText: "Cloud Native Santo Domingo · Powered by Cloud Native Computing Foundation",
     calendarTitle: "Calendario de Eventos",
     calendarSubtitle: "Mira nuestro calendario, cada fecha es una reunión de la comunidad.",
@@ -531,6 +535,10 @@ export const translations = {
     sending: "Sending...",
     successMessage: "Message sent successfully!",
     errorMessage: "There was an error sending the message. Please try again.",
+    contactErrors: {
+      invalid: "Check the fields: name, a valid email and a message of at least 10 characters.",
+      unavailable: "We couldn't send your message right now. Email us at organizers@cloudnativesdq.org.",
+    },
     footerText: "Cloud Native Santo Domingo · Powered by Cloud Native Computing Foundation",
     calendarTitle: "Event Calendar",
     calendarSubtitle: "Check our calendar, each date is a community meetup.",
