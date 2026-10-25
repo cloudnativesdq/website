@@ -34,7 +34,7 @@
     --popover-foreground: 221.1 33.3% 88.8%;
 
     --primary: 197.2 88.5% 47.8%;        /* --cyan-500  #0ea8e6 */
-    --primary-foreground: 200 82% 9%;    /* readable ink on the accent */
+    --primary-foreground: 200.9 84.3% 10%; /* --text-on-accent #04202f, 6.20:1 on cyan */
 
     --secondary: 220.9 28.9% 14.9%;      /* --navy-600  #1b2231 */
     --secondary-foreground: 221.1 33.3% 88.8%;
@@ -43,7 +43,7 @@
     --muted-foreground: 221.4 14% 59.4%; /* --slate-400 #8992a6 */
 
     --accent: 197.2 88.5% 47.8%;         /* --cyan-500  #0ea8e6 */
-    --accent-foreground: 200 82% 9%;
+    --accent-foreground: 200.9 84.3% 10%;
 
     --destructive: 0 83.8% 61.4%;        /* --red-500   #ef4a4a */
     --destructive-foreground: 0 0% 100%;
@@ -57,7 +57,7 @@
     --sidebar-background: 221.5 41.9% 6.1%;
     --sidebar-foreground: 221.1 33.3% 88.8%;
     --sidebar-primary: 197.2 88.5% 47.8%;
-    --sidebar-primary-foreground: 200 82% 9%;
+    --sidebar-primary-foreground: 200.9 84.3% 10%;
     --sidebar-accent: 220.9 28.9% 14.9%;
     --sidebar-accent-foreground: 221.1 33.3% 88.8%;
     --sidebar-border: 220.9 28.9% 14.9%;
@@ -88,7 +88,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 221.1 31.1% 12%;
 
-    --primary: 200.4 98% 39.4%;          /* light accent #0284c7 */
+    --primary: 201.3 96.3% 32.2%;        /* light accent #0369a1, white 5.93:1 */
     --primary-foreground: 0 0% 100%;
 
     --secondary: 220 36% 95.1%;          /* --fog-100 #eef1f7 */
@@ -97,23 +97,23 @@
     --muted: 220 36% 95.1%;
     --muted-foreground: 220 16.9% 34.9%; /* --fog-700 #4a5468 */
 
-    --accent: 200.4 98% 39.4%;
+    --accent: 201.3 96.3% 32.2%;
     --accent-foreground: 0 0% 100%;
 
     --border: 218.6 31.8% 91.4%;         /* --fog-200 #e2e7f0 */
     --input: 218.6 31.8% 91.4%;
-    --ring: 200.4 98% 39.4%;
+    --ring: 201.3 96.3% 32.2%;
 
     --sidebar-background: 216 45.5% 97.8%;
     --sidebar-foreground: 221.1 31.1% 12%;
-    --sidebar-primary: 200.4 98% 39.4%;
+    --sidebar-primary: 201.3 96.3% 32.2%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 220 36% 95.1%;
     --sidebar-accent-foreground: 221.1 31.1% 12%;
     --sidebar-border: 218.6 31.8% 91.4%;
-    --sidebar-ring: 200.4 98% 39.4%;
+    --sidebar-ring: 201.3 96.3% 32.2%;
 
-    --glow: 200.4 98% 39.4%;
+    --glow: 201.3 96.3% 32.2%;
     --surface: 0 0% 100%;
 
     --warning-foreground: 40 100% 12%;
