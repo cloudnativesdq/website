@@ -87,6 +87,66 @@ test("card grids filter by tab", async ({ page }) => {
   await expect(grid.locator("ul > li").first()).toBeVisible();
 });
 
+test("head declares the brand icons, manifest and theme color", async ({ page, request }) => {
+  await page.goto("/");
+  const head = page.locator("head");
+  const href = (selector: string) => head.locator(selector).first().getAttribute("href");
+  const icons = [
+    await href('link[rel="icon"][href*="favicon.ico"]'),
+    await href('link[rel="icon"][type="image/svg+xml"]'),
+    await href('link[rel="apple-touch-icon"]'),
+  ];
+  for (const url of icons) {
+    expect(url, "icon link").toBeTruthy();
+    expect((await request.get(url!)).status(), url!).toBe(200);
+  }
+  await expect(head.locator('meta[name="theme-color"][media="(prefers-color-scheme: dark)"]')).toHaveAttribute("content", "#090d16");
+  await expect(head.locator('meta[name="theme-color"][media="(prefers-color-scheme: light)"]')).toHaveAttribute("content", "#f7f9fc");
+
+  const manifestUrl = await href('link[rel="manifest"]');
+  expect(manifestUrl, "manifest link").toBeTruthy();
+  const manifest = await (await request.get(manifestUrl!)).json();
+  expect(manifest.short_name.length).toBeLessThanOrEqual(12);
+  const purposes = manifest.icons.map((i: { sizes: string; purpose: string }) => `${i.sizes} ${i.purpose}`);
+  expect(purposes).toEqual(expect.arrayContaining(["192x192 any", "512x512 any", "512x512 maskable"]));
+  for (const icon of manifest.icons) {
+    const res = await request.get(icon.src);
+    expect(res.status(), icon.src).toBe(200);
+    expect(res.headers()["content-type"], icon.src).toContain("image/png");
+  }
+
+  expect((await request.get("/favicon.ico")).status()).toBe(200);
+  for (const gone of ["/favicon.svg", "/images/logo.png"]) {
+    expect((await request.get(gone)).status(), gone).toBe(404);
+  }
+});
+
+test("navbar and footer home links show the lockup", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator("nav").first().getByRole("link", { name: "Cloud Native Santo Domingo", exact: true })).toBeVisible();
+  await expect(page.locator("footer").last().getByRole("link", { name: "Cloud Native Santo Domingo", exact: true })).toBeVisible();
+});
+
+test("unknown URLs get the branded 404 without console errors", async ({ page }) => {
+  const errors = collectErrors(page);
+  const res = await page.goto("/no-existe", { waitUntil: "networkidle" });
+  expect(res?.status()).toBe(404);
+  await expect(page.locator("nav").first().getByRole("link", { name: "Cloud Native Santo Domingo", exact: true })).toBeVisible();
+  await expect(page.locator("main#main").getByRole("link", { name: /Volver al inicio|Back to home/ })).toHaveAttribute("href", "/");
+  expect(errors, "console errors").toEqual([]);
+});
+
+test("first Tab focuses the skip link, which moves focus to main", async ({ page, isMobile }) => {
+  test.skip(isMobile, "keyboard navigation");
+  await page.goto("/");
+  await page.keyboard.press("Tab");
+  const skip = page.getByRole("link", { name: /Saltar al contenido|Skip to content/ });
+  await expect(skip).toBeFocused();
+  await expect(skip).toBeVisible();
+  await page.keyboard.press("Enter");
+  await expect(page.locator("main#main")).toBeFocused();
+});
+
 test("public API endpoints answer JSON", async ({ request }) => {
   for (const path of ["/api", "/api/community", "/api/map", "/api/resources", "/api/people", "/api/wcnf", "/api/programs", "/api/chapter-guide"]) {
     const res = await request.get(path);
