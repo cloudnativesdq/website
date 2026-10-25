@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { sharedOpenGraph, sharedTwitter } from '@/lib/seo';
 import GalleryPage from "@/components/GalleryPage";
 
 export const metadata: Metadata = {
@@ -7,14 +8,8 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://cloudnativesdq.org/gallery',
   },
-  openGraph: {
-    title: 'Galería | Cloud Native Santo Domingo',
-    description: 'Explora las fotos de nuestros eventos y encuentros.',
-    url: 'https://cloudnativesdq.org/gallery',
-    siteName: 'Cloud Native Santo Domingo',
-    locale: 'es_DO',
-    type: 'website',
-  },
+  openGraph: { ...sharedOpenGraph, title: 'Galería | Cloud Native Santo Domingo', description: 'Explora las fotos de nuestros eventos y encuentros.', url: '/gallery' },
+  twitter: { ...sharedTwitter, title: 'Galería | Cloud Native Santo Domingo', description: 'Explora las fotos de nuestros eventos y encuentros.' },
 };
 
 export default function Gallery() {

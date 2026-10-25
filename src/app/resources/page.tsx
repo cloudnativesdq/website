@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { sharedOpenGraph, sharedTwitter } from '@/lib/seo';
 import {
   getCoupon,
   getFreeCourses,
@@ -16,6 +17,8 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://cloudnativesdq.org/resources',
   },
+  openGraph: { ...sharedOpenGraph, title: 'Recursos | Cloud Native Santo Domingo', description: 'Descuentos para certificaciones CNCF, cursos gratuitos, certificaciones, comunidades y próximos eventos Cloud Native.', url: '/resources' },
+  twitter: { ...sharedTwitter, title: 'Recursos | Cloud Native Santo Domingo', description: 'Descuentos para certificaciones CNCF, cursos gratuitos, certificaciones, comunidades y próximos eventos Cloud Native.' },
 };
 
 export default async function Resources() {

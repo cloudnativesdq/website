@@ -7,45 +7,15 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { LanguageProvider } from "@/hooks/use-language";
 import { ThemeProvider } from "next-themes";
+import { SITE_URL, sharedOpenGraph, sharedTwitter } from '@/lib/seo';
 import './globals.css';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://cloudnativesdq.org'),
+  metadataBase: new URL(SITE_URL),
   title: 'Cloud Native Santo Domingo | Comunidad Oficial CNCF en RD',
   description: 'Únete a la comunidad oficial de Cloud Native Computing Foundation (CNCF) en Santo Domingo. Eventos, charlas y networking sobre Kubernetes, Docker y el ecosistema Cloud Native en República Dominicana.',
-  keywords: [
-    'Cloud Native',
-    'CNCF',
-    'Santo Domingo',
-    'República Dominicana',
-    'Kubernetes',
-    'Docker',
-    'DevOps',
-    'Comunidad Tech',
-    'Eventos de Tecnología',
-  ],
-    openGraph: {
-    title: 'Cloud Native Santo Domingo | Comunidad Oficial CNCF',
-    description: 'Únete a la comunidad oficial de Cloud Native Computing Foundation (CNCF) en Santo Domingo. Eventos sobre Kubernetes, Docker y Cloud Native en RD.',
-    url: 'https://cloudnativesdq.org',
-    siteName: 'Cloud Native Santo Domingo',
-    locale: 'es_DO',
-    type: 'website',
-    images: [
-      {
-        url: '/og-image.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Cloud Native Santo Domingo',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Cloud Native Santo Domingo',
-    description: 'Comunidad oficial de Cloud Native Computing Foundation (CNCF) en Santo Domingo, República Dominicana.',
-    images: ['/og-image.jpg'],
-  },
+  openGraph: { ...sharedOpenGraph, title: 'Cloud Native Santo Domingo | Comunidad Oficial CNCF en RD', description: 'Únete a la comunidad oficial de Cloud Native Computing Foundation (CNCF) en Santo Domingo. Eventos, charlas y networking sobre Kubernetes, Docker y el ecosistema Cloud Native en República Dominicana.', url: '/' },
+  twitter: { ...sharedTwitter, title: 'Cloud Native Santo Domingo | Comunidad Oficial CNCF en RD', description: 'Únete a la comunidad oficial de Cloud Native Computing Foundation (CNCF) en Santo Domingo. Eventos, charlas y networking sobre Kubernetes, Docker y el ecosistema Cloud Native en República Dominicana.' },
   alternates: {
     canonical: 'https://cloudnativesdq.org',
   },
