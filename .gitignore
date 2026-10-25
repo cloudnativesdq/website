@@ -1,5 +1,6 @@
 .env*
 .env
+!.env.example
 
 # Logs
 logs
@@ -35,3 +36,7 @@ dist-ssr
 # Playwright
 /test-results/
 /playwright-report/
+
+# Claude Code personal and session state (commands/ and skills/ are tracked)
+.claude/settings.local.json
+.claude/worktrees/

@@ -1,0 +1,17 @@
+<!doctype html><html><head><style>
+@font-face{font-family:SG;src:url(SpaceGrotesk-var.ttf)}@font-face{font-family:Inter;src:url(Inter-var.ttf)}
+*{margin:0;box-sizing:border-box}body{width:1200px;background:#333}
+.og{width:1200px;height:630px;position:relative;overflow:hidden;background:#090d16;color:#d9dfec;font-family:Inter;margin-bottom:20px}
+.photo{position:absolute;inset:0 0 0 600px;background:url(photo.jpg) 72% 30%/cover}
+.photo::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#090d16 0%,rgba(9,13,22,0) 22%)}
+.txt{position:absolute;left:72px;top:0;bottom:0;width:540px;display:flex;flex-direction:column;justify-content:center;gap:24px}
+.brand{display:flex;align-items:center;gap:16px;font:700 28px SG;letter-spacing:-.02em;color:#fff}.brand img{width:64px}
+h1{font:700 64px/1.02 SG;letter-spacing:-.035em;color:#fff}h1 span{color:#0ea8e6}
+p{font-size:24px;color:#8992a6}
+.rule{position:absolute;left:0;right:0;bottom:0;height:8px;background:linear-gradient(90deg,#0ea8e6 0 80%,#090d16 80% 81%,#002d72 81% 90%,#090d16 90% 91%,#ce1126 91%)}
+.g{position:absolute;inset:0;background:radial-gradient(600px 400px at 0 0,rgba(14,168,230,.18),transparent)}
+.eyebrow{font:600 18px Inter;letter-spacing:.14em;text-transform:uppercase;color:#0ea8e6}
+</style></head><body>
+<div class="og"><div class="photo"></div><div class="txt"><div class="brand"><img src="mark.svg">Cloud Native Santo Domingo</div><h1>La comunidad <span>Cloud Native</span> de RD</h1><p>Meetups, charlas y networking sobre Kubernetes y el ecosistema CNCF.</p></div><div class="rule"></div></div>
+<div class="og"><div class="g"></div><div class="txt" style="width:1000px"><div class="brand"><img src="mark.svg">Cloud Native Santo Domingo</div><div class="eyebrow">Eventos</div><h1 style="font-size:84px">Próximos meetups<br>y charlas</h1><p>cloudnativesdq.org/events</p></div><img src="mark.svg" style="position:absolute;right:-90px;bottom:-110px;width:520px;opacity:.12"><div class="rule"></div></div>
+</body></html>

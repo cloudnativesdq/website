@@ -4,7 +4,7 @@ This is the official website for the **Cloud Native Santo Domingo** community, a
 
 ## 🚀 Built With
 
-- [Next.js](https://nextjs.org/) (App Router, Edge Runtime)
+- [Next.js](https://nextjs.org/) (App Router)
 - [TypeScript](https://www.typescriptlang.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [Shadcn UI](https://ui.shadcn.com/)
@@ -15,19 +15,20 @@ This is the official website for the **Cloud Native Santo Domingo** community, a
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) (v18 or higher)
-- [pnpm](https://pnpm.io/) (v9 or higher)
+- [Node.js](https://nodejs.org/) 24 (see `.nvmrc`)
+- [pnpm](https://pnpm.io/) 11, through Corepack: `corepack enable`
 
 ### Installation
 
-1. Clone the repository:
+1. Clone the repository with its submodule:
    ```bash
-   git clone https://github.com/cloudnativesdq/website.git
+   git clone --recurse-submodules https://github.com/cloudnativesdq/website.git
+   cd website
    ```
 
-2. Install dependencies:
+2. Set up the environment (checks versions, installs dependencies, creates `.env.local`):
    ```bash
-   pnpm install
+   pnpm run dev:setup
    ```
 
 3. Run the development server:
@@ -36,6 +37,8 @@ This is the official website for the **Cloud Native Santo Domingo** community, a
    ```
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for worktrees, planning changes with OpenSpec and the checks to run before a pull request.
 
 ## 📦 Deployment
 

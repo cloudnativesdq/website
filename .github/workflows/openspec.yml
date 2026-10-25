@@ -1,0 +1,60 @@
+name: OpenSpec
+
+# Separate from ci.yml so label changes re-run only this cheap job, not the build and e2e.
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, labeled, unlabeled]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: openspec-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  openspec:
+    name: Validate specs and require a change for product edits
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # the path gate diffs against the base branch
+
+      - uses: pnpm/action-setup@v6 # version comes from packageManager in package.json
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec openspec validate --all --strict
+
+      - name: Product changes need an OpenSpec change or the no-spec label
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          NO_SPEC: ${{ contains(github.event.pull_request.labels.*.name, 'no-spec') }}
+        run: |
+          changed=$(git diff --name-only --no-renames "origin/${BASE_REF}...HEAD")
+          product=$(grep -E '^(src|public)/' <<<"$changed" || true)
+          if [ -z "$product" ]; then
+            echo "No files under src/ or public/ changed."
+            exit 0
+          fi
+          if grep -qE '^openspec/' <<<"$changed"; then
+            echo "Product files changed together with openspec/."
+            exit 0
+          fi
+          if [ "$NO_SPEC" = "true" ]; then
+            echo "Product files changed; the no-spec label exempts this PR."
+            exit 0
+          fi
+          echo "::error::This PR changes product files but nothing under openspec/."
+          echo "Changed product files:"
+          echo "$product"
+          echo
+          echo "Fix it in one of two ways:"
+          echo "  1. Add or update an OpenSpec change (see CONTRIBUTING.md, 'Planning Changes with OpenSpec')."
+          echo "  2. If no requirement changes (typo, copy tweak, dependency-driven fix), ask a maintainer for the no-spec label."
+          exit 1
