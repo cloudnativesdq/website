@@ -9,7 +9,7 @@
 ## 2. CI gate and PR template
 
 - [x] 2.1 Add `.github/workflows/openspec.yml` (triggers incl. `labeled`/`unlabeled`, checkout with `fetch-depth: 0`, frozen install, strict validate, bash path gate with `no-spec` label check); verify `shellcheck` on the extracted gate script and `actionlint` (if available) pass
-- [ ] 2.2 Add `.github/pull_request_template.md` (OpenSpec change field or `no-spec` reason, "change archived in this PR" item, checklist: lint, typecheck, build, e2e); verify it renders on a draft PR
+- [x] 2.2 Add `.github/pull_request_template.md` (OpenSpec change field or `no-spec` reason, "change archived in this PR" item, checklist: lint, typecheck, build, e2e); verify it renders on a draft PR
 - [x] 2.3 On a throwaway draft PR, check each case: `src/` edit without `openspec/` fails with the fix message, adding `no-spec` passes, removing it fails again, a docs-only edit passes; record results in the PR description
 
 ## 3. Dev environment scripts
@@ -34,4 +34,4 @@
 
 - [x] 6.1 Run `pnpm lint`, `pnpm exec tsc --noEmit -p .`, `pnpm build`, `pnpm test:e2e` and `pnpm exec openspec validate --all --strict`; all pass
 - [x] 6.2 Maintainer: create the `no-spec` label on GitHub and optionally mark the `OpenSpec` check as required in branch protection; verify the label appears in the PR label picker
-- [ ] 6.3 As the last commit of this PR, run `pnpm exec openspec archive contributor-workflow`; verify `openspec list --specs` shows `contribution-workflow`, the other pending changes stay in `openspec/changes/`, and strict validation passes
+- [x] 6.3 As the last commit of this PR, run `pnpm exec openspec archive contributor-workflow`; verify `openspec list --specs` shows `contribution-workflow`, the other pending changes stay in `openspec/changes/`, and strict validation passes
