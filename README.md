@@ -40,6 +40,8 @@ This is the official website for the **Cloud Native Santo Domingo** community, a
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for worktrees, planning changes with OpenSpec and the checks to run before a pull request.
 
+<!-- throwaway docs-only edit to test the OpenSpec gate -->
+
 ## 📦 Deployment
 
 The project is configured for deployment on [Vercel](https://vercel.com/).
