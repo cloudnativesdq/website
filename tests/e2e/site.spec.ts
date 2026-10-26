@@ -35,6 +35,77 @@ for (const path of PAGES) {
   });
 }
 
+const SITE_URL = "https://cloudnativesdq.org";
+
+for (const path of PAGES) {
+  test(`${path} publishes its own social metadata`, async ({ page, request }) => {
+    await page.goto(path);
+    const head = page.locator("head");
+    const meta = (attr: string, key: string) => head.locator(`meta[${attr}="${key}"]`).first().getAttribute("content");
+    const canonical = await head.locator('link[rel="canonical"]').getAttribute("href");
+    expect(canonical, "canonical").toBe(path === "/" ? SITE_URL : `${SITE_URL}${path}`);
+    expect(await meta("property", "og:url"), "og:url").toBe(canonical);
+    const title = await page.title();
+    expect(await meta("property", "og:title"), "og:title").toBe(title);
+    expect(await meta("name", "twitter:title"), "twitter:title").toBe(title);
+    const description = await meta("name", "description");
+    const ogDescription = await meta("property", "og:description");
+    expect(ogDescription, "og:description").toBeTruthy();
+    if (path !== "/") {
+      const home = await request.get("/");
+      const homeOg = (await home.text()).match(/property="og:description" content="([^"]*)"/)?.[1];
+      expect(ogDescription, "og:description must not be inherited from home").not.toBe(homeOg);
+    }
+    expect(await meta("property", "og:type")).toBe("website");
+    expect(await meta("name", "twitter:description"), "twitter:description").toBe(await meta("property", "og:description"));
+    expect(description, "description").toBeTruthy();
+    expect(await meta("name", "twitter:card")).toBe("summary_large_image");
+    expect(await meta("property", "og:site_name")).toBe("Cloud Native Santo Domingo");
+    expect(await meta("property", "og:locale")).toBe("es_DO");
+    const image = await meta("property", "og:image");
+    expect(image, "og:image").toBeTruthy();
+    expect((await request.get(new URL(image!).pathname)).status(), "og:image status").toBe(200);
+    await expect(head.locator('meta[name="keywords"]')).toHaveCount(0);
+    await expect(head.locator("link[hreflang]")).toHaveCount(0);
+  });
+}
+
+test("sitemap lists only the site's own pages", async ({ request }) => {
+  const xml = await (await request.get("/sitemap.xml")).text();
+  const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+  expect(locs.sort()).toEqual(PAGES.map((p) => (p === "/" ? SITE_URL : `${SITE_URL}${p}`)).sort());
+  expect(xml).not.toMatch(/luma\.com|lu\.ma|ocgroups\.dev/);
+});
+
+test("home JSON-LD is a graph of Organization, WebSite and Events", async ({ page, request }) => {
+  await page.goto("/");
+  const raw = await page.locator('script[type="application/ld+json"]').first().textContent();
+  const data = JSON.parse(raw!);
+  const graph: Record<string, unknown>[] = data["@graph"];
+  const org = graph.find((n) => n["@type"] === "Organization")!;
+  const site = graph.find((n) => n["@type"] === "WebSite")!;
+  expect(org, "Organization").toBeTruthy();
+  expect(site, "WebSite").toBeTruthy();
+  expect(org).not.toHaveProperty("event");
+  expect(org.alternateName).toBe("Cloud Native SDQ");
+  expect(raw).not.toContain("CNCD");
+  expect((site.publisher as { "@id": string })["@id"]).toBe(org["@id"]);
+  const events = graph.filter((n) => n["@type"] === "Event");
+  // The build only has events when the data sources answered and something is upcoming.
+  if (events.length === 0) test.info().annotations.push({ type: "note", description: "no upcoming events: Event node checks did not run" });
+  for (const event of events) {
+    expect((event.organizer as { "@id": string })["@id"]).toBe(org["@id"]);
+    expect(event.startDate).toBeTruthy();
+    expect(event.endDate).not.toBe(event.startDate);
+    expect((event.offers as { price: number }).price).toBe(0);
+  }
+  const logo = org.logo as string;
+  expect(logo).toBe(`${SITE_URL}/brand/icon-512.png`);
+  const res = await request.get(new URL(logo).pathname);
+  expect(res.status()).toBe(200);
+  expect(res.headers()["content-type"]).toContain("image/png");
+});
+
 test("theme toggle switches between light and dark", async ({ page }) => {
   await page.goto("/");
   const html = page.locator("html");

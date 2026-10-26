@@ -16,6 +16,10 @@ export interface CommunityEvent {
   soldOut?: boolean;
   spotsRemaining?: number;
   portraitImage?: string;
+  /** ISO 8601 start with offset, when the source provides one (Luma). */
+  startDate?: string;
+  /** ISO 8601 end with offset, when the source provides one (Luma). */
+  endDate?: string;
 }
 
 export interface CommunityStats {

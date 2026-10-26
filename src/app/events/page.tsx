@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { sharedOpenGraph, sharedTwitter } from '@/lib/seo';
 import { getCncfData } from "@/lib/cncf";
 import EventsPage from "@/components/EventsPage";
 
@@ -8,28 +9,8 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://cloudnativesdq.org/events',
   },
-  openGraph: {
-    title: 'Eventos | Cloud Native Santo Domingo',
-    description: 'Explora todos los eventos de la comunidad Cloud Native Santo Domingo.',
-    url: 'https://cloudnativesdq.org/events',
-    siteName: 'Cloud Native Santo Domingo',
-    locale: 'es_DO',
-    type: 'website',
-    images: [
-      {
-        url: '/og-image.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Cloud Native Santo Domingo',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Eventos | Cloud Native Santo Domingo',
-    description: 'Explora todos los eventos de la comunidad Cloud Native Santo Domingo.',
-    images: ['/og-image.jpg'],
-  },
+  openGraph: { ...sharedOpenGraph, title: 'Eventos | Cloud Native Santo Domingo', description: 'Explora todos los eventos de la comunidad Cloud Native Santo Domingo.', url: '/events' },
+  twitter: { ...sharedTwitter, title: 'Eventos | Cloud Native Santo Domingo', description: 'Explora todos los eventos de la comunidad Cloud Native Santo Domingo.' },
 };
 
 export default async function Events() {
