@@ -1,6 +1,6 @@
 # Proposal
 
-> Status: proposal and specs only. Design and tasks come later through `/opsx:propose language-ssr` (continue), after the open decision below is made.
+> Decision (maintainer, 2026-10-25): option A, cookie-driven server rendering.
 
 ## Why
 
@@ -15,8 +15,9 @@
 - Keep `<html lang>` in sync with the language shown.
 - Persist the choice so the server can read it on the next request (a cookie instead of, or in addition to, `localStorage`).
 - Remove the `invisible` wrapper.
+- Render real numbers in the hero stats from the server; `CountUp` only animates after load (today they read "0" until JavaScript runs).
 
-**Open decision (blocks design):**
+**Options considered (A chosen):**
 - **A. Cookie-driven SSR.** The server reads a `lang` cookie (then `Accept-Language`) and renders that language. The output is exact for every visitor, but reading cookies makes pages dynamic and drops the current static/ISR caching (`revalidate` on map, resources).
 - **B. Static Spanish plus client swap.** The server always renders visible Spanish. Visitors who chose English see Spanish briefly, then English after hydration. All caching stays, and only English-preferring visitors see the swap.
 - **C. Separate `/en` routes.** Fully static in both languages, and hreflang becomes possible. Largest change: every route and link doubles.

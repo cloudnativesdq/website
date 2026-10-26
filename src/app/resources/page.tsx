@@ -9,8 +9,6 @@ import {
 } from "@/lib/cncf-resources";
 import ResourcesView from "@/components/ResourcesView";
 
-export const revalidate = 21600;
-
 export const metadata: Metadata = {
   title: 'Recursos | Cloud Native Santo Domingo',
   description: 'Descuentos para certificaciones CNCF, cursos gratuitos, certificaciones, comunidades y próximos eventos Cloud Native.',

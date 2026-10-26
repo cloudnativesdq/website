@@ -4,8 +4,6 @@ import { getMapData } from "@/lib/chapters";
 import { getLfEvents } from "@/lib/cncf-resources";
 import MapView from "@/components/MapView";
 
-export const revalidate = 21600;
-
 export const metadata: Metadata = {
   title: 'Cloud Native en el mundo | Cloud Native Santo Domingo',
   description: 'Capítulos CNCF del mundo en un mapa: próximos eventos, KCDs, Cloud Native Days y Kubestronauts por país.',

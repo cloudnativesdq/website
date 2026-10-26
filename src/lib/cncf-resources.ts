@@ -143,7 +143,8 @@ export async function getNewContributorOrientations(limit = 4): Promise<Orientat
     q: "New Contributor Orientation",
     singleEvents: "true",
     orderBy: "startTime",
-    timeMin: new Date().toISOString(),
+    // Rounded to the hour so the URL (the fetch cache key) is stable between requests.
+    timeMin: new Date().toISOString().slice(0, 13) + ":00:00Z",
     maxResults: String(limit),
   });
   try {

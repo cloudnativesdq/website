@@ -15,15 +15,13 @@ interface HeroSectionProps {
   kubestronautsCount: number;
 }
 
+// The server HTML carries the real value; the count-up only runs after mount, and not at all
+// with prefers-reduced-motion.
 const CountUp = ({ end, duration = 2000, prefix = "" }: { end: number; duration?: number; prefix?: string }) => {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(end);
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- matchMedia is browser-only
-      setCount(end);
-      return;
-    }
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     let startTime: number | null = null;
     let animationFrame: number;
@@ -53,7 +51,7 @@ const CountUp = ({ end, duration = 2000, prefix = "" }: { end: number; duration?
 };
 
 const HeroSection = ({ membersCount, pastCount, upcomingCount, kubestronautsCount }: HeroSectionProps) => {
-  const { t, mounted } = useLanguage();
+  const { t } = useLanguage();
 
   return (
     <section className="relative min-h-[560px] py-20 md:py-0 md:h-screen md:min-h-[660px] flex items-center justify-center overflow-hidden border-b border-foreground/5 bg-background select-none">
@@ -121,7 +119,7 @@ const HeroSection = ({ membersCount, pastCount, upcomingCount, kubestronautsCoun
               <>
                 <dt className="mt-1 text-[11px] md:text-xs font-medium uppercase tracking-wider text-muted-foreground">{stat.label}</dt>
                 <dd className="text-2xl md:text-4xl font-heading font-bold text-foreground">
-                  {mounted ? <CountUp end={stat.value} /> : "0"}
+                  <CountUp end={stat.value} />
                 </dd>
               </>
             );
