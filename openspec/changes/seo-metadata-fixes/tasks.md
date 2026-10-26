@@ -31,7 +31,7 @@
 
 ## 6. Domain (maintainer, manual)
 
-- [ ] 6.1 Maintainer: in Vercel → Project → Settings → Domains, set `cloudnativesdq.org` as primary and `www.cloudnativesdq.org` to redirect with 308; verify `curl -sI https://www.cloudnativesdq.org/events` returns `308` with `location: https://cloudnativesdq.org/events`
+- [x] 6.1 Maintainer: in Vercel → Project → Settings → Domains, set `cloudnativesdq.org` as primary and `www.cloudnativesdq.org` to redirect with 308; verify `curl -sI https://www.cloudnativesdq.org/events` returns `308` with `location: https://cloudnativesdq.org/events`
 
 ## Workflow follow-up
 
