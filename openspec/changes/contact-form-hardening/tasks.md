@@ -18,7 +18,7 @@
 
 ## 4. Edge rate limit (maintainer, manual)
 
-- [ ] 4.1 Maintainer: in Vercel → Firewall → Custom rules, add "Contact form rate limit": path equals `/contact`, method `POST`, header `next-action` exists, rate limit 5 per 10 minutes per IP, action deny; verify six quick submissions from one IP on production return 429 on the sixth
+- [x] 4.1 Maintainer: in Vercel → Firewall → Custom rules, add "Contact form rate limit": path equals `/contact`, method `POST`, header `next-action` exists, rate limit 5 per 10 minutes per IP, action deny; verify six quick submissions from one IP on production return 429 on the sixth
 
 ## 5. Integration
 
