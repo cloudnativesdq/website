@@ -35,10 +35,10 @@ export function LanguageProvider({ children, initialLanguage }: { children: Reac
     if (stored === null) return;
     localStorage.removeItem("lang");
     const hasCookie = document.cookie.split("; ").some((c) => c.startsWith(`${LANGUAGE_COOKIE}=`));
-    if (!hasCookie && (stored === "es" || stored === "en") && stored !== initialLanguage) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- localStorage is browser-only
-      setLanguageState(stored);
+    if (!hasCookie && (stored === "es" || stored === "en")) {
       persist(stored);
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- localStorage is browser-only
+      if (stored !== initialLanguage) setLanguageState(stored);
     }
   }, [initialLanguage]);
 

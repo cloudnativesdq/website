@@ -82,11 +82,15 @@ async function fetchEventCapacity(eventUrl: string, baseUrl: string, groupSlug: 
     if (!eventSlug) return { soldOut: false };
 
     const availabilityUrl = `${baseUrl}/cncf/group/${groupSlug}/event/${eventSlug}/availability`;
+    // Pages render per request (language cookie), so cache explicitly: request-time fetches
+    // without an option are not cached.
     const res = await fetch(availabilityUrl, {
       headers: {
         "User-Agent": "cloudnativesdq-website/1.0",
         "origin": baseUrl,
       },
+      next: { revalidate: 3600 },
+      signal: AbortSignal.timeout(5000),
     });
 
     if (!res.ok) return { soldOut: false };
@@ -108,6 +112,7 @@ async function fetchEventPortrait(eventUrl: string, baseUrl: string): Promise<st
         "User-Agent": "cloudnativesdq-website/1.0",
         "origin": baseUrl,
       },
+      next: { revalidate: 3600 },
       signal: AbortSignal.timeout(5000),
     });
 

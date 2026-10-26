@@ -11,6 +11,21 @@ test("resolveLanguage: cookie, Accept-Language, default", () => {
   expect(resolveLanguage(undefined, "fr,en;q=0.3")).toBe("es");
   expect(resolveLanguage("xx", "")).toBe("es");
   expect(resolveLanguage(undefined, undefined)).toBe("es");
+  expect(resolveLanguage(undefined, "en ;q=0.9")).toBe("en");
+});
+
+test("English server HTML hydrates without console errors", async ({ page, context, baseURL }) => {
+  const errors: string[] = [];
+  page.on("pageerror", (e) => errors.push(e.message));
+  page.on("console", (m) => {
+    if (m.type() === "error" && !/Failed to load resource|net::ERR_|status of (4|5)\d\d/.test(m.text())) errors.push(m.text());
+  });
+  await context.addCookies([{ name: "lang", value: "en", url: baseURL! }]);
+  for (const path of ["/", "/events", "/team"]) {
+    await page.goto(path, { waitUntil: "networkidle" });
+    await expect(page.locator("html")).toHaveAttribute("lang", "en");
+  }
+  expect(errors, "console errors").toEqual([]);
 });
 
 test("pages are visible without JavaScript", async ({ browser }) => {
