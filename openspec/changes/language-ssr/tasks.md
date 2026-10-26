@@ -19,7 +19,7 @@
 
 ## 4. Integration
 
-- [ ] 4.1 Run `pnpm lint`, `pnpm exec tsc --noEmit -p .`, `pnpm build`, `pnpm test:e2e`, `pnpm exec openspec validate --all --strict`; all pass
+- [x] 4.1 Run `pnpm lint`, `pnpm exec tsc --noEmit -p .`, `pnpm build`, `pnpm test:e2e`, `pnpm exec openspec validate --all --strict`; all pass
 - [ ] 4.2 As the last commit of the PR, run `pnpm exec openspec archive language-ssr`; verify `openspec list --specs` shows `site-language`
 
 ## Workflow follow-up
