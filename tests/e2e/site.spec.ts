@@ -80,6 +80,9 @@ test("every page has its own 1200x630 PNG preview under 300KB", async ({ page, r
     const twitter = await head.locator('meta[name="twitter:image"]').first().getAttribute("content");
     expect(og, `${path} og:image`).toBeTruthy();
     expect(alt?.trim(), `${path} og:image:alt`).toBeTruthy();
+    await expect(head.locator('meta[property="og:image:type"]').first(), `${path} og:image:type`).toHaveAttribute("content", "image/png");
+    await expect(head.locator('meta[property="og:image:width"]').first(), `${path} og:image:width`).toHaveAttribute("content", "1200");
+    await expect(head.locator('meta[property="og:image:height"]').first(), `${path} og:image:height`).toHaveAttribute("content", "630");
     expect(twitter, `${path} twitter:image`).toBe(og);
     seen.add(og!);
     const url = new URL(og!);
