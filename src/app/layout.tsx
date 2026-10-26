@@ -8,6 +8,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { LanguageProvider } from "@/hooks/use-language";
 import { ThemeProvider } from "next-themes";
 import { SITE_URL, sharedOpenGraph, sharedTwitter } from '@/lib/seo';
+import { LANGUAGE_COOKIE, resolveLanguage } from '@/lib/language';
+import { cookies, headers } from 'next/headers';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -41,13 +43,16 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function RootLayout({
+// Reading the cookie and Accept-Language makes every page render per request, in the visitor's
+// language. Data stays cached at the fetch layer.
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const lang = resolveLanguage((await cookies()).get(LANGUAGE_COOKIE)?.value, (await headers()).get('accept-language'));
   return (
-    <html lang="es" data-scroll-behavior="smooth" suppressHydrationWarning>
+    <html lang={lang} data-scroll-behavior="smooth" suppressHydrationWarning>
       {/* Fonts are self-hosted from the design system — see the @font-face rules
           in _ds/style-guide/tokens/fonts.css, imported by globals.css. The
           previous Google Fonts <link> was removed: it duplicated the download
@@ -56,7 +61,7 @@ export default function RootLayout({
           system's full 100-900 / 300-700 variable ranges. */}
       <body>
         <ThemeProvider attribute="data-theme" defaultTheme="dark" enableSystem>
-          <LanguageProvider>
+          <LanguageProvider initialLanguage={lang}>
             <TooltipProvider>
               {children}
               <Analytics />
