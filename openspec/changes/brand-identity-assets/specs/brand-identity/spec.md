@@ -7,18 +7,25 @@ Defines the Cloud Native Santo Domingo mark, its approved variants and lockup, w
 ## ADDED Requirements
 
 ### Requirement: Mark vector source
-The repository SHALL contain the approved wave mark as an SVG with a 64x64 viewBox, using cyan `#0ea8e6` for the curl and end node, light cyan `#7ad8fa` for the inner swell and vermillion `#ce1126` for the crest dot. Every raster brand asset SHALL be generated from this file.
+The repository SHALL contain the approved tambora mark (the merengue drum) as an SVG with a 64x64 viewBox, using cyan `#0ea8e6` for the barrel, light cyan `#7ad8fa` for the drum head, white `#ffffff` for the crossed lacing and its nodes, and vermillion `#ce1126` for one lacing node. Every raster brand asset SHALL be generated from this file or from the small-size icon.
 
 #### Scenario: Source file present and unchanged in color
 - **WHEN** a reviewer opens the mark SVG
-- **THEN** its viewBox is `0 0 64 64` and its only fills and strokes are `#0ea8e6`, `#7ad8fa` and `#ce1126`
+- **THEN** its viewBox is `0 0 64 64` and its only fills and strokes are `#0ea8e6`, `#7ad8fa`, `#ffffff` and `#ce1126`
 
 #### Scenario: Rasters trace back to the source
-- **WHEN** the icon generation command runs after the SVG changes
-- **THEN** every brand PNG and the ICO are rewritten from the SVG with no manual editing step
+- **WHEN** the icon generation command runs after either SVG changes
+- **THEN** every brand PNG and the ICO are rewritten from the SVGs with no manual editing step
+
+### Requirement: Small-size icon source
+The repository SHALL contain a simplified icon of the same drum at `public/brand/icon.svg` (64x64 viewBox, same four colors, at most five lacing nodes plus the vermillion node) for favicons, app icons and avatars, where the full mark's lacing blurs.
+
+#### Scenario: Favicon reads at 16px
+- **WHEN** the favicon is rendered at 16x16
+- **THEN** it is generated from `icon.svg` and the lacing crossing and vermillion node are distinguishable
 
 ### Requirement: One-color mark variant
-The repository SHALL contain a one-color variant of the mark that uses `currentColor` for every shape, so it takes the color of the surrounding text.
+The repository SHALL contain a one-color variant of the mark that uses `currentColor` for every shape, so it takes the color of the surrounding text. The lacing is knocked out of the drum so it stays visible in one ink.
 
 #### Scenario: Variant follows text color
 - **WHEN** the one-color SVG is inlined inside an element with `color: #ffffff`
@@ -99,7 +106,7 @@ Brand assets SHALL NOT place heritage ultramarine `#002d72` directly adjacent to
 
 #### Scenario: Icon on navy background
 - **WHEN** a generated icon places the mark on a navy background
-- **THEN** the vermillion dot touches only navy, never ultramarine
+- **THEN** the vermillion node touches only the mark's own cyan or white, or navy, never ultramarine
 
 ### Requirement: Accent tokens meet contrast floor
 Text on the accent color SHALL have a contrast ratio of at least 4.5:1 in both themes. The dark theme `--text-on-accent` SHALL be `#04202f` on accent `#0ea8e6`. The light theme `--accent` SHALL be `#0369a1` with white text, and the light `--accent-hover` SHALL differ from `--accent`. The site stylesheet and the design-system tokens SHALL hold the same values.

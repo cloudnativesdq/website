@@ -15,7 +15,8 @@
     "test:e2e": "playwright test",
     "dev:setup": "bash scripts/setup.sh",
     "worktree": "bash scripts/worktree.sh",
-    "brand:icons": "node scripts/generate-brand-icons.mjs"
+    "brand:icons": "node scripts/generate-brand-icons.mjs",
+    "brand:kit": "node scripts/generate-brand-kit.mjs"
   },
   "dependencies": {
     "@radix-ui/react-toast": "^1.3.1",
@@ -52,6 +53,8 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "globals": "^17.13.0",
     "postcss": "^8.5.30",
+    "pptxgenjs": "4.0.1",
+    "satori": "0.63.2",
     "tailwindcss": "^4.3.3",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
     "typescript-eslint": "^8.71.2"

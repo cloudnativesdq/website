@@ -2,11 +2,11 @@
 
 ## Why
 
-The site has no logo of its own. The navbar and footer render a text wordmark, the favicon (`public/favicon.svg`) is a placeholder of Azure-blue squares unrelated to the community, and `public/images/logo.png` is the generic CNCF community-group template. An approved wave mark now exists, so every icon surface can carry one consistent identity. Two color tokens also fail WCAG AA contrast and are fixed in the same pass because the lockup and icons sit on them.
+The site has no logo of its own. The navbar and footer render a text wordmark, the favicon (`public/favicon.svg`) is a placeholder of Azure-blue squares unrelated to the community, and `public/images/logo.png` is the generic CNCF community-group template. An approved mark now exists, so every icon surface can carry one consistent identity. Two color tokens also fail WCAG AA contrast and are fixed in the same pass because the lockup and icons sit on them.
 
 ## What Changes
 
-- Add the approved wave mark (64x64 SVG: cyan `#0ea8e6` curl ending in a node, light cyan `#7ad8fa` inner swell, vermillion `#ce1126` dot near the crest) as the vector source, plus a one-color variant.
+- Add the approved mark as the vector source, plus a one-color variant. The first release used a wave mark; it was replaced by a tambora, the merengue drum (64x64 SVG: cyan `#0ea8e6` barrel, light cyan `#7ad8fa` head, white crossed lacing whose bends are nodes, one vermillion `#ce1126` node), with a simplified tambora icon for favicons, app icons and avatars. Iterations are in `brand-kit/concepts/tambora/`.
 - Add a lockup: mark + "Cloud Native Santo Domingo" in Space Grotesk 700. Render it in the navbar and footer instead of the "Cloud Native SDQ" text wordmark.
 - Add app icons through Next.js metadata file conventions: `src/app/icon.svg`, `src/app/favicon.ico` (16/32/48), `src/app/apple-icon.png` (180, solid navy background), 192 and 512 PNGs, a maskable 512 PNG, and `src/app/manifest.ts`.
 - Set `theme-color` through `export const viewport` in the root layout.

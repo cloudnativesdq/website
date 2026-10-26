@@ -1,0 +1,9 @@
+<svg width="1080" height="1080" viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg"><mask id="satori_om-id"><rect x="0" y="0" width="1080" height="1080" fill="#fff"/></mask><rect x="0" y="0" width="1080" height="1080" fill="#090d16"/><clipPath id="satori_cp-id-0"><rect x="220" y="220" width="640" height="640"/></clipPath><mask id="satori_om-id-0"><rect x="220" y="220" width="640" height="640" fill="#fff"/></mask><g clip-path="url(#satori_cp-id-0)" mask="url(#satori_om-id-0)"><g transform="translate(220 220) scale(10)" fill="none">
+  <rect x="6" y="12" width="52" height="40" rx="12" fill="#0ea8e6"/>
+  <rect x="6" y="12" width="10" height="40" rx="5" fill="#7ad8fa"/>
+  <path d="M23 20L36 44L49 20M23 44L36 20L49 44" stroke="#ffffff" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"/>
+  <g fill="#ffffff">
+    <circle cx="23" cy="20" r="3.4"/><circle cx="36" cy="20" r="3.4"/><circle cx="23" cy="44" r="3.4"/><circle cx="36" cy="44" r="3.4"/><circle cx="49" cy="44" r="3.4"/>
+  </g>
+  <circle cx="49" cy="20" r="4.2" fill="#ce1126"/>
+</g></g></svg>

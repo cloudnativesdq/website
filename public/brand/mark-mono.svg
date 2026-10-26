@@ -1,6 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
-  <path d="M57 47C45 52 21 54 11 42C3 31 9 13 27 9C40 6 49 13 48 22C47 29 39 30 37 24" stroke="currentColor" stroke-width="6.5" stroke-linecap="round"/>
-  <path d="M23 42C15 34 17 23 26 19" stroke="currentColor" stroke-opacity="0.6" stroke-width="5" stroke-linecap="round"/>
-  <circle cx="57" cy="47" r="5" fill="currentColor"/>
-  <circle cx="55" cy="12" r="4.5" fill="currentColor"/>
+  <mask id="lacing" maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64">
+    <rect width="64" height="64" fill="#fff"/>
+    <path d="M14.8 20L23.4 44L32 20L40.6 44L49.2 20M14.8 44L23.4 20L32 44L40.6 20L49.2 44" stroke="#000" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+    <g fill="#000">
+      <circle cx="14.8" cy="20" r="2.4"/><circle cx="23.4" cy="20" r="2.4"/><circle cx="32" cy="20" r="2.4"/><circle cx="40.6" cy="20" r="2.4"/><circle cx="49.2" cy="20" r="2.4"/>
+      <circle cx="14.8" cy="44" r="2.4"/><circle cx="23.4" cy="44" r="2.4"/><circle cx="32" cy="44" r="2.4"/><circle cx="40.6" cy="44" r="2.4"/><circle cx="49.2" cy="44" r="3"/>
+    </g>
+  </mask>
+  <g mask="url(#lacing)">
+    <path d="M10 16C24.7 10.9 39.3 10.9 54 16V48C39.3 53.1 24.7 53.1 10 48Z" fill="currentColor"/>
+    <ellipse cx="10" cy="32" rx="4.8" ry="16" fill="currentColor" fill-opacity="0.6"/>
+  </g>
 </svg>
