@@ -70,6 +70,34 @@ for (const path of PAGES) {
   });
 }
 
+test("every page has its own 1200x630 PNG preview under 300KB", async ({ page, request }) => {
+  const seen = new Set<string>();
+  for (const path of PAGES) {
+    await page.goto(path);
+    const head = page.locator("head");
+    const og = await head.locator('meta[property="og:image"]').first().getAttribute("content");
+    const alt = await head.locator('meta[property="og:image:alt"]').first().getAttribute("content");
+    const twitter = await head.locator('meta[name="twitter:image"]').first().getAttribute("content");
+    expect(og, `${path} og:image`).toBeTruthy();
+    expect(alt?.trim(), `${path} og:image:alt`).toBeTruthy();
+    await expect(head.locator('meta[property="og:image:type"]').first(), `${path} og:image:type`).toHaveAttribute("content", "image/png");
+    await expect(head.locator('meta[property="og:image:width"]').first(), `${path} og:image:width`).toHaveAttribute("content", "1200");
+    await expect(head.locator('meta[property="og:image:height"]').first(), `${path} og:image:height`).toHaveAttribute("content", "630");
+    expect(twitter, `${path} twitter:image`).toBe(og);
+    seen.add(og!);
+    const url = new URL(og!);
+    const res = await request.get(url.pathname + url.search);
+    expect(res.status(), `${path} image status`).toBe(200);
+    expect(res.headers()["content-type"], `${path} content-type`).toContain("image/png");
+    const body = await res.body();
+    expect(body.length, `${path} bytes`).toBeLessThan(307200);
+    // PNG IHDR: width and height are big-endian uint32 at bytes 16 and 20.
+    expect([body.readUInt32BE(16), body.readUInt32BE(20)], `${path} size`).toEqual([1200, 630]);
+  }
+  expect(seen.size, "distinct images").toBe(PAGES.length);
+  expect((await request.get("/og-image.jpg")).status()).toBe(404);
+});
+
 test("sitemap lists only the site's own pages", async ({ request }) => {
   const xml = await (await request.get("/sitemap.xml")).text();
   const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);

@@ -8,10 +8,10 @@ export const sharedOpenGraph = {
   siteName: 'Cloud Native Santo Domingo',
   locale: 'es_DO',
   type: 'website',
-  images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'Cloud Native Santo Domingo' }],
 } satisfies NonNullable<Metadata['openGraph']>;
 
+// No images here: each route's opengraph-image.tsx supplies og:image, and Next copies it to
+// twitter:image when twitter.images is unset.
 export const sharedTwitter = {
   card: 'summary_large_image',
-  images: ['/og-image.jpg'],
 } satisfies NonNullable<Metadata['twitter']>;
