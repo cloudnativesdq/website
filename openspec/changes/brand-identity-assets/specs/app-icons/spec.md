@@ -7,7 +7,7 @@ Defines the icons, web app manifest and theme color that browsers, search engine
 ## ADDED Requirements
 
 ### Requirement: Browser favicon
-The site SHALL serve `/favicon.ico` containing the mark at 16x16, 32x32 and 48x48, and an SVG icon of the mark, both announced in the document head of every page.
+The site SHALL serve `/favicon.ico` containing the small-size icon at 16x16, 32x32 and 48x48, and the small-size icon as SVG, both announced in the document head of every page.
 
 #### Scenario: ICO sizes
 - **WHEN** a client fetches `/favicon.ico`
@@ -15,10 +15,10 @@ The site SHALL serve `/favicon.ico` containing the mark at 16x16, 32x32 and 48x4
 
 #### Scenario: SVG icon link
 - **WHEN** any page's HTML is fetched
-- **THEN** the head contains a `rel="icon"` link with `type="image/svg+xml"` that resolves to the mark SVG with status 200
+- **THEN** the head contains a `rel="icon"` link with `type="image/svg+xml"` that resolves to the small-size icon SVG with status 200
 
 ### Requirement: Apple touch icon
-The site SHALL serve a 180x180 PNG apple touch icon showing the mark on a solid, fully opaque navy (`#090d16`) background, announced with `rel="apple-touch-icon"`.
+The site SHALL serve a 180x180 PNG apple touch icon showing the small-size icon on a solid, fully opaque navy (`#090d16`) background, announced with `rel="apple-touch-icon"`.
 
 #### Scenario: Opaque background
 - **WHEN** a client fetches the apple touch icon

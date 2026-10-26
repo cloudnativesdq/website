@@ -18,7 +18,7 @@
 
 **Non-Goals:**
 - Open Graph images (change `social-preview-images`) and JSON-LD rewrites (change `seo-metadata-fixes`). This change only repoints `links.siteLogo` because it deletes the file that link targets.
-- Redrawing the mark. The approved SVG is committed as delivered.
+- Redrawing the mark by hand in this change. The approved SVGs are committed as delivered (the tambora replaced the first wave mark after review; see `brand-kit/concepts/tambora/`).
 - Generating icons at build time.
 
 ## Decisions
@@ -32,7 +32,7 @@
 - `icon-192.png`, `icon-512.png`: mark on transparent background with 8% padding (purpose `any`). `icon-512.png` doubles as the JSON-LD Organization logo and the image fallback.
 - `icon-maskable-512.png`: opaque `#090d16`, mark scaled so its bounding box fits inside a centered circle of 80% diameter. The mark is nearly square, so a box of about 56% of the icon width fits (diagonal ≈ 0.79 × 512). The script asserts this geometry instead of eyeballing it.
 - `apple-icon.png`: 180x180, opaque `#090d16`, mark at about 70% width, flattened so no pixel is transparent (iOS fills transparency with black).
-- `favicon.ico`: sharp cannot write ICO, so the script renders 16, 32 and 48 PNGs and packs them into an ICO container (6-byte header, 16-byte directory entry per image, PNG payloads). This takes about 20 lines and needs no library. At 16px the mark is rendered directly from the SVG, with no hand-tuned pixel version: `mark-preview.png` shows the curl and dot still read at 16px.
+- `favicon.ico`: sharp cannot write ICO, so the script renders 16, 32 and 48 PNGs and packs them into an ICO container (6-byte header, 16-byte directory entry per image, PNG payloads). This takes about 20 lines and needs no library. The full tambora's nine lacing nodes blur below 32px, so every square icon (favicon, apple, 192/512, maskable, `src/app/icon.svg`) comes from `public/brand/icon.svg`, a simplified drum with two crossings that reads at 16px. The event placeholder keeps the full mark.
 
 **Lockup component.** New `src/components/BrandLockup.tsx` renders the mark as inline SVG (`aria-hidden`) followed by the text "Cloud Native Santo Domingo" in `font-heading font-bold` (Space Grotesk 700 is already self-hosted). Inline SVG avoids an extra request and layout shift. Navbar and footer wrap it in their existing `<Link href="/">`, so the link's accessible name is the text. At narrow widths the text breaks onto two lines ("Cloud Native" / "Santo Domingo") with tight leading instead of truncating; the mark keeps a fixed size. The mark stays full color in the light theme. The cyan measures 2.71:1 on white, but logos are exempt from WCAG contrast rules, and the dark navbar is the default theme.
 

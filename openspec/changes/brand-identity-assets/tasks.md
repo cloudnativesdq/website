@@ -49,6 +49,13 @@
 - [ ] 8.2 Deploy a preview and check the tab icon, an iOS "Add to Home Screen" icon and an Android install prompt icon on real devices
 - [ ] 8.3 As the last commit of this PR, run `pnpm exec openspec archive brand-identity-assets` so `openspec/specs/brand-identity/` and `openspec/specs/app-icons/` land on `main` with the code; verify `pnpm exec openspec validate --all --strict` passes and `openspec list --specs` shows both
 
+## 9. Tambora mark
+
+- [x] 9.1 Replace `public/brand/mark.svg` and `mark-mono.svg` with the tambora (iteration "Amarres") and add `public/brand/icon.svg` (iteration "Ícono"); mirror all three in `_ds/style-guide/assets/`
+- [x] 9.2 Point `scripts/generate-brand-icons.mjs` square icons and `src/app/icon.svg` at `icon.svg`, keep the event placeholder on `mark.svg`; run `pnpm brand:icons` and its self-checks pass
+- [x] 9.3 Update the inline paths in `BrandLockup.tsx` and regenerate `brand-kit/` with `pnpm brand:kit` (avatar uses the icon)
+- [ ] 9.4 On the preview deploy, check the tab icon, navbar lockup and `/opengraph-image` show the tambora
+
 ## Workflow follow-up
 
 - Commit `_ds/style-guide` changes in the submodule repo first, then bump the submodule pointer in this repo's PR.

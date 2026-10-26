@@ -1,5 +1,6 @@
-// Regenerates every raster brand asset from public/brand/mark.svg.
-// Run with `pnpm brand:icons` after changing the mark, then commit the outputs.
+// Regenerates every raster brand asset: square app icons and the favicon from public/brand/icon.svg
+// (the simplified tambora that reads at 16px), the event placeholder from public/brand/mark.svg.
+// Run with `pnpm brand:icons` after changing either SVG, then commit the outputs.
 import assert from 'node:assert/strict';
 import { copyFile, readFile, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
@@ -11,20 +12,22 @@ const NAVY_RGB = [0x09, 0x0d, 0x16];
 const CLEAR = { r: 0, g: 0, b: 0, alpha: 0 };
 
 const MARK_SVG = path('public/brand/mark.svg');
+const ICON_SVG = path('public/brand/icon.svg');
 const PADDING = 0.08; // icon-192/512 and favicon: transparent, 8% padding per side
 const MASKABLE_SCALE = 0.56; // mark box as a share of the icon; must fit the 80% circle
 const APPLE_SCALE = 0.7;
 const PLACEHOLDER_SCALE = 0.22;
 
 // Render the SVG large and trim it, so sizing works on the visible mark, not the viewBox margins.
-const mark = await sharp(await readFile(MARK_SVG), { density: 72 * 32 }).trim().png().toBuffer();
+const trimmed = async (file) => sharp(await readFile(file), { density: 72 * 32 }).trim().png().toBuffer();
+const [mark, square] = await Promise.all([trimmed(MARK_SVG), trimmed(ICON_SVG)]);
 
-const fitMark = (box) =>
-  sharp(mark).resize(Math.round(box), Math.round(box), { fit: 'contain', background: CLEAR }).toBuffer();
+const fit = (src, box) =>
+  sharp(src).resize(Math.round(box), Math.round(box), { fit: 'contain', background: CLEAR }).toBuffer();
 
-async function icon(width, height, scale, background) {
+async function icon(width, height, scale, background, src = square) {
   const png = await sharp({ create: { width, height, channels: 4, background: background ?? CLEAR } })
-    .composite([{ input: await fitMark(width * scale), gravity: 'center' }])
+    .composite([{ input: await fit(src, width * scale), gravity: 'center' }])
     .png()
     .toBuffer();
   // Opaque icons drop the alpha channel entirely (iOS paints transparency black).
@@ -57,14 +60,14 @@ const outputs = {
   'public/brand/icon-192.png': await transparent(192),
   'public/brand/icon-512.png': await transparent(512),
   'public/brand/icon-maskable-512.png': await icon(512, 512, MASKABLE_SCALE, NAVY),
-  'public/brand/event-placeholder.png': await icon(1200, 800, PLACEHOLDER_SCALE, NAVY),
+  'public/brand/event-placeholder.png': await icon(1200, 800, PLACEHOLDER_SCALE, NAVY, mark),
   'src/app/apple-icon.png': await icon(180, 180, APPLE_SCALE, NAVY),
   'src/app/favicon.ico': packIco(
     await Promise.all(icoSizes.map(async (size) => ({ size, data: await transparent(size) }))),
   ),
 };
 for (const [file, data] of Object.entries(outputs)) await writeFile(path(file), data);
-await copyFile(MARK_SVG, path('src/app/icon.svg'));
+await copyFile(ICON_SVG, path('src/app/icon.svg'));
 
 // Self-checks: re-read the written files.
 
@@ -122,6 +125,6 @@ for (const ratio of [0.5, 1, 16 / 9, 3, 3.5]) {
   );
 }
 
-assert.ok((await readFile(path('src/app/icon.svg'))).equals(await readFile(MARK_SVG)), 'icon.svg differs from mark.svg');
+assert.ok((await readFile(path('src/app/icon.svg'))).equals(await readFile(ICON_SVG)), 'src/app/icon.svg differs from public/brand/icon.svg');
 
 console.log(`brand icons written and checked: ${[...Object.keys(outputs), 'src/app/icon.svg'].join(', ')}`);
