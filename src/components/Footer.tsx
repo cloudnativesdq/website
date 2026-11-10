@@ -30,7 +30,7 @@ export default function Footer() {
 
   const connect = [
     { href: links.cncfMain, label: "Cloud Native Computing Foundation", logo: "cncf.svg" },
-    { href: links.cncfSlack, label: t.nav.slack, logo: "slack.png" },
+    { href: links.slackChannel, label: t.nav.slack, logo: "slack.png" },
     { href: links.slides, label: t.footer.slides, icon: Presentation },
     { href: links.cfp, label: t.footer.cfp, icon: Mic2 },
   ];

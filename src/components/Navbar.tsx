@@ -91,7 +91,7 @@ const Navbar = () => {
   const joinItems: NavItem[] = [
     { href: links.cncfCommunity, label: t.nav.joinOcg, external: true },
     { href: links.whatsapp, label: t.nav.whatsapp, external: true },
-    { href: links.cncfSlack, label: t.nav.slack, external: true },
+    { href: links.slackChannel, label: t.nav.slack, external: true },
     { href: "/contact", label: t.nav.contact },
   ];
 
