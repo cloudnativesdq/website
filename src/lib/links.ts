@@ -45,6 +45,7 @@ export const links = {
   aaifEvents: "https://aaif.io/events/",
   cncfCommunityGroups: "https://community.cncf.io/",
   cncfSlack: "https://slack.cncf.io/",
+  slackChannel: "https://cloud-native.slack.com/archives/C08HTR95K17",
   lfCoupons: "https://github.com/techiescamp/linux-foundation-coupon",
   kodekloud: "https://kodekloud.com/",
   lfTraining: "https://training.linuxfoundation.org/",
