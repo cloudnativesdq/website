@@ -1,7 +1,7 @@
 # community-links Specification
 
 ## Purpose
-TBD - created by archiving change slack-channel-link. Update Purpose after archive.
+Defines where the site's community links point and how they are labeled, so visitors land in the chapter's own channels.
 
 ## Requirements
 
