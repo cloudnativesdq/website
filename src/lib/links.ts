@@ -15,7 +15,7 @@ export const links = {
   kcds: "https://www.cncf.io/kcds/",
   cloudNativeDays: "https://cloudnativedays.org/",
   cloudNativeDaysAbout: "https://cloudnativedays.org/about/",
-  chapterApply: "https://github.com/cncf/communitygroups/issues/new?template=new-group-request.yaml",
+  chapterApply: "https://github.com/cncf/communitygroups/issues/new/choose",
   chapterGuidelines: "https://github.com/cncf/communitygroups",
   chapterBestPractices: "https://github.com/cncf/communitygroups/blob/main/best_practices.md",
   chapterBranding: "https://github.com/cncf/communitygroups/blob/main/branding.md",
