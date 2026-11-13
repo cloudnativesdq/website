@@ -24,6 +24,7 @@ export default function Footer() {
     { href: "/#wcnf", label: "Women in Cloud Native" },
     { href: "/map", label: t.nav.map },
     { href: "/start-a-chapter", label: t.nav.startChapter },
+    { href: "/partners", label: t.nav.partners },
     { href: "/resources", label: t.nav.learn },
     { href: "/contact", label: t.nav.contact },
   ];

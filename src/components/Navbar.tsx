@@ -83,6 +83,7 @@ const Navbar = () => {
         { href: "/#wcnf", label: "Women in Cloud Native" },
         { href: "/map", label: t.nav.map },
         { href: "/start-a-chapter", label: t.nav.startChapter },
+        { href: "/partners", label: t.nav.partners },
       ],
     },
     { label: t.nav.learn, href: "/resources" },

@@ -2,9 +2,9 @@ import type { CommunityData, Organizer } from "./types";
 import type { CommunityDataSource } from "./providers/community-data-source";
 import { OcgScraperProvider } from "./providers/ocg-scraper.provider";
 import { FallbackProvider } from "./providers/fallback.provider";
-import { fetchLumaEvents, type LumaEventConfig } from "./providers/luma-scraper.provider";
+import { fetchLumaEvents, fetchLumaCalendarEvents, type LumaEventConfig } from "./providers/luma-scraper.provider";
 import { mergeAndClassifyEvents } from "./event-utils";
-import { links } from "./links";
+import { links, partnerCommunities } from "./links";
 
 function getLumaEventConfigs(): LumaEventConfig[] {
   const raw = process.env.LUMA_EVENT_URLS;
@@ -81,10 +81,18 @@ export async function getCommunityData(): Promise<CommunityData> {
     }
   }
 
+  const partnerEvents = (
+    await Promise.all(
+      partnerCommunities.flatMap((p) =>
+        "lumaCalendar" in p ? [fetchLumaCalendarEvents(p.lumaCalendar, p.eventType)] : []
+      )
+    )
+  ).flat();
+
   const { upcoming, past, pastCount } = mergeAndClassifyEvents(
     ocgData.upcoming,
     ocgData.past,
-    lumaEvents
+    [...lumaEvents, ...partnerEvents]
   );
 
   return {

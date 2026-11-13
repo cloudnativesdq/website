@@ -97,3 +97,29 @@ export const latamCommunities = [
   { name: "Cloud Native Guadalajara", href: "https://community.cncf.io/cloud-native-guadalajara/" },
   { name: "KCD Panamá", href: "https://community2.cncf.io/kcd-panama/" },
 ];
+
+// Partner communities shown on /partners. When `lumaCalendar` is set, the upcoming events of that
+// Luma calendar are merged into our events with `eventType` as their badge.
+export const partnerJoinMailto =
+  "mailto:organizers@cloudnativesdq.org?subject=" + encodeURIComponent("Comunidad aliada / Partner community");
+export const partnerCommunities = [
+  {
+    id: "aaif",
+    name: "AAIF Community Santo Domingo",
+    href: "https://luma.com/aaif-santodomingo",
+    luma: "https://luma.com/aaif-santodomingo",
+    logo: "/logos/aaif-wordmark.svg",
+    logoBg: "#f6f5f1",
+    lumaCalendar: "https://luma.com/aaif-santodomingo",
+    eventType: "AAIF",
+  },
+  {
+    id: "harddevs",
+    name: "Hard Devs Community",
+    href: "https://community.harddevs.com/",
+    logo: "/logos/harddevs.svg",
+    logoBg: "#0b1020",
+    // Events not loaded yet: their calendar also lists events worldwide.
+    luma: "https://luma.com/harddevscommunity",
+  },
+] as const;

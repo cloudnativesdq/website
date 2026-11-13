@@ -6,7 +6,7 @@ import { translations } from "../../src/lib/translations";
 // External data (OCG, cncf.io, Luma…) can be unavailable in CI, so content checks only rely on
 // things the site renders even when it falls back.
 
-const PAGES = ["/", "/events", "/gallery", "/team", "/map", "/programs", "/start-a-chapter", "/resources", "/contact"];
+const PAGES = ["/", "/events", "/gallery", "/team", "/map", "/programs", "/start-a-chapter", "/partners", "/resources", "/contact"];
 
 function collectErrors(page: Page) {
   const errors: string[] = [];
@@ -122,7 +122,10 @@ test("home JSON-LD is a graph of Organization, WebSite and Events", async ({ pag
   // The build only has events when the data sources answered and something is upcoming.
   if (events.length === 0) test.info().annotations.push({ type: "note", description: "no upcoming events: Event node checks did not run" });
   for (const event of events) {
-    expect((event.organizer as { "@id": string })["@id"]).toBe(org["@id"]);
+    // Partner events (AAIF) name the partner as organizer.
+    const organizer = event.organizer as { "@id"?: string; name?: string };
+    if (organizer["@id"] === undefined) expect(organizer.name).toBe("AAIF Community Santo Domingo");
+    else expect(organizer["@id"]).toBe(org["@id"]);
     expect(event.startDate).toBeTruthy();
     expect(event.endDate).not.toBe(event.startDate);
     expect((event.offers as { price: number }).price).toBe(0);
@@ -311,4 +314,18 @@ test.describe("contact form", () => {
     await page.getByRole("button", { name: /Cambiar idioma|Change language/ }).first().click();
     await expect(page.getByText(es.contactErrors.unavailable)).toBeVisible();
   });
+});
+
+test("/partners lists partner communities with logos, JSON-LD and a join link", async ({ page }) => {
+  await page.goto("/partners");
+  for (const name of ["AAIF Community Santo Domingo", "Hard Devs Community"]) {
+    const logo = page.getByRole("img", { name });
+    await expect(logo).toBeVisible();
+    expect(await logo.evaluate((img: HTMLImageElement) => img.naturalWidth)).toBeGreaterThan(0);
+  }
+  await expect(page.locator('a[href="https://luma.com/harddevscommunity"]')).toBeVisible();
+  await expect(page.locator('a[href^="mailto:organizers@cloudnativesdq.org?subject="]')).toBeVisible();
+  const raw = await page.locator('script[type="application/ld+json"]').first().textContent();
+  const names = JSON.parse(raw!).itemListElement.map((i: { item: { name: string } }) => i.item.name);
+  expect(names).toEqual(["AAIF Community Santo Domingo", "Hard Devs Community"]);
 });

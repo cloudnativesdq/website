@@ -184,6 +184,7 @@ export const translations = {
       people: "Kubestronauts y Ambassadors",
       map: "Mapa CNCF",
       startChapter: "Abre tu capítulo",
+      partners: "Comunidades aliadas",
       learn: "Aprende",
       join: "Únete",
       joinOcg: "Únete al grupo",
@@ -285,6 +286,18 @@ export const translations = {
     spotsRemaining: "{count} lugares disponibles",
     upcomingPreviewSubtitle: "Los próximos encuentros de la comunidad.",
     seeAllEvents: "Ver todos los eventos",
+    partners: {
+      title: "Comunidades aliadas",
+      subtitle: "Comunidades de República Dominicana con las que colaboramos. Algunos de sus eventos también aparecen en nuestro calendario.",
+      visit: "Visitar comunidad",
+      luma: "Eventos en Luma",
+      join: "Únete como comunidad aliada",
+      joinHint: "¿Organizas una comunidad tech en República Dominicana? Escríbenos.",
+      descriptions: {
+        aaif: "Capítulo de Santo Domingo de la Agentic AI Foundation (Linux Foundation): meetups neutrales sobre agentes de IA y el Model Context Protocol.",
+        harddevs: "Comunidad de desarrolladores dominicanos: comparte conocimientos, colabora en proyectos y crece profesionalmente.",
+      },
+    },
   },
   en: {
     heroTitle1: "Cloud Native",
@@ -470,6 +483,7 @@ export const translations = {
       people: "Kubestronauts & Ambassadors",
       map: "CNCF map",
       startChapter: "Start a chapter",
+      partners: "Partner communities",
       learn: "Learn",
       join: "Join",
       joinOcg: "Join the group",
@@ -571,6 +585,18 @@ export const translations = {
     spotsRemaining: "{count} spots left",
     upcomingPreviewSubtitle: "The community's next meetups.",
     seeAllEvents: "See all events",
+    partners: {
+      title: "Partner communities",
+      subtitle: "Dominican Republic communities we work with. Some of their events also show up in our calendar.",
+      visit: "Visit community",
+      luma: "Events on Luma",
+      join: "Join as a partner community",
+      joinHint: "Do you run a tech community in the Dominican Republic? Write to us.",
+      descriptions: {
+        aaif: "Santo Domingo chapter of the Agentic AI Foundation (Linux Foundation): vendor-neutral meetups on AI agents and the Model Context Protocol.",
+        harddevs: "Dominican developer community: share knowledge, collaborate on projects and grow professionally.",
+      },
+    },
   }
 };
 

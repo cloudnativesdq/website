@@ -12,6 +12,7 @@ const routes: [path: string, changeFrequency: Freq, priority: number][] = [
   ['/programs', 'monthly', 0.7],
   ['/resources', 'daily', 0.8],
   ['/start-a-chapter', 'monthly', 0.6],
+  ['/partners', 'monthly', 0.6],
   ['/contact', 'monthly', 0.8],
 ];
 

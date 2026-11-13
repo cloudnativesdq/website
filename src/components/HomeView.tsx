@@ -10,7 +10,7 @@ import OrganizersSection from "@/components/OrganizersSection";
 import WcnfSection from "@/components/WcnfSection";
 import type { WcnfEvent } from "@/lib/wcnf";
 import type { CommunityData, Organizer, CommunityEvent } from "@/lib/types";
-import { links } from "@/lib/links";
+import { links, partnerCommunities } from "@/lib/links";
 import { SITE_URL } from "@/lib/seo";
 import { parseEventDate } from "@/lib/event-utils";
 
@@ -31,6 +31,20 @@ export default function HomeView({ data, kubestronautsCount, wcnfEvents }: HomeV
     if (!d) return undefined;
     const pad = (n: number) => String(n).padStart(2, "0");
     return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  };
+
+  // Partner events (e.g. AAIF) name the partner as organizer instead of this community.
+  const organizerOf = (event: CommunityEvent) => {
+    const partner = partnerCommunities.find((p) => "eventType" in p && p.eventType === event.type);
+    return partner
+      ? {
+          "description": `${event.title} - Evento de ${partner.name}, comunidad aliada de Cloud Native Santo Domingo.`,
+          "organizer": { "@type": "Organization", "name": partner.name, "url": partner.href },
+        }
+      : {
+          "description": `${event.title} - Evento de la comunidad Cloud Native Santo Domingo.`,
+          "organizer": { "@id": orgId },
+        };
   };
 
   const organizationSchema = {
@@ -102,8 +116,7 @@ export default function HomeView({ data, kubestronautsCount, wcnfEvents }: HomeV
               },
           "image": event.image || links.siteLogo,
           "url": event.url,
-          "description": `${event.title} - Evento de la comunidad Cloud Native Santo Domingo.`,
-          "organizer": { "@id": orgId },
+          ...organizerOf(event),
           "offers": {
             "@type": "Offer",
             "price": 0,
