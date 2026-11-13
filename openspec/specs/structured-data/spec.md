@@ -38,7 +38,7 @@ The `WebSite` node SHALL state the site name "Cloud Native Santo Domingo", URL `
 - **THEN** the WebSite's `publisher` `@id` equals the Organization's `@id`
 
 ### Requirement: Event organizer and offers
-Each `Event` SHALL reference the Organization as `organizer` and include an `offers` object with `price` `0`, a `priceCurrency`, the event URL and `availability` `https://schema.org/SoldOut` when the event is sold out, else `https://schema.org/InStock`.
+Each `Event` SHALL reference the Organization as `organizer`, except partner community events, whose `organizer` SHALL be an `Organization` with the partner's name and URL. Each `Event` SHALL include an `offers` object with `price` `0`, a `priceCurrency`, the event URL and `availability` `https://schema.org/SoldOut` when the event is sold out, else `https://schema.org/InStock`.
 
 #### Scenario: Sold-out event
 - **WHEN** an upcoming event is marked sold out
@@ -46,7 +46,11 @@ Each `Event` SHALL reference the Organization as `organizer` and include an `off
 
 #### Scenario: Organizer reference
 - **WHEN** the JSON-LD is parsed
-- **THEN** each Event's `organizer` `@id` equals the Organization's `@id`
+- **THEN** each Event that is not a partner event has an `organizer` `@id` equal to the Organization's `@id`
+
+#### Scenario: Partner event organizer
+- **WHEN** an upcoming event comes from the AAIF Community Santo Domingo calendar
+- **THEN** its `organizer` is an `Organization` named "AAIF Community Santo Domingo" with `url` `https://luma.com/aaif-santodomingo`
 
 ### Requirement: Event dates
 An Event's `startDate` SHALL be the event's real start: an ISO 8601 date-time with offset when the source provides a time, otherwise a date-only value. `endDate` SHALL be the real end time when the source provides one and SHALL be omitted otherwise. `endDate` SHALL NOT equal `startDate`.
