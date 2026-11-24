@@ -189,6 +189,17 @@ test("card grids filter by tab", async ({ page }) => {
   await expect(grid.locator("ul > li").first()).toBeVisible();
 });
 
+test("resources roadmaps tab lists the learning paths", async ({ page }) => {
+  await page.goto("/resources", { waitUntil: "networkidle" });
+  const grid = page.locator('[aria-labelledby="resources-grid-title"]');
+  await grid.getByRole("tab", { name: /Rutas de aprendizaje|Roadmaps/ }).click();
+  // The grid shows 8 cards per page; the ninth is behind "Show more".
+  await grid.getByRole("button", { name: /Ver más|Show more/ }).click();
+  await expect(grid.locator("ul > li a")).toHaveCount(9);
+  await expect(grid.locator('a[href="https://roadmap.sh/kubernetes"]')).toHaveAttribute("target", "_blank");
+  await expect(grid.locator('a[href="https://landscape.cncf.io/guide"]')).toHaveAttribute("rel", "noopener noreferrer");
+});
+
 test("head declares the brand icons, manifest and theme color", async ({ page, request }) => {
   await page.goto("/");
   const head = page.locator("head");
