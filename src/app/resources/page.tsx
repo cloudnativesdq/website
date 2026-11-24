@@ -6,6 +6,7 @@ import {
   getFreeCodeCampVideos,
   getKubernetesBlogs,
   getNewContributorOrientations,
+  lfPromoState,
 } from "@/lib/cncf-resources";
 import ResourcesView from "@/components/ResourcesView";
 
@@ -34,6 +35,7 @@ export default async function Resources() {
       videos={videos}
       blogs={blogs}
       orientations={orientations}
+      lfPromo={lfPromoState()}
     />
   );
 }

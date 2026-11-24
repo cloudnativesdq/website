@@ -200,6 +200,18 @@ test("resources roadmaps tab lists the learning paths", async ({ page }) => {
   await expect(grid.locator('a[href="https://landscape.cncf.io/guide"]')).toHaveAttribute("rel", "noopener noreferrer");
 });
 
+test("LF Black Friday promo follows the visitor's clock", async ({ page }) => {
+  const promo = page.getByText(translations.en.lfPromo.title);
+  // The server decides with the real clock; the client re-checks with the (faked) visitor clock.
+  await page.clock.setFixedTime(new Date("2026-12-05T03:59:00Z"));
+  await page.goto("/resources", { waitUntil: "networkidle" });
+  await expect(promo).toBeVisible();
+  await expect(page.getByText(translations.en.lfPromo.live)).toBeVisible();
+  await page.clock.setFixedTime(new Date("2026-12-05T04:00:00Z"));
+  await page.reload({ waitUntil: "networkidle" });
+  await expect(promo).toBeHidden();
+});
+
 test("head declares the brand icons, manifest and theme color", async ({ page, request }) => {
   await page.goto("/");
   const head = page.locator("head");

@@ -55,6 +55,13 @@ export async function getCoupon(): Promise<Coupon | null> {
   }
 }
 
+// LF Education Black Friday 2026: Nov 27 – Dec 4, midnight to midnight in Santo Domingo (UTC-4).
+const LF_PROMO_START = Date.parse("2026-11-27T04:00:00Z");
+const LF_PROMO_END = Date.parse("2026-12-05T04:00:00Z");
+export type LfPromoState = "upcoming" | "live" | null;
+export const lfPromoState = (now = Date.now()): LfPromoState =>
+  now >= LF_PROMO_END ? null : now >= LF_PROMO_START ? "live" : "upcoming";
+
 type WpCourse = { title: { rendered: string }; link: string; date: string; meta: { lf_course_free: boolean; lf_course_course_url?: string } };
 
 export async function getFreeCourses(): Promise<CncfCourse[]> {

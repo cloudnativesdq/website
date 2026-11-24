@@ -1,6 +1,7 @@
 "use client";
 
-import React from "react";
+import React, { useSyncExternalStore } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -8,7 +9,7 @@ import BrandLogo from "@/components/BrandLogo";
 import CardGrid, { type CardCategory, type CardItem } from "@/components/CardGrid";
 import { useLanguage } from "@/hooks/use-language";
 import { links, latamCommunities } from "@/lib/links";
-import type { Coupon, CncfCourse, Article, Orientation, Video } from "@/lib/cncf-resources";
+import { lfPromoState, type Coupon, type CncfCourse, type Article, type Orientation, type Video, type LfPromoState } from "@/lib/cncf-resources";
 import { ArrowRight, ArrowUpRight, Tag } from "lucide-react";
 import { Github } from "@/components/BrandIcons";
 
@@ -18,12 +19,18 @@ interface ResourcesViewProps {
   videos: Video[];
   blogs: { io: Article[]; dev: Article[] };
   orientations: Orientation[];
+  lfPromo: LfPromoState;
 }
+
+const noSubscribe = () => () => {};
 
 const logoImage = (file: string) => ({ image: `/logos/${file}`, imageFit: "contain" as const });
 
-export default function ResourcesView({ coupon, courses, videos, blogs, orientations }: ResourcesViewProps) {
+export default function ResourcesView({ coupon, courses, videos, blogs, orientations, lfPromo }: ResourcesViewProps) {
   const { t, language } = useLanguage();
+  // Hydrate with the server's answer, then re-check with the visitor's clock, so cached HTML can't
+  // show the promo after it ends and the e2e test can fake the date.
+  const promo = useSyncExternalStore(noSubscribe, () => lfPromoState(), () => lfPromo);
   const locale = language === "es" ? "es-DO" : "en-US";
   const fmtDate = new Intl.DateTimeFormat(locale, { dateStyle: "medium" });
 
@@ -167,6 +174,34 @@ export default function ResourcesView({ coupon, courses, videos, blogs, orientat
                   </a>
                 )}
               </div>
+              {promo && (
+                <div className="mt-6 pt-6 border-t border-primary/20 flex flex-col md:flex-row md:items-center gap-5">
+                  <Image
+                    src="/images/lf-black-friday-2026.webp"
+                    alt={t.lfPromo.imageAlt}
+                    width={1200}
+                    height={628}
+                    sizes="(min-width: 768px) 288px, 100vw"
+                    className="w-full md:w-72 h-auto rounded-2xl border border-foreground/10 shrink-0"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-bold uppercase tracking-wider text-primary">
+                      {promo === "live" ? t.lfPromo.live : t.lfPromo.upcoming} · {t.lfPromo.dates}
+                    </p>
+                    <p className="font-heading font-semibold text-lg mt-1">{t.lfPromo.title}</p>
+                    <p className="text-sm text-muted-foreground mt-2">{t.lfPromo.discount}</p>
+                  </div>
+                  <a
+                    href={links.lfTraining}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 h-11 px-6 rounded-full bg-primary text-primary-foreground font-heading font-semibold text-sm hover:bg-primary/90 transition-colors shrink-0"
+                  >
+                    {t.lfPromo.cta}
+                    <ArrowUpRight className="w-4 h-4" />
+                  </a>
+                </div>
+              )}
             </div>
 
             <CardGrid id="resources-grid" title={t.resourcesGrid.title} categories={categories} items={items} defaultTab="videos" />
